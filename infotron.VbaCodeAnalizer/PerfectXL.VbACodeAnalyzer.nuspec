@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>PerfectXL.VbACodeAnalyzer</id>
+    <version>0.1.0</version>
+    <title>PerfectXL.VbACodeAnalyzer</title>
+    <authors>Infotron BV</authors>
+    <owners>Infotron BV</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Rubberduck integration into PerfectXL</description>
+    <copyright>Copyright 2017</copyright>
+    <tags>Infotron PerfectXL Rubberduck</tags>
+    <dependencies>
+      <dependency id="Antlr4" version="4.3.0" />
+      <dependency id="Antlr4.Runtime" version="4.3.0" />
+      <dependency id="AvalonEdit" version="5.0.0" />
+      <dependency id="Castle.Core" version="3.2.0" />
+      <dependency id="EasyHook" version="2.7.0" />
+      <dependency id="HtmlAgilityPack" version="1.4.0" />
+      <dependency id="Ninject" version="3.2.0" />
+      <dependency id="Ninject.Extensions.Conventions" version="3.2.0" />
+      <dependency id="Ninject.Extensions.Factory" version="3.2.0" />
+      <dependency id="Ninject.Extensions.Interception" version="3.2.0" />
+      <dependency id="Ninject.Extensions.Interception.DynamicProxy" version="3.2.0" />
+      <dependency id="Ninject.Extensions.NamedScope" version="3.2.0" />
+      <dependency id="NLog" version="4.4.0" />
+      <dependency id="NLog.Schema" version="4.0.0" />
+      <dependency id="LibGit2Sharp" version="0.22.0" />
+      <dependency id="Moq" version="4.2.0" />
+      <dependency id="Newtonsoft.Json" version="9.0.0" />
+    </dependencies>
+  </metadata>
+</package>

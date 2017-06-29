@@ -1,0 +1,3 @@
+﻿namespace Rubberduck.VBEditor.Extensions
+{
+}

@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{15E4C174-E923-4128-A6CA-B8E1F245A6D9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>infotron.VbaCodeAnalizer</RootNamespace>
+    <AssemblyName>infotron.VbaCodeAnalizer</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Moq, Version=4.2.1507.118, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Rubberduck.SmartIndenter, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Rubberduck\Rubberduck.SmartIndenter\bin\Debug\Rubberduck.SmartIndenter.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CodeAnalizer.cs" />
+    <Compile Include="Inspections\CodeInspection.cs" />
+    <Compile Include="Inspections\InspectionsHelper.cs" />
+    <Compile Include="Inspections\Inspector.cs" />
+    <Compile Include="Mog\MockParser.cs" />
+    <Compile Include="Mog\MockProjectBuilder.cs" />
+    <Compile Include="Mog\MockUserFormBuilder.cs" />
+    <Compile Include="Mog\MockVbeBuilder.cs" />
+    <Compile Include="Mog\Windows.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Rubberduck\RetailCoder.VBE\Rubberduck.csproj">
+      <Project>{20589DE8-432E-4359-9232-69EB070B7185}</Project>
+      <Name>Rubberduck</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Rubberduck\Rubberduck.Inspections\Rubberduck.Inspections.csproj">
+      <Project>{AC4F1D22-D74B-45FF-AB0C-CC2A104FE023}</Project>
+      <Name>Rubberduck.Inspections</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Rubberduck\Rubberduck.Parsing\Rubberduck.Parsing.csproj">
+      <Project>{A4A618E1-CBCA-435F-9C6C-5181E030ADFC}</Project>
+      <Name>Rubberduck.Parsing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Rubberduck\Rubberduck.SettingsProvider\Rubberduck.SettingsProvider.csproj">
+      <Project>{E85E1253-86D6-45EE-968B-F37348D44132}</Project>
+      <Name>Rubberduck.SettingsProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Rubberduck\Rubberduck.VBEEditor\Rubberduck.VBEditor.csproj">
+      <Project>{8CE35EB3-8852-4BA1-84DD-DF3F5D2967B0}</Project>
+      <Name>Rubberduck.VBEditor</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
