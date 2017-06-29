@@ -1,2 +1,2 @@
-.\nuget.exe pack .\Infotron.VbaCodeAnalizer.nuspec
-.\nuget push .\PerfectXL.VbACodeAnalyzer.0.1.0.nupkg -Source https://nuget.perfectxl.com/nuget/NuGet -ApiKey 9j86KfD73t
+.\nuget.exe pack PerfectXL.VbaCodeAnalyzer.nuspec
+.\nuget.exe push PerfectXL.VbaCodeAnalyzer.0.1.1.nupkg -Source https://nuget.perfectxl.com/nuget/default -ApiKey 9j86KfD73t
