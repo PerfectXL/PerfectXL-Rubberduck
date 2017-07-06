@@ -47,7 +47,7 @@ namespace infotron.VbaCodeAnalizer.Mog
 
         /// <summary>
         /// Builds the UserForm, adds it to the project,
-        /// and returns a <see cref="MockProjectBuilder"/>
+        /// and returns a MockProjectBuilder
         /// to continue adding components to the project.
         /// </summary>
         /// <returns></returns>

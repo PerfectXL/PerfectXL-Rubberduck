@@ -9,7 +9,7 @@ using Rubberduck.VBEditor.SafeComWrappers.Abstract;
 namespace infotron.VbaCodeAnalizer.Mog
 {
     /// <summary>
-    /// Builds a mock <see cref="VBE"/>.
+    /// Builds a mock VBE.
     /// </summary>
     public class MockVbeBuilder
     {
@@ -51,7 +51,7 @@ namespace infotron.VbaCodeAnalizer.Mog
         /// Adds a project to the mock VBE.
         /// Use a <see cref="MockProjectBuilder"/> to build the <see cref="project"/>.
         /// </summary>
-        /// <param name="project">A mock <see cref="VBProject"/>.</param>
+        /// <param name="project">A mock VBProject.</param>
         /// <returns>Returns the <see cref="MockVbeBuilder"/> instance.</returns>
         public MockVbeBuilder AddProject(Mock<IVBProject> project)
         {
@@ -92,7 +92,7 @@ namespace infotron.VbaCodeAnalizer.Mog
         }
 
         /// <summary>
-        /// Gets the mock <see cref="VBE"/> instance.
+        /// Gets the mock VBE instance.
         /// </summary>
         public Mock<IVBE> Build()
         {
@@ -100,13 +100,13 @@ namespace infotron.VbaCodeAnalizer.Mog
         }
 
         /// <summary>
-        /// Gets a mock <see cref="VBE"/> instance, 
-        /// containing a single "TestProject1" <see cref="VBProject"/>
-        /// and a single "TestModule1" <see cref="VBComponent"/>, with the specified <see cref="content"/>.
+        /// Gets a mock VBE instance, 
+        /// containing a single "TestProject1" VBProject
+        /// and a single "TestModule1" VBComponent, with the specified <see cref="content"/>.
         /// </summary>
         /// <param name="content">The VBA code associated to the component.</param>
-        /// <param name="component">The created <see cref="VBComponent"/></param>
-        /// <param name="module">The created <see cref="CodeModule"/></param>
+        /// <param name="component">The created VBComponent</param>
+        /// <param name="module">The created CodeModule</param>
         /// <param name="selection"></param>
         /// <returns></returns>
         public static Mock<IVBE> BuildFromSingleStandardModule(string content, out IVBComponent component, Selection selection = default(Selection), bool referenceStdLibs = false)
