@@ -17,29 +17,29 @@ namespace infotron.VbaCodeAnalizer.Mog
     {
         private readonly Func<IVBE> _getVbe;
         private readonly MockVbeBuilder _mockVbeBuilder;
-        private readonly Mock<IVBProject> _project;
-        private readonly Mock<IVBComponents> _vbComponents;
-        private readonly Mock<IReferences> _vbReferences;
+        private readonly IVBProject _project;
+        private readonly IVBComponents _vbComponents;
+        private readonly IReferences _vbReferences;
 
-        private readonly List<Mock<IVBComponent>> _componentsMock = new List<Mock<IVBComponent>>();
+        private readonly List<IVBComponent> _componentsMock = new List<IVBComponent>();
         private readonly List<IReference> _references = new List<IReference>();
 
-        public Mock<IVBComponents> MockVBComponents
+        public IVBComponents MockVBComponents
         {
             get { return _vbComponents; }
         }
 
-        public List<Mock<IVBComponent>> MockComponents
+        public List<IVBComponent> MockComponents
         {
             get { return _componentsMock; }
         }
 
         private List<IVBComponent> Components
         {
-            get { return _componentsMock.Select(m => m.Object).ToList(); }
+            get { return _componentsMock.Select(m => m).ToList(); }
         }
 
-        public void RemoveComponent(Mock<IVBComponent> component)
+        public void RemoveComponent(IVBComponent component)
         {
             _componentsMock.Remove(component);
         }
@@ -60,18 +60,26 @@ namespace infotron.VbaCodeAnalizer.Mog
             _getVbe = getVbe;
             _mockVbeBuilder = mockVbeBuilder;
 
-            _project = CreateProjectMock(name, filename, protection);
+            var result = new Mock<IVBProject>();
 
-            _project.SetupProperty(m => m.HelpFile);
-            _project.SetupGet(m => m.ProjectId).Returns(() => _project.Object.HelpFile);
-            _project.Setup(m => m.AssignProjectId())
-                .Callback(() => _project.Object.HelpFile = projectId);
+            result.SetupProperty(m => m.Name, name);
+            result.SetupGet(m => m.FileName).Returns(() => filename);
+            result.SetupGet(m => m.Protection).Returns(() => protection);
+            result.SetupGet(m => m.VBE).Returns(_getVbe);
+            result.Setup(m => m.ComponentNames()).Returns(() => _vbComponents.Select(component => component.Name).ToArray());
+
+            result.SetupProperty(m => m.HelpFile);
+            result.SetupGet(m => m.ProjectId).Returns(() => _project.HelpFile);
+            result.Setup(m => m.AssignProjectId())
+                .Callback(() => _project.HelpFile = projectId);
 
             _vbComponents = CreateComponentsMock();
-            _project.SetupGet(m => m.VBComponents).Returns(_vbComponents.Object);
+            result.SetupGet(m => m.VBComponents).Returns(_vbComponents);
 
             _vbReferences = CreateReferencesMock();
-            _project.SetupGet(m => m.References).Returns(_vbReferences.Object);
+            result.SetupGet(m => m.References).Returns(_vbReferences);
+
+            _project = result.Object;
         }
 
         /// <summary>
@@ -93,10 +101,10 @@ namespace infotron.VbaCodeAnalizer.Mog
         /// </summary>
         /// <param name="component">The component to add.</param>
         /// <returns>Returns the <see cref="MockProjectBuilder"/> instance.</returns>
-        public MockProjectBuilder AddComponent(Mock<IVBComponent> component)
+        public MockProjectBuilder AddComponent(IVBComponent component)
         {
             _componentsMock.Add(component);
-            _getVbe().ActiveCodePane = component.Object.CodeModule.CodePane;
+            _getVbe().ActiveCodePane = component.CodeModule.CodePane;
             return this;
         }
 
@@ -120,9 +128,9 @@ namespace infotron.VbaCodeAnalizer.Mog
         /// to continue adding projects to the VBE.
         /// </summary>
         /// <returns></returns>
-        public MockVbeBuilder MockVbeBuilder()
+        private MockVbeBuilder MockVbeBuilder()
         {
-            _mockVbeBuilder.AddProject(Build());
+            //_mockVbeBuilder.AddProject(Build());
             return _mockVbeBuilder;
         }
 
@@ -140,29 +148,16 @@ namespace infotron.VbaCodeAnalizer.Mog
         /// <summary>
         /// Gets the mock VBProject instance.
         /// </summary>
-        public Mock<IVBProject> Build()
+        public IVBProject Build()
         {
             return _project;
         }
 
-        private Mock<IVBProject> CreateProjectMock(string name, string filename, ProjectProtection protection)
-        {
-            var result = new Mock<IVBProject>();
-
-            result.SetupProperty(m => m.Name, name);
-            result.SetupGet(m => m.FileName).Returns(() => filename);
-            result.SetupGet(m => m.Protection).Returns(() => protection);
-            result.SetupGet(m => m.VBE).Returns(_getVbe);
-            result.Setup(m => m.ComponentNames()).Returns(() => _vbComponents.Object.Select(component => component.Name).ToArray());
-
-            return result;
-        }
-
-        private Mock<IVBComponents> CreateComponentsMock()
+        private IVBComponents CreateComponentsMock()
         {
             var result = new Mock<IVBComponents>();
 
-            result.SetupGet(m => m.Parent).Returns(() => _project.Object);
+            result.SetupGet(m => m.Parent).Returns(() => _project);
             result.SetupGet(m => m.VBE).Returns(_getVbe);
 
             result.Setup(c => c.GetEnumerator()).Returns(() => Components.GetEnumerator());
@@ -182,12 +177,12 @@ namespace infotron.VbaCodeAnalizer.Mog
                     var lastComponent = _componentsMock.LastOrDefault();
                     return lastComponent == null
                         ? null
-                        : lastComponent.Object;
+                        : lastComponent;
                 });
 
             result.Setup(m => m.Remove(It.IsAny<IVBComponent>())).Callback((IVBComponent c) =>
             {
-                _componentsMock.Remove(_componentsMock.First(m => m.Object == c));
+                _componentsMock.Remove(_componentsMock.First(m => m == c));
             });
 
             result.Setup(m => m.Import(It.IsAny<string>())).Callback((string s) =>
@@ -206,20 +201,20 @@ namespace infotron.VbaCodeAnalizer.Mog
                 _componentsMock.Add(CreateComponentMock(s.Split('\\').Last(), type, string.Empty, new Selection()));
             });
 
-            return result;
+            return result.Object;
         }
 
-        private Mock<IReferences> CreateReferencesMock()
+        private IReferences CreateReferencesMock()
         {
             var result = new Mock<IReferences>();
-            result.SetupGet(m => m.Parent).Returns(() => _project.Object);
+            result.SetupGet(m => m.Parent).Returns(() => _project);
             result.SetupGet(m => m.VBE).Returns(_getVbe);
             result.Setup(m => m.GetEnumerator()).Returns(() => _references.GetEnumerator());
             result.As<IEnumerable>().Setup(m => m.GetEnumerator()).Returns(() => _references.GetEnumerator());
             result.Setup(m => m[It.IsAny<int>()]).Returns<int>(index => _references.ElementAt(index - 1));
             result.SetupGet(m => m.Count).Returns(() => _references.Count);
             result.Setup(m => m.AddFromFile(It.IsAny<string>()));
-            return result;
+            return result.Object;
         }
 
         private Mock<IReference> CreateReferenceMock(string name, string filePath, int major, int minor, bool isBuiltIn = true)
@@ -227,7 +222,7 @@ namespace infotron.VbaCodeAnalizer.Mog
             var result = new Mock<IReference>();
 
             result.SetupGet(m => m.VBE).Returns(_getVbe);
-            result.SetupGet(m => m.Collection).Returns(() => _vbReferences.Object);
+            result.SetupGet(m => m.Collection).Returns(() => _vbReferences);
 
             result.SetupGet(m => m.Name).Returns(() => name);
             result.SetupGet(m => m.FullPath).Returns(() => filePath);
@@ -239,12 +234,12 @@ namespace infotron.VbaCodeAnalizer.Mog
             return result;
         }
 
-        private Mock<IVBComponent> CreateComponentMock(string name, ComponentType type, string content, Selection selection)
+        private IVBComponent CreateComponentMock(string name, ComponentType type, string content, Selection selection)
         {
             var result = new Mock<IVBComponent>();
 
             result.SetupGet(m => m.VBE).Returns(_getVbe);
-            result.SetupGet(m => m.Collection).Returns(() => _vbComponents.Object);
+            result.SetupGet(m => m.Collection).Returns(() => _vbComponents);
             result.SetupGet(m => m.Type).Returns(() => type);
             result.SetupProperty(m => m.Name, name);
 
@@ -254,7 +249,7 @@ namespace infotron.VbaCodeAnalizer.Mog
 
             result.Setup(m => m.Activate());
 
-            return result;
+            return result.Object;
         }
 
         private Mock<ICodeModule> CreateCodeModuleMock(string name, string content, Selection selection, Mock<IVBComponent> component)

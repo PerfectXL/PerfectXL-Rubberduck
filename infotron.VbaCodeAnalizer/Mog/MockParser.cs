@@ -24,7 +24,7 @@ namespace infotron.VbaCodeAnalizer.Mog
             IVBComponent component;
             var vbe = MockVbeBuilder.BuildFromSingleStandardModule(inputCode, out component);
             qualifiedModuleName = new QualifiedModuleName(component);
-            var parser = Create(vbe.Object, new RubberduckParserState(vbe.Object));
+            var parser = Create(vbe, new RubberduckParserState(vbe));
 
             parser.Parse(new CancellationTokenSource());
             if (parser.State.Status == ParserState.Error)

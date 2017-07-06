@@ -14,14 +14,14 @@ namespace infotron.VbaCodeAnalizer.Mog
     /// </summary>
     public class MockUserFormBuilder
     {
-        private readonly Mock<IVBComponent> _component;
+        private readonly IVBComponent _component;
         private readonly MockProjectBuilder _mockProjectBuilder;
-        private readonly Mock<IControls> _vbControls;
+        private readonly IControls _vbControls;
         private readonly ICollection<IControl> _controls = new List<IControl>();
 
-        public MockUserFormBuilder(Mock<IVBComponent> component, MockProjectBuilder mockProjectBuilder)
+        public MockUserFormBuilder(IVBComponent component, MockProjectBuilder mockProjectBuilder)
         {
-            if (component.Object.Type != ComponentType.UserForm)
+            if (component.Type != ComponentType.UserForm)
             {
                 throw new InvalidOperationException("Component type must be 'ComponentType.UserForm'.");
             }
@@ -51,7 +51,7 @@ namespace infotron.VbaCodeAnalizer.Mog
         /// to continue adding components to the project.
         /// </summary>
         /// <returns></returns>
-        public MockProjectBuilder MockProjectBuilder()
+        private MockProjectBuilder MockProjectBuilder()
         {
             _mockProjectBuilder.AddComponent(Build());
             return _mockProjectBuilder;
@@ -61,15 +61,15 @@ namespace infotron.VbaCodeAnalizer.Mog
         /// Gets the mock UserForm component.
         /// </summary>
         /// <returns></returns>
-        public Mock<IVBComponent> Build()
+        private IVBComponent Build()
         {
             //var designer = CreateMockDesigner();
             //_component.SetupGet(m => m.Designer).Returns(() => designer.Object);
 
             var window = new Mock<IWindow>();
             window.SetupProperty(w => w.IsVisible, false);
-            _component.Setup(m => m.Controls).Returns(_vbControls.Object);
-            _component.Setup(m => m.DesignerWindow()).Returns(window.Object);
+            //_component.Setup(m => m.Controls).Returns(_vbControls);
+            //_component.Setup(m => m.DesignerWindow()).Returns(window.Object);
 
             return _component;
         }
@@ -83,7 +83,7 @@ namespace infotron.VbaCodeAnalizer.Mog
         //    return result;
         //}
 
-        private Mock<IControls> CreateControlsMock()
+        private IControls CreateControlsMock()
         {
             var result = new Mock<IControls>();
             result.Setup(m => m.GetEnumerator()).Returns(() => _controls.GetEnumerator());
@@ -91,7 +91,7 @@ namespace infotron.VbaCodeAnalizer.Mog
 
             result.Setup(m => m[It.IsAny<int>()]).Returns<int>(index => _controls.ElementAt(index));
             result.SetupGet(m => m.Count).Returns(_controls.Count);
-            return result;
+            return result.Object;
         }
     }
 }

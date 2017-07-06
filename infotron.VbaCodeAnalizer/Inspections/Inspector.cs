@@ -20,7 +20,7 @@ namespace infotron.VbaCodeAnalizer.Inspections
 
             IVBComponent component;
             var vbe = MockVbeBuilder.BuildFromSingleStandardModule(inputcode, out component);
-            var state = MockParser.CreateAndParse(vbe.Object);
+            var state = MockParser.CreateAndParse(vbe);
 
             var inspection = InspectionFactory.Create<TInspection>(state);
 
