@@ -15,7 +15,7 @@ namespace infotron.VbaCodeAnalizer.Mog
     {
         public const string TestProjectName = "TestProject1";
         public const string TestModuleName = "TestModule1";
-        private readonly Mock<IVBE> _vbe;
+        private readonly IVBE _vbe;
 
         #region standard library paths (referenced in all VBA projects hosted in Microsoft Excel)
         public static readonly string LibraryPathVBA = @"C:\PROGRA~2\COMMON~1\MICROS~1\VBA\VBA7.1\VBE7.DLL";      // standard library, priority locked
@@ -36,10 +36,10 @@ namespace infotron.VbaCodeAnalizer.Mog
         //private Mock<IWindows> _vbWindows;
         private readonly Windows _windows = new Windows();
 
-        private Mock<IVBProjects> _vbProjects;
+        private IVBProjects _vbProjects;
         private readonly ICollection<IVBProject> _projects = new List<IVBProject>();
         
-        private Mock<ICodePanes> _vbCodePanes;
+        private ICodePanes _vbCodePanes;
         private readonly ICollection<ICodePane> _codePanes = new List<ICodePane>(); 
 
         public MockVbeBuilder()
@@ -53,20 +53,20 @@ namespace infotron.VbaCodeAnalizer.Mog
         /// </summary>
         /// <param name="project">A mock VBProject.</param>
         /// <returns>Returns the <see cref="MockVbeBuilder"/> instance.</returns>
-        public MockVbeBuilder AddProject(Mock<IVBProject> project)
+        public MockVbeBuilder AddProject(IVBProject project)
         {
-            project.SetupGet(m => m.VBE).Returns(_vbe.Object);
+            // TODO roel This needs to be re-added once we have factored out all the mocking
+            //project.SetupGet(m => m.VBE).Returns(_vbe);
 
-            _projects.Add(project.Object);
+            _projects.Add(project);
 
             foreach (var component in _projects.SelectMany(vbProject => vbProject.VBComponents))
             {
                 _codePanes.Add(component.CodeModule.CodePane);
             }
 
-            _vbe.SetupGet(vbe => vbe.ActiveVBProject).Returns(project.Object);
-            _vbe.SetupGet(vbe => vbe.Version).Returns("7.1");
-            _vbe.SetupGet(m => m.VBProjects).Returns(() => _vbProjects.Object);
+            // TODO roel Do we need this? It is set in the `BuildFromSingleModule` method as well...
+            //_vbe.SetupGet(vbe => vbe.ActiveVBProject).Returns(project);
 
             return this;
         }
@@ -83,18 +83,18 @@ namespace infotron.VbaCodeAnalizer.Mog
 
         public MockProjectBuilder ProjectBuilder(string name, string filename, ProjectProtection protection)
         {
-            return new MockProjectBuilder(name, filename, protection, () => _vbe.Object, this);
+            return new MockProjectBuilder(name, filename, protection, () => _vbe, this);
         }
 
         public MockProjectBuilder ProjectBuilder(string name, string filename, string projectId, ProjectProtection protection)
         {
-            return new MockProjectBuilder(name, filename, projectId, protection, () => _vbe.Object, this);
+            return new MockProjectBuilder(name, filename, projectId, protection, () => _vbe, this);
         }
 
         /// <summary>
         /// Gets the mock VBE instance.
         /// </summary>
-        public Mock<IVBE> Build()
+        public IVBE Build()
         {
             return _vbe;
         }
@@ -109,22 +109,22 @@ namespace infotron.VbaCodeAnalizer.Mog
         /// <param name="module">The created CodeModule</param>
         /// <param name="selection"></param>
         /// <returns></returns>
-        public static Mock<IVBE> BuildFromSingleStandardModule(string content, out IVBComponent component, Selection selection = default(Selection), bool referenceStdLibs = false)
+        public static IVBE BuildFromSingleStandardModule(string content, out IVBComponent component, Selection selection = default(Selection), bool referenceStdLibs = false)
         {
             return BuildFromSingleModule(content, TestModuleName, ComponentType.StandardModule, out component, selection, referenceStdLibs);
         }
 
-        public static Mock<IVBE> BuildFromSingleStandardModule(string content, string name, out IVBComponent component, Selection selection = default(Selection), bool referenceStdLibs = false)
+        public static IVBE BuildFromSingleStandardModule(string content, string name, out IVBComponent component, Selection selection = default(Selection), bool referenceStdLibs = false)
         {
             return BuildFromSingleModule(content, name, ComponentType.StandardModule, out component, selection, referenceStdLibs);
         }
 
-        public static Mock<IVBE> BuildFromSingleModule(string content, ComponentType type, out IVBComponent component, Selection selection = default(Selection), bool referenceStdLibs = false)
+        public static IVBE BuildFromSingleModule(string content, ComponentType type, out IVBComponent component, Selection selection = default(Selection), bool referenceStdLibs = false)
         {
             return BuildFromSingleModule(content, TestModuleName, type, out component, selection, referenceStdLibs);
         }
 
-        public static Mock<IVBE> BuildFromSingleModule(string content, string name, ComponentType type, out IVBComponent component, Selection selection = default(Selection), bool referenceStdLibs = false)
+        public static IVBE BuildFromSingleModule(string content, string name, ComponentType type, out IVBComponent component, Selection selection = default(Selection), bool referenceStdLibs = false)
         {
             var vbeBuilder = new MockVbeBuilder();
 
@@ -139,15 +139,15 @@ namespace infotron.VbaCodeAnalizer.Mog
             var project = builder.Build();
             var vbe = vbeBuilder.AddProject(project).Build();
 
-            component = project.Object.VBComponents[0];
+            component = project.VBComponents[0];
 
-            vbe.Object.ActiveVBProject = project.Object;
-            vbe.Object.ActiveCodePane = component.CodeModule.CodePane;
+            vbe.ActiveVBProject = project;
+            vbe.ActiveCodePane = component.CodeModule.CodePane;
 
             return vbe;
         }
 
-        private Mock<IVBE> CreateVbeMock()
+        private IVBE CreateVbeMock()
         {
             var vbe = new Mock<IVBE>();
             _windows.VBE = vbe.Object;
@@ -164,15 +164,19 @@ namespace infotron.VbaCodeAnalizer.Mog
             vbe.SetupGet(m => m.MainWindow).Returns(() => mainWindow.Object);
 
             _vbProjects = CreateProjectsMock();
-            vbe.SetupGet(m => m.VBProjects).Returns(() => _vbProjects.Object);
+            vbe.SetupGet(m => m.VBProjects).Returns(() => _vbProjects);
 
             _vbCodePanes = CreateCodePanesMock();
-            vbe.SetupGet(m => m.CodePanes).Returns(() => _vbCodePanes.Object);
-            
-            return vbe;
+            vbe.SetupGet(m => m.CodePanes).Returns(() => _vbCodePanes);
+
+            vbe.SetupGet(m => m.Version).Returns("7.1");
+            vbe.SetupGet(m => m.VBProjects).Returns(() => _vbProjects);
+
+
+            return vbe.Object;
         }
 
-        private Mock<IVBProjects> CreateProjectsMock()
+        private IVBProjects CreateProjectsMock()
         {
             var result = new Mock<IVBProjects>();
 
@@ -183,10 +187,10 @@ namespace infotron.VbaCodeAnalizer.Mog
             result.SetupGet(m => m.Count).Returns(() => _projects.Count);
 
 
-            return result;
+            return result.Object;
         }
 
-        private Mock<ICodePanes> CreateCodePanesMock()
+        private ICodePanes CreateCodePanesMock()
         {
             var result = new Mock<ICodePanes>();
 
@@ -196,7 +200,7 @@ namespace infotron.VbaCodeAnalizer.Mog
             result.Setup(m => m[It.IsAny<int>()]).Returns<int>(value => _codePanes.ElementAt(value));
             result.SetupGet(m => m.Count).Returns(() => _codePanes.Count);
 
-            return result;
+            return result.Object;
         }
     }
 }
