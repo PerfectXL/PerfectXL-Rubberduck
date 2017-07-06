@@ -11,7 +11,7 @@ using Rubberduck.VBEditor.SafeComWrappers.Abstract;
 namespace infotron.VbaCodeAnalizer.Mog
 {
     /// <summary>
-    /// Builds a mock <see cref="VBProject"/>.
+    /// Builds a mock VBProject.
     /// </summary>
     public class MockProjectBuilder
     {
@@ -116,7 +116,7 @@ namespace infotron.VbaCodeAnalizer.Mog
 
         /// <summary>
         /// Builds the project, adds it to the VBE,
-        /// and returns a <see cref="MockVbeBuilder"/>
+        /// and returns a MockVbeBuilder
         /// to continue adding projects to the VBE.
         /// </summary>
         /// <returns></returns>
@@ -138,7 +138,7 @@ namespace infotron.VbaCodeAnalizer.Mog
         }
 
         /// <summary>
-        /// Gets the mock <see cref="VBProject"/> instance.
+        /// Gets the mock VBProject instance.
         /// </summary>
         public Mock<IVBProject> Build()
         {
