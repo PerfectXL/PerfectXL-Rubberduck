@@ -19,7 +19,7 @@ namespace infotron.VbaCodeAnalizer
             return modules.Select(module => Analize(module.Value, module.Key, filename)).ToList();
         }
 
-        private static CodeInspection Analize(string code, string modulename, string documentname)
+        internal static CodeInspection Analize(string code, string modulename, string documentname)
         {
             var codeinspection = new CodeInspection();
 

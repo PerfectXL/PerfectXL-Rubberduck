@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("infotron.VbaCodeAnalizer")]
+[assembly: AssemblyTitle("PerfectXL.VbaCodeAnalyzer.UnitTests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("infotron.VbaCodeAnalizer")]
+[assembly: AssemblyProduct("PerfectXL.VbaCodeAnalyzer.UnitTests")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("15e4c174-e923-4128-a6ca-b8e1f245a6d9")]
+[assembly: Guid("04b62bc7-8f1a-4e3e-a07a-6d9840b44060")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -34,5 +34,3 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("0.1.1.0")]
 [assembly: AssemblyFileVersion("0.1.1.0")]
-
-[assembly: InternalsVisibleTo("PerfectXL.VbaCodeAnalyzer.UnitTests")]
