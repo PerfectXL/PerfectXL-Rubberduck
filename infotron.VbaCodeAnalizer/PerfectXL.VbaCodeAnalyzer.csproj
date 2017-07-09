@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="CodeAnalizer.cs" />
     <Compile Include="Inspections\CodeInspection.cs" />
+    <Compile Include="Inspections\InspectionFactory.cs" />
     <Compile Include="Inspections\InspectionsHelper.cs" />
     <Compile Include="Inspections\Inspector.cs" />
     <Compile Include="Mog\MockParser.cs" />
