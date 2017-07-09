@@ -5,14 +5,14 @@ using Rubberduck.Settings;
 
 namespace infotron.VbaCodeAnalizer.Inspections
 {
-   public class InspectionsHelper
+    internal class InspectionsHelper
     {
         public static IInspector GetInspector(IInspection inspection, params IInspection[] otherInspections)
         {
             return new Rubberduck.Inspections.Rubberduck.Inspections.Inspector(GetSettings(inspection), otherInspections.Union(new[] { inspection }));
         }
 
-        public static IGeneralConfigService GetSettings(IInspection inspection)
+        private static IGeneralConfigService GetSettings(IInspection inspection)
         {
             var settings = new Mock<IGeneralConfigService>();
             var config = GetTestConfig(inspection);

@@ -11,10 +11,10 @@ namespace infotron.VbaCodeAnalizer.Mog
     /// <summary>
     /// Builds a mock VBE.
     /// </summary>
-    public class MockVbeBuilder
+    internal class MockVbeBuilder
     {
-        public const string TestProjectName = "TestProject1";
-        public const string TestModuleName = "TestModule1";
+        private const string TestProjectName = "TestProject1";
+        private const string TestModuleName = "TestModule1";
         private readonly IVBE _vbe;
 
         #region standard library paths (referenced in all VBA projects hosted in Microsoft Excel)
@@ -64,17 +64,17 @@ namespace infotron.VbaCodeAnalizer.Mog
         /// </summary>
         /// <param name="name">The name of the project to build.</param>
         /// <param name="protection">A value that indicates whether the project is protected.</param>
-        public MockProjectBuilder ProjectBuilder(string name, ProjectProtection protection)
+        private MockProjectBuilder ProjectBuilder(string name, ProjectProtection protection)
         {
             return ProjectBuilder(name, string.Empty, protection);
         }
 
-        public MockProjectBuilder ProjectBuilder(string name, string filename, ProjectProtection protection)
+        private MockProjectBuilder ProjectBuilder(string name, string filename, ProjectProtection protection)
         {
             return new MockProjectBuilder(name, filename, protection, () => _vbe, this);
         }
 
-        public MockProjectBuilder ProjectBuilder(string name, string filename, string projectId, ProjectProtection protection)
+        private MockProjectBuilder ProjectBuilder(string name, string filename, string projectId, ProjectProtection protection)
         {
             return new MockProjectBuilder(name, filename, projectId, protection, () => _vbe, this);
         }
@@ -82,7 +82,7 @@ namespace infotron.VbaCodeAnalizer.Mog
         /// <summary>
         /// Gets the mock VBE instance.
         /// </summary>
-        public IVBE Build()
+        private IVBE Build()
         {
             return _vbe;
         }
@@ -102,17 +102,17 @@ namespace infotron.VbaCodeAnalizer.Mog
             return BuildFromSingleModule(content, TestModuleName, ComponentType.StandardModule, out component, selection, referenceStdLibs);
         }
 
-        public static IVBE BuildFromSingleStandardModule(string content, string name, out IVBComponent component, Selection selection = default(Selection), bool referenceStdLibs = false)
+        private static IVBE BuildFromSingleStandardModule(string content, string name, out IVBComponent component, Selection selection = default(Selection), bool referenceStdLibs = false)
         {
             return BuildFromSingleModule(content, name, ComponentType.StandardModule, out component, selection, referenceStdLibs);
         }
 
-        public static IVBE BuildFromSingleModule(string content, ComponentType type, out IVBComponent component, Selection selection = default(Selection), bool referenceStdLibs = false)
+        private static IVBE BuildFromSingleModule(string content, ComponentType type, out IVBComponent component, Selection selection = default(Selection), bool referenceStdLibs = false)
         {
             return BuildFromSingleModule(content, TestModuleName, type, out component, selection, referenceStdLibs);
         }
 
-        public static IVBE BuildFromSingleModule(string content, string name, ComponentType type, out IVBComponent component, Selection selection = default(Selection), bool referenceStdLibs = false)
+        private static IVBE BuildFromSingleModule(string content, string name, ComponentType type, out IVBComponent component, Selection selection = default(Selection), bool referenceStdLibs = false)
         {
             var vbeBuilder = new MockVbeBuilder();
 

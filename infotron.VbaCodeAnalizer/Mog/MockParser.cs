@@ -16,9 +16,9 @@ using Rubberduck.VBEditor.SafeComWrappers.Abstract;
 
 namespace infotron.VbaCodeAnalizer.Mog
 {
-    public static class MockParser
+    internal static class MockParser
     {
-        public static RubberduckParserState ParseString(string inputCode, out QualifiedModuleName qualifiedModuleName)
+        private static RubberduckParserState ParseString(string inputCode, out QualifiedModuleName qualifiedModuleName)
         {
 
             IVBComponent component;
@@ -35,7 +35,7 @@ namespace infotron.VbaCodeAnalizer.Mog
 
         }
 
-        public static ParseCoordinator Create(IVBE vbe, RubberduckParserState state, string serializedDeclarationsPath = null)
+        private static ParseCoordinator Create(IVBE vbe, RubberduckParserState state, string serializedDeclarationsPath = null)
         {
             var attributeParser = new Mock<IAttributeParser>();
             attributeParser.Setup(m => m.Parse(It.IsAny<IVBComponent>(), It.IsAny<CancellationToken>()))
@@ -43,7 +43,7 @@ namespace infotron.VbaCodeAnalizer.Mog
             return Create(vbe, state, attributeParser.Object, serializedDeclarationsPath);
         }
 
-        public static ParseCoordinator Create(IVBE vbe, RubberduckParserState state, IAttributeParser attributeParser, string serializedDeclarationsPath = null)
+        private static ParseCoordinator Create(IVBE vbe, RubberduckParserState state, IAttributeParser attributeParser, string serializedDeclarationsPath = null)
         {
             var path = serializedDeclarationsPath ??
                        Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(MockParser)).Location), "TestFiles", "Resolver");
@@ -116,7 +116,7 @@ namespace infotron.VbaCodeAnalizer.Mog
                 DeclarationType.PropertyLet, DeclarationType.PropertySet
             });
 
-        public static void AddTestLibrary(this RubberduckParserState state, string serialized)
+        private static void AddTestLibrary(this RubberduckParserState state, string serialized)
         {
             var reader = new XmlPersistableDeclarations();
             var deserialized = reader.Load(Path.Combine("Resolver", serialized));
@@ -124,7 +124,7 @@ namespace infotron.VbaCodeAnalizer.Mog
         }
 
         // ReSharper disable once UnusedMember.Global; used by RubberduckWeb to load serialized declarations.
-        public static void AddTestLibrary(this RubberduckParserState state, Stream stream)
+        private static void AddTestLibrary(this RubberduckParserState state, Stream stream)
         {
             var reader = new XmlPersistableDeclarations();
             var deserialized = reader.Load(stream);

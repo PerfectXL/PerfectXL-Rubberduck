@@ -4,15 +4,13 @@ using System.Linq;
 using System.Threading;
 using infotron.VbaCodeAnalizer.Mog;
 using Rubberduck.Inspections.Abstract;
-using Rubberduck.Inspections.Concrete;
 using Rubberduck.Parsing.Inspections.Abstract;
-using Rubberduck.Parsing.VBA;
 using Rubberduck.VBEditor.SafeComWrappers.Abstract;
 
 
 namespace infotron.VbaCodeAnalizer.Inspections
 {
-    public static class Inspector
+    internal static class Inspector
     {
         public static List<Issue> Inspect<TInspection>(string inputcode, Helper helper) where TInspection : InspectionBase
         {

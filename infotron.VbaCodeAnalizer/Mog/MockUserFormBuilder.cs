@@ -12,7 +12,7 @@ namespace infotron.VbaCodeAnalizer.Mog
     /// <summary>
     /// Builds a mock UserForm component.
     /// </summary>
-    public class MockUserFormBuilder
+    internal class MockUserFormBuilder
     {
         private readonly IVBComponent _component;
         private readonly MockProjectBuilder _mockProjectBuilder;
@@ -36,7 +36,7 @@ namespace infotron.VbaCodeAnalizer.Mog
         /// </summary>
         /// <param name="name">The name of the control to add.</param>
         /// <returns></returns>
-        public MockUserFormBuilder AddControl(string name)
+        private MockUserFormBuilder AddControl(string name)
         {
             var control = new Mock<IControl>();
             control.SetupProperty(m => m.Name, name);
