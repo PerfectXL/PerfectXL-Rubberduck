@@ -7,7 +7,7 @@ using Rubberduck.VBEditor.SafeComWrappers.Abstract;
 
 namespace infotron.VbaCodeAnalizer.Mog
 {
-    public class Windows : SafeComWrapper<object>, IWindows, ICollection<IWindow>
+    internal class Windows : SafeComWrapper<object>, IWindows, ICollection<IWindow>
     {
         private readonly IList<IWindow> _windows = new List<IWindow>();
         
@@ -101,13 +101,6 @@ namespace infotron.VbaCodeAnalizer.Mog
         public override int GetHashCode()
         {
             return _windows.GetHashCode();
-        }
-
-        public IWindow CreateWindow(string name)
-        {
-            var result = new Mock<IWindow>();
-            result.Setup(m => m.Caption).Returns(name);
-            return result.Object;
         }
     }
 }

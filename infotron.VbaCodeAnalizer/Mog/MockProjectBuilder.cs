@@ -13,7 +13,7 @@ namespace infotron.VbaCodeAnalizer.Mog
     /// <summary>
     /// Builds a mock VBProject.
     /// </summary>
-    public class MockProjectBuilder
+    internal class MockProjectBuilder
     {
         private readonly Func<IVBE> _getVbe;
         private readonly MockVbeBuilder _mockVbeBuilder;
@@ -24,12 +24,12 @@ namespace infotron.VbaCodeAnalizer.Mog
         private readonly List<IVBComponent> _componentsMock = new List<IVBComponent>();
         private readonly List<IReference> _references = new List<IReference>();
 
-        public IVBComponents MockVBComponents
+        private IVBComponents MockVBComponents
         {
             get { return _vbComponents; }
         }
 
-        public List<IVBComponent> MockComponents
+        private List<IVBComponent> MockComponents
         {
             get { return _componentsMock; }
         }
@@ -39,7 +39,7 @@ namespace infotron.VbaCodeAnalizer.Mog
             get { return _componentsMock.Select(m => m).ToList(); }
         }
 
-        public void RemoveComponent(IVBComponent component)
+        private void RemoveComponent(IVBComponent component)
         {
             _componentsMock.Remove(component);
         }
@@ -139,7 +139,7 @@ namespace infotron.VbaCodeAnalizer.Mog
         /// </summary>
         /// <param name="name">The name of the component.</param>
         /// <param name="content">The VBA code associated to the component.</param>
-        public MockUserFormBuilder MockUserFormBuilder(string name, string content)
+        private MockUserFormBuilder MockUserFormBuilder(string name, string content)
         {
             var component = CreateComponentMock(name, ComponentType.UserForm, content, new Selection());
             return new MockUserFormBuilder(component, this);
@@ -337,8 +337,11 @@ namespace infotron.VbaCodeAnalizer.Mog
             }
 
             var codePane = new Mock<ICodePane>();
-            var window = windows.CreateWindow(name);
-            windows.Add(window);
+
+            var windowMock = new Mock<IWindow>();
+            windowMock.Setup(m => m.Caption).Returns(name);
+
+            windows.Add(windowMock.Object);
 
             codePane.Setup(p => p.GetQualifiedSelection()).Returns(() => {
                 if (selection.IsEmpty()) { return null; }
@@ -348,7 +351,7 @@ namespace infotron.VbaCodeAnalizer.Mog
             codePane.Setup(p => p.Show());
 
             codePane.SetupGet(p => p.VBE).Returns(_getVbe);
-            codePane.SetupGet(p => p.Window).Returns(() => window);
+            codePane.SetupGet(p => p.Window).Returns(() => windowMock.Object);
 
             return codePane;
         }
