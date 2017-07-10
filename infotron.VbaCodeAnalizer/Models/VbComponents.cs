@@ -6,7 +6,7 @@ using Rubberduck.VBEditor;
 using Rubberduck.VBEditor.SafeComWrappers;
 using Rubberduck.VBEditor.SafeComWrappers.Abstract;
 
-namespace infotron.VbaCodeAnalizer.Mog
+namespace PerfectXL.VbaCodeAnalyzer.Models
 {
     internal class VbComponents : IVBComponents
     {
@@ -97,13 +97,13 @@ namespace infotron.VbaCodeAnalizer.Mog
             return type;
         }
 
-        private VbComponent AddInternal(ComponentType type, string name)
+        private IVBComponent AddInternal(ComponentType type, string name)
         {
             var component = new VbComponent(VBE, name, type, this);
             var codePane = new CodePane(VBE, new Window(name), new Selection(), component);
             component.CodeModule = codePane.CodeModule = new CodeModule(VBE, name, "", component, codePane);
-            _components.Add(component);
-            return component;
+
+            return Add(component);
         }
     }
 }

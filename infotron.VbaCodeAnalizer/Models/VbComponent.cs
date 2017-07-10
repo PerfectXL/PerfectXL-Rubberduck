@@ -3,7 +3,7 @@ using Rubberduck.VBEditor.SafeComWrappers;
 using Rubberduck.VBEditor.SafeComWrappers.Abstract;
 using Rubberduck.VBEditor.SafeComWrappers.Office.Core.Abstract;
 
-namespace infotron.VbaCodeAnalizer.Mog
+namespace PerfectXL.VbaCodeAnalyzer.Models
 {
     internal class VbComponent : IVBComponent
     {

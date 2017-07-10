@@ -2,7 +2,7 @@ using System;
 using Rubberduck.VBEditor.SafeComWrappers;
 using Rubberduck.VBEditor.SafeComWrappers.Abstract;
 
-namespace infotron.VbaCodeAnalizer.Mog {
+namespace PerfectXL.VbaCodeAnalyzer.Models {
     internal class Reference : IReference
     {
         public Reference(IVBE vbe, string name, string fullPath, int major, int minor, bool isBuiltIn = true)

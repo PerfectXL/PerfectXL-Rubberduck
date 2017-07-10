@@ -6,14 +6,14 @@ using Rubberduck.VBEditor;
 using Rubberduck.VBEditor.SafeComWrappers;
 using Rubberduck.VBEditor.SafeComWrappers.Abstract;
 
-namespace infotron.VbaCodeAnalizer.Mog
+namespace PerfectXL.VbaCodeAnalyzer.Models
 {
     internal class CodeModule : ICodeModule
     {
         private static readonly string[] ModuleBodyTokens = {Tokens.Sub + ' ', Tokens.Function + ' ', Tokens.Property + ' '};
         private List<string> _lines;
 
-        public CodeModule(IVBE vbe,string name, string content, IVBComponent component, ICodePane codePane)
+        public CodeModule(IVBE vbe, string name, string content, IVBComponent component, ICodePane codePane)
         {
             VBE = vbe;
             Name = name;

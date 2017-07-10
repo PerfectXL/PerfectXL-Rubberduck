@@ -3,17 +3,19 @@ using Rubberduck.VBEditor.Application;
 using Rubberduck.VBEditor.SafeComWrappers.Abstract;
 using Rubberduck.VBEditor.SafeComWrappers.Office.Core.Abstract;
 
-namespace infotron.VbaCodeAnalizer.Mog
+namespace PerfectXL.VbaCodeAnalyzer.Models
 {
     internal class Vbe : IVBE
     {
+        private const string VbeVersion = "7.1";
+
         public Vbe()
         {
             Windows = new Windows(this);
             MainWindow = new Window(0);
             VBProjects = new VbProjects(this);
             CodePanes = new CodePanes(this);
-            Version = "7.1";
+            Version = VbeVersion;
         }
 
         public bool Equals(IVBE other)

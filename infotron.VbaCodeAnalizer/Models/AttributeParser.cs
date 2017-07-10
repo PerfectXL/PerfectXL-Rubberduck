@@ -5,7 +5,7 @@ using Rubberduck.Parsing.Symbols;
 using Rubberduck.Parsing.VBA;
 using Rubberduck.VBEditor.SafeComWrappers.Abstract;
 
-namespace infotron.VbaCodeAnalizer.Mog
+namespace PerfectXL.VbaCodeAnalyzer.Models
 {
     internal class AttributeParser : IAttributeParser
     {

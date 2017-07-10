@@ -3,11 +3,17 @@ using Rubberduck.Inspections.Concrete;
 using Rubberduck.Parsing.Inspections.Abstract;
 using Rubberduck.Parsing.VBA;
 
-namespace infotron.VbaCodeAnalizer.Inspections
+namespace PerfectXL.VbaCodeAnalyzer.Inspection
 {
     internal static class InspectionFactory
     {
-        public static IInspection Create<TInspection>(RubberduckParserState state) where TInspection : IInspection
+        public static InspectionWrapper Create<TInspection>(RubberduckParserState state, ResultFetchMethod resultFetchMethod) where TInspection : IInspection
+        {
+            IInspection inspection = Create<TInspection>(state);
+            return new InspectionWrapper(inspection, state, resultFetchMethod);
+        }
+
+        private static IInspection Create<TInspection>(RubberduckParserState state) where TInspection : IInspection
         {
             switch (typeof(TInspection).Name)
             {
@@ -15,12 +21,12 @@ namespace infotron.VbaCodeAnalizer.Inspections
                 case "AssignedByValParameterInspection": return new AssignedByValParameterInspection(state);
                 case "ConstantNotUsedInspection": return new ConstantNotUsedInspection(state);
                 case "DefaultProjectNameInspection": return new DefaultProjectNameInspection(state);
-                // case "EmptyIfBlockInspection": return new EmptyIfBlockInspection(state);
+                //case "EmptyIfBlockInspection": return new EmptyIfBlockInspection(state);
                 case "EmptyStringLiteralInspection": return new EmptyStringLiteralInspection(state);
                 case "EncapsulatePublicFieldInspection": return new EncapsulatePublicFieldInspection(state);
                 case "FunctionReturnValueNotUsedInspection": return new FunctionReturnValueNotUsedInspection(state);
                 case "HostSpecificExpressionInspection": return new HostSpecificExpressionInspection(state);
-                // case "HungarianNotationInspection": return new HungarianNotationInspection(state);
+                //case "HungarianNotationInspection": return new HungarianNotationInspection(state);
                 case "ImplicitActiveSheetReferenceInspection": return new ImplicitActiveSheetReferenceInspection(state);
                 case "ImplicitActiveWorkbookReferenceInspection": return new ImplicitActiveWorkbookReferenceInspection(state);
                 case "ImplicitByRefParameterInspection": return new ImplicitByRefParameterInspection(state);
@@ -52,12 +58,11 @@ namespace infotron.VbaCodeAnalizer.Inspections
                 case "UnassignedVariableUsageInspection": return new UnassignedVariableUsageInspection(state);
                 case "UndeclaredVariableInspection": return new UndeclaredVariableInspection(state);
                 case "UntypedFunctionUsageInspection": return new UntypedFunctionUsageInspection(state);
-                // case "UseMeaningfulNameInspection": return new UseMeaningfulNameInspection(state);
+                //case "UseMeaningfulNameInspection": return new UseMeaningfulNameInspection(state);
                 case "VariableNotAssignedInspection": return new VariableNotAssignedInspection(state);
                 case "VariableNotUsedInspection": return new VariableNotUsedInspection(state);
                 case "VariableTypeNotDeclaredInspection": return new VariableTypeNotDeclaredInspection(state);
                 case "WriteOnlyPropertyInspection": return new WriteOnlyPropertyInspection(state);
-
                 default: throw new ArgumentException(nameof(TInspection));
             }
         }

@@ -3,7 +3,7 @@ using Rubberduck.VBEditor;
 using Rubberduck.VBEditor.SafeComWrappers;
 using Rubberduck.VBEditor.SafeComWrappers.Abstract;
 
-namespace infotron.VbaCodeAnalizer.Mog
+namespace PerfectXL.VbaCodeAnalyzer.Models
 {
     internal class CodePane : ICodePane
     {
@@ -16,7 +16,7 @@ namespace infotron.VbaCodeAnalizer.Mog
             Window = window;
             Selection = selection;
 
-            ((Windows)VBE.Windows).Add(Window);
+            ((Windows)VBE.Windows).WindowList.Add(Window);
         }
 
         public IVBE VBE { get; }

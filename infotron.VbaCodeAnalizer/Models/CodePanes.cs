@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Rubberduck.VBEditor.SafeComWrappers.Abstract;
 
-namespace infotron.VbaCodeAnalizer.Mog
+namespace PerfectXL.VbaCodeAnalyzer.Models
 {
     internal class CodePanes : ICodePanes
     {

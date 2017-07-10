@@ -7,8 +7,8 @@
     <ProjectGuid>{15E4C174-E923-4128-A6CA-B8E1F245A6D9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>infotron.VbaCodeAnalizer</RootNamespace>
-    <AssemblyName>infotron.VbaCodeAnalizer</AssemblyName>
+    <RootNamespace>PerfectXL.VbaCodeAnalyzer</RootNamespace>
+    <AssemblyName>PerfectXL.VbaCodeAnalyzer</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -45,27 +45,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CodeAnalizer.cs" />
-    <Compile Include="Inspections\CodeInspectionResult.cs" />
-    <Compile Include="Inspections\GeneralConfigService.cs" />
-    <Compile Include="Inspections\InspectionFactory.cs" />
-    <Compile Include="Inspections\InspectionExtensions.cs" />
-    <Compile Include="Inspections\ResultFetchMethod.cs" />
-    <Compile Include="Inspections\VbaCodeIssue.cs" />
-    <Compile Include="Mog\AttributeParser.cs" />
-    <Compile Include="Mog\CodeModule.cs" />
-    <Compile Include="Mog\CodePane.cs" />
-    <Compile Include="Mog\CodePanes.cs" />
-    <Compile Include="Mog\Vbe.cs" />
-    <Compile Include="Mog\VbeExtensions.cs" />
-    <Compile Include="Mog\Reference.cs" />
-    <Compile Include="Mog\References.cs" />
-    <Compile Include="Mog\VbComponent.cs" />
-    <Compile Include="Mog\VbComponents.cs" />
-    <Compile Include="Mog\VbProject.cs" />
-    <Compile Include="Mog\VbProjects.cs" />
-    <Compile Include="Mog\Window.cs" />
-    <Compile Include="Mog\Windows.cs" />
+    <Compile Include="..\PerfectXL.VbaCodeAnalyzer.Version.cs">
+      <Link>Properties\PerfectXL.VbaCodeAnalyzer.Version.cs</Link>
+    </Compile>
+    <Compile Include="CodeAnalyzer.cs" />
+    <Compile Include="Extensions\VbProjectExtensions.cs" />
+    <Compile Include="Inspection\CodeInspectionResult.cs" />
+    <Compile Include="Inspection\InspectionWrapper.cs" />
+    <Compile Include="Models\GeneralConfigService.cs" />
+    <Compile Include="Inspection\InspectionFactory.cs" />
+    <Compile Include="Inspection\ResultFetchMethod.cs" />
+    <Compile Include="Inspection\VbaCodeIssue.cs" />
+    <Compile Include="Models\AttributeParser.cs" />
+    <Compile Include="Models\CodeModule.cs" />
+    <Compile Include="Models\CodePane.cs" />
+    <Compile Include="Models\CodePanes.cs" />
+    <Compile Include="Models\Vbe.cs" />
+    <Compile Include="Extensions\VbeExtensions.cs" />
+    <Compile Include="Models\Reference.cs" />
+    <Compile Include="Models\References.cs" />
+    <Compile Include="Models\VbComponent.cs" />
+    <Compile Include="Models\VbComponents.cs" />
+    <Compile Include="Models\VbProject.cs" />
+    <Compile Include="Models\VbProjects.cs" />
+    <Compile Include="Models\Window.cs" />
+    <Compile Include="Models\Windows.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

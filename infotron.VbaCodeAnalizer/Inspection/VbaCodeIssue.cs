@@ -1,10 +1,11 @@
 ﻿using System;
 using Rubberduck.Parsing.Inspections.Abstract;
 
-namespace infotron.VbaCodeAnalizer.Inspections {
+namespace PerfectXL.VbaCodeAnalyzer.Inspection
+{
     public class VbaCodeIssue
     {
-        public VbaCodeIssue(IInspectionResult item)
+        public VbaCodeIssue(IInspectionResult item, string fileName, string moduleName)
         {
             Severity = item.Inspection.Severity.ToString();
             Description = item.Description;
@@ -13,6 +14,8 @@ namespace infotron.VbaCodeAnalizer.Inspections {
             Name = ExtractIdentifierName(item.Description);
             Line = item.QualifiedSelection.Selection.StartLine;
             Column = item.QualifiedSelection.Selection.StartColumn;
+            FileName = fileName;
+            ModuleName = moduleName;
         }
 
         public string Type { get; set; }
