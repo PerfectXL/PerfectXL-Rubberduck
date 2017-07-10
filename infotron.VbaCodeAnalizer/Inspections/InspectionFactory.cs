@@ -58,7 +58,7 @@ namespace infotron.VbaCodeAnalizer.Inspections
                 case "VariableTypeNotDeclaredInspection": return new VariableTypeNotDeclaredInspection(state);
                 case "WriteOnlyPropertyInspection": return new WriteOnlyPropertyInspection(state);
 
-                default: throw new ArgumentException();
+                default: throw new ArgumentException(nameof(TInspection));
             }
         }
     }

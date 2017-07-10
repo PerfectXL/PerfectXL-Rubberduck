@@ -11,7 +11,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
         [Test, Ignore]
         public void ApplicationWorksheetFunctionInspectionTest()
         {
-            CodeInspection result = CodeAnalizer.Analize(@"
+            CodeInspectionResult result = CodeAnalizer.Analize(@"
                 Option Explicit
 
                 Private Sub MySub()
@@ -23,13 +23,13 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                 ",
                 "Module1",
                 "Workbook1.xlsm");
-            Assert.AreEqual(1, result.MaintabilityAndReadabilityIssues.Count(x => x.Type == "ApplicationWorksheetFunction"));
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ApplicationWorksheetFunction"));
         }
 
         [Test]
         public void ConstantNotUsedInspectionTest()
         {
-            CodeInspection result = CodeAnalizer.Analize(@"
+            CodeInspectionResult result = CodeAnalizer.Analize(@"
                  Option Explicit
 
                 Private Sub MySub()
@@ -38,13 +38,13 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                 ",
                 "Module1",
                 "Workbook1.xlsm");
-            Assert.AreEqual(1, result.MaintabilityAndReadabilityIssues.Count(x => x.Type == "ConstantNotUsed"));
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ConstantNotUsed"));
         }
 
         [Test, Ignore]
         public void EmptyStringLiteralInspectionTest()
         {
-            CodeInspection result = CodeAnalizer.Analize(@"
+            CodeInspectionResult result = CodeAnalizer.Analize(@"
                 Option Explicit
 
                 Private Sub MySub()
@@ -55,13 +55,13 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                 ",
                 "Module1",
                 "Workbook1.xlsm");
-            Assert.AreEqual(1, result.MaintabilityAndReadabilityIssues.Count(x => x.Type == "EmptyStringLiteral"));
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "EmptyStringLiteral"));
         }
 
         [Test]
         public void EncapsulatePublicFieldInspectionTest()
         {
-            CodeInspection result = CodeAnalizer.Analize(@"
+            CodeInspectionResult result = CodeAnalizer.Analize(@"
                 Option Explicit
 
                 Public x As New Excel.Application
@@ -72,13 +72,13 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                 ",
                 "Module1",
                 "Workbook1.xlsm");
-            Assert.AreEqual(1, result.MaintabilityAndReadabilityIssues.Count(x => x.Type == "EncapsulatePublicField"));
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "EncapsulatePublicField"));
         }
 
         [Test]
         public void FunctionReturnValueNotUsedInspectionTest()
         {
-            CodeInspection result = CodeAnalizer.Analize(@"
+            CodeInspectionResult result = CodeAnalizer.Analize(@"
                 Option Explicit
 
                 Private Function MyFunction() As Integer
@@ -91,7 +91,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                 ",
                 "Module1",
                 "Workbook1.xlsm");
-            Assert.AreEqual(1, result.MaintabilityAndReadabilityIssues.Count(x => x.Type == "FunctionReturnValueNotUsed"));
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "FunctionReturnValueNotUsed"));
         }
 
         // TODO roel Create unit test for every inspection type. Fix ignored unit tests.

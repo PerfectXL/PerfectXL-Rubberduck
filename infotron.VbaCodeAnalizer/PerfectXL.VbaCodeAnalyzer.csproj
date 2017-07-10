@@ -31,14 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Moq, Version=4.2.1507.118, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>..\packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Rubberduck.SmartIndenter, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Rubberduck\Rubberduck.SmartIndenter\bin\Debug\Rubberduck.SmartIndenter.dll</HintPath>
@@ -54,20 +46,30 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeAnalizer.cs" />
-    <Compile Include="Inspections\CodeInspection.cs" />
+    <Compile Include="Inspections\CodeInspectionResult.cs" />
+    <Compile Include="Inspections\GeneralConfigService.cs" />
     <Compile Include="Inspections\InspectionFactory.cs" />
-    <Compile Include="Inspections\InspectionsHelper.cs" />
-    <Compile Include="Inspections\Inspector.cs" />
-    <Compile Include="Mog\MockParser.cs" />
-    <Compile Include="Mog\MockProjectBuilder.cs" />
-    <Compile Include="Mog\MockUserFormBuilder.cs" />
-    <Compile Include="Mog\MockVbeBuilder.cs" />
+    <Compile Include="Inspections\InspectionExtensions.cs" />
+    <Compile Include="Inspections\ResultFetchMethod.cs" />
+    <Compile Include="Inspections\VbaCodeIssue.cs" />
+    <Compile Include="Mog\AttributeParser.cs" />
+    <Compile Include="Mog\CodeModule.cs" />
+    <Compile Include="Mog\CodePane.cs" />
+    <Compile Include="Mog\CodePanes.cs" />
+    <Compile Include="Mog\Vbe.cs" />
+    <Compile Include="Mog\VbeExtensions.cs" />
+    <Compile Include="Mog\Reference.cs" />
+    <Compile Include="Mog\References.cs" />
+    <Compile Include="Mog\VbComponent.cs" />
+    <Compile Include="Mog\VbComponents.cs" />
+    <Compile Include="Mog\VbProject.cs" />
+    <Compile Include="Mog\VbProjects.cs" />
+    <Compile Include="Mog\Window.cs" />
     <Compile Include="Mog\Windows.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Rubberduck\RetailCoder.VBE\Rubberduck.csproj">
