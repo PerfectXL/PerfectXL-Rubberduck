@@ -1,33 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using infotron.VbaCodeAnalizer.Inspections;
+using infotron.VbaCodeAnalizer.Mog;
+using Rubberduck.Inspections.Abstract;
 using Rubberduck.Inspections.Concrete;
+using Rubberduck.Parsing.Inspections.Abstract;
+using Rubberduck.Parsing.VBA;
+using Rubberduck.VBEditor.SafeComWrappers.Abstract;
 
 namespace infotron.VbaCodeAnalizer
 {
     public static class CodeAnalizer
     {
         /// <summary>
-        /// Inspects vba Code and returns code issues,
+        ///     Inspects vba Code and returns code issues,
         /// </summary>
         /// <param name="modules"></param>
         /// <param name="filename"></param>
         /// <returns>Json string</returns>
-        public static List<CodeInspection> Run(Dictionary<string, string> modules, string filename)
+        public static List<CodeInspectionResult> Run(Dictionary<string, string> modules, string filename)
         {
             return modules.Select(module => Analize(module.Value, module.Key, filename)).ToList();
         }
 
-        internal static CodeInspection Analize(string code, string modulename, string documentname)
+        public static List<VbaCodeIssue> Inspect<TInspection>(string inputCode, ResultFetchMethod resultFetchMethod) where TInspection : InspectionBase
         {
-            var codeinspection = new CodeInspection();
+            IVBE vbe = new Vbe();
+            vbe.AddProjectFromCode(inputCode);
+            ParseCoordinator parser = vbe.CreateConfiguredParser();
+            parser.Parse(new CancellationTokenSource());
 
-            var strt = documentname.LastIndexOf("-", StringComparison.Ordinal) + 1;
-            var file = documentname.Substring(strt, documentname.Length - strt);
+            IInspection inspection = InspectionFactory.Create<TInspection>(parser.State);
+
+            IEnumerable<IInspectionResult> inspectionResults = inspection.GetInspectionResults(resultFetchMethod, parser);
+
+            return inspectionResults.GroupBy(x => x.Description).Select(x => x.First()).Select(item => new VbaCodeIssue(item)).ToList();
+        }
+
+        internal static CodeInspectionResult Analize(string code, string modulename, string documentname)
+        {
+            var codeinspection = new CodeInspectionResult();
+
+            int strt = documentname.LastIndexOf("-", StringComparison.Ordinal) + 1;
+            string file = documentname.Substring(strt, documentname.Length - strt);
 
             #region EmptyIfBlockInspector
-            //var issues = Inspector.Inspect<EmptyIfBlockInspection>(code, Helper.Yes);
+            //var issues = Inspect<EmptyIfBlockInspection>(code, Helper.Yes);
             //if (issues != null)
             //{
             //   issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
@@ -36,356 +56,514 @@ namespace infotron.VbaCodeAnalizer
             #endregion
 
             #region StringLiteralInspector
-            var issues = Inspector.Inspect<EmptyStringLiteralInspection>(code, Helper.No);
+            List<VbaCodeIssue> issues = Inspect<EmptyStringLiteralInspection>(code, ResultFetchMethod.NoHelper);
 
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region AssignedByValParameterInspector
-            issues = Inspector.Inspect<AssignedByValParameterInspection>(code, Helper.No);
+            issues = Inspect<AssignedByValParameterInspection>(code, ResultFetchMethod.NoHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region ConstantNotUsedInspector
-            issues = Inspector.Inspect<ConstantNotUsedInspection>(code, Helper.No);
+            issues = Inspect<ConstantNotUsedInspection>(code, ResultFetchMethod.NoHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region EncapsulatePublicFieldInspector
-            issues = Inspector.Inspect<EncapsulatePublicFieldInspection>(code, Helper.No);
+            issues = Inspect<EncapsulatePublicFieldInspection>(code, ResultFetchMethod.NoHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region ApplicationWorksheetFunctionInspector
-            issues = Inspector.Inspect<ApplicationWorksheetFunctionInspection>(code, Helper.No);
+            issues = Inspect<ApplicationWorksheetFunctionInspection>(code, ResultFetchMethod.NoHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region FunctionReturnValueNotUsedInspector
-            issues = Inspector.Inspect<FunctionReturnValueNotUsedInspection>(code, Helper.No);
+            issues = Inspect<FunctionReturnValueNotUsedInspection>(code, ResultFetchMethod.NoHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region ImplicitActiveSheetReferenceInspector
-            issues = Inspector.Inspect<ImplicitActiveSheetReferenceInspection>(code, Helper.No);
+            issues = Inspect<ImplicitActiveSheetReferenceInspection>(code, ResultFetchMethod.NoHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region ImplicitActiveWorkbookReferenceInspector
-            issues = Inspector.Inspect<ImplicitActiveWorkbookReferenceInspection>(code, Helper.No);
+            issues = Inspect<ImplicitActiveWorkbookReferenceInspection>(code, ResultFetchMethod.NoHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region ImplicitByRefParameterInspector
-            issues = Inspector.Inspect<ImplicitByRefParameterInspection>(code, Helper.No);
+            issues = Inspect<ImplicitByRefParameterInspection>(code, ResultFetchMethod.NoHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region ImplicitPublicMemberInspector
-            issues = Inspector.Inspect<ImplicitPublicMemberInspection>(code, Helper.No);
+            issues = Inspect<ImplicitPublicMemberInspection>(code, ResultFetchMethod.NoHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region ImplicitVariantReturnTypeInspector
-            issues = Inspector.Inspect<ImplicitVariantReturnTypeInspection>(code, Helper.No);
+            issues = Inspect<ImplicitVariantReturnTypeInspection>(code, ResultFetchMethod.NoHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region MemberNotOnInterfaceInspector
-            issues = Inspector.Inspect<MemberNotOnInterfaceInspection>(code, Helper.No);
+            issues = Inspect<MemberNotOnInterfaceInspection>(code, ResultFetchMethod.NoHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region MissingAnnotationArgumentInspector
-            issues = Inspector.Inspect<MissingAnnotationArgumentInspection>(code, Helper.No);
+            issues = Inspect<MissingAnnotationArgumentInspection>(code, ResultFetchMethod.NoHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region ModuleScopeDimKeywordInspector
-            issues = Inspector.Inspect<ModuleScopeDimKeywordInspection>(code, Helper.No);
+            issues = Inspect<ModuleScopeDimKeywordInspection>(code, ResultFetchMethod.NoHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region MoveFieldCloseToUsageInspector
-            issues = Inspector.Inspect<MoveFieldCloserToUsageInspection>(code, Helper.No);
+            issues = Inspect<MoveFieldCloserToUsageInspection>(code, ResultFetchMethod.NoHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region MultilineParameterInspector
-            issues = Inspector.Inspect<MultilineParameterInspection>(code, Helper.Yes);
+            issues = Inspect<MultilineParameterInspection>(code, ResultFetchMethod.UsingHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region MultipleDeclarationsInspector
-            issues = Inspector.Inspect<MultipleDeclarationsInspection>(code, Helper.Yes);
+            issues = Inspect<MultipleDeclarationsInspection>(code, ResultFetchMethod.UsingHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region MultipleFolderAnnotationsInspector
-            issues = Inspector.Inspect<MultipleFolderAnnotationsInspection>(code, Helper.Yes);
+            issues = Inspect<MultipleFolderAnnotationsInspection>(code, ResultFetchMethod.UsingHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region NonReturningFunctionInspector
-            issues = Inspector.Inspect<NonReturningFunctionInspection>(code, Helper.No);
+            issues = Inspect<NonReturningFunctionInspection>(code, ResultFetchMethod.NoHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region ObsoleteCallStatementInspector
-            issues = Inspector.Inspect<ObsoleteCallStatementInspection>(code, Helper.Yes);
+            issues = Inspect<ObsoleteCallStatementInspection>(code, ResultFetchMethod.UsingHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region ObsoleteCommentSyntaxInspector
-            issues = Inspector.Inspect<ObsoleteCommentSyntaxInspection>(code, Helper.Yes);
+            issues = Inspect<ObsoleteCommentSyntaxInspection>(code, ResultFetchMethod.UsingHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region ObsoleteGlobalInspector
-            issues = Inspector.Inspect<ObsoleteGlobalInspection>(code, Helper.No);
+            issues = Inspect<ObsoleteGlobalInspection>(code, ResultFetchMethod.NoHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region ObsoleteLetStatementInspector
-            issues = Inspector.Inspect<ObsoleteLetStatementInspection>(code, Helper.Yes);
+            issues = Inspect<ObsoleteLetStatementInspection>(code, ResultFetchMethod.UsingHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region ObsoleteTypeHintInspector
-            issues = Inspector.Inspect<ObsoleteTypeHintInspection>(code, Helper.No);
+            issues = Inspect<ObsoleteTypeHintInspection>(code, ResultFetchMethod.NoHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region OptionBaseInspector
-            issues = Inspector.Inspect<OptionBaseInspection>(code, Helper.Yes);
+            issues = Inspect<OptionBaseInspection>(code, ResultFetchMethod.UsingHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region OptionBaseZeroInspector
-            issues = Inspector.Inspect<OptionBaseZeroInspection>(code, Helper.Yes);
+            issues = Inspect<OptionBaseZeroInspection>(code, ResultFetchMethod.UsingHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region OptionExplicitInspector
-            issues = Inspector.Inspect<OptionExplicitInspection>(code, Helper.Yes);
+            issues = Inspect<OptionExplicitInspection>(code, ResultFetchMethod.UsingHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region ParameterCanBeByValInspector
-            issues = Inspector.Inspect<ParameterCanBeByValInspection>(code, Helper.No);
+            issues = Inspect<ParameterCanBeByValInspection>(code, ResultFetchMethod.NoHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region ParameterNotUsedInspector
-            issues = Inspector.Inspect<ParameterNotUsedInspection>(code, Helper.No);
+            issues = Inspect<ParameterNotUsedInspection>(code, ResultFetchMethod.NoHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region ProcedureNotUsedInspector
-            issues = Inspector.Inspect<ProcedureNotUsedInspection>(code, Helper.No);
+            issues = Inspect<ProcedureNotUsedInspection>(code, ResultFetchMethod.NoHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region ProcedureShouldBeFunctionInspector
-            issues = Inspector.Inspect<ProcedureCanBeWrittenAsFunctionInspection>(code, Helper.Yes);
+            issues = Inspect<ProcedureCanBeWrittenAsFunctionInspection>(code, ResultFetchMethod.UsingHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region SelfAssignedDeclarationInspector
-            issues = Inspector.Inspect<SelfAssignedDeclarationInspection>(code, Helper.No);
+            issues = Inspect<SelfAssignedDeclarationInspection>(code, ResultFetchMethod.NoHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region UnassignedVariableUsageInspector
-            issues = Inspector.Inspect<UnassignedVariableUsageInspection>(code, Helper.No);
+            issues = Inspect<UnassignedVariableUsageInspection>(code, ResultFetchMethod.NoHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region UndeclaredVariableInspector
-            issues = Inspector.Inspect<UndeclaredVariableInspection>(code, Helper.No);
+            issues = Inspect<UndeclaredVariableInspection>(code, ResultFetchMethod.NoHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region UntypedFunctionUsageInspector
-            issues = Inspector.Inspect<UntypedFunctionUsageInspection>(code, Helper.No);
+            issues = Inspect<UntypedFunctionUsageInspection>(code, ResultFetchMethod.NoHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region VariableNotAssignedInspector
-            issues = Inspector.Inspect<VariableNotAssignedInspection>(code, Helper.No);
+            issues = Inspect<VariableNotAssignedInspection>(code, ResultFetchMethod.NoHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region VariableNotUsedInspector
-            issues = Inspector.Inspect<VariableNotUsedInspection>(code, Helper.No);
+            issues = Inspect<VariableNotUsedInspection>(code, ResultFetchMethod.NoHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region VariableTypeNotDeclaredInspector
-            issues = Inspector.Inspect<VariableTypeNotDeclaredInspection>(code, Helper.No);
+            issues = Inspect<VariableTypeNotDeclaredInspection>(code, ResultFetchMethod.NoHelper);
             if (issues != null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
             }
             #endregion
 
             #region WriteOnlyPropertyInspector
-            issues = Inspector.Inspect<WriteOnlyPropertyInspection>(code, Helper.No);
-            if (issues == null) return codeinspection;
+            issues = Inspect<WriteOnlyPropertyInspection>(code, ResultFetchMethod.NoHelper);
+            if (issues == null)
             {
-                issues.ForEach(item => { item.ModuleName = modulename; item.FileName = file; });
-                codeinspection.MaintabilityAndReadabilityIssues.AddRange(issues);
+                return codeinspection;
             }
-
+            {
+                issues.ForEach(item =>
+                {
+                    item.ModuleName = modulename;
+                    item.FileName = file;
+                });
+                codeinspection.VbaCodeIssues.AddRange(issues);
+            }
             #endregion
 
             return codeinspection;

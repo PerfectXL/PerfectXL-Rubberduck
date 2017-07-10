@@ -11,15 +11,15 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
         [Test]
         public void BasicTest()
         {
-            CodeInspection result = CodeAnalizer.Analize(@"Option Explicit", "Module1", "Workbook1.xlsm");
+            CodeInspectionResult result = CodeAnalizer.Analize(@"Option Explicit", "Module1", "Workbook1.xlsm");
             Assert.IsNotNull(result);
-            Assert.AreEqual(0, result.MaintabilityAndReadabilityIssues.Count);
+            Assert.AreEqual(0, result.VbaCodeIssues.Count);
         }
 
         [Test]
         public void IssuesTest()
         {
-            CodeInspection result = CodeAnalizer.Analize(@"
+            CodeInspectionResult result = CodeAnalizer.Analize(@"
                 Sub MySub()
                     counter = 10
                     For i = 1 To counter
@@ -29,8 +29,8 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                 ",
                 "Module1",
                 "Workbook1.xlsm");
-            Assert.AreEqual(7, result.MaintabilityAndReadabilityIssues.Count);
-            Assert.AreEqual(1, result.MaintabilityAndReadabilityIssues.Count(x => x.Type == "OptionExplicit"));
+            Assert.AreEqual(7, result.VbaCodeIssues.Count);
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "OptionExplicit"));
         }
     }
 }
