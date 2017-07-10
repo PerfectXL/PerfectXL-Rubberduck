@@ -1,13 +1,15 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using PerfectXL.VbaCodeAnalyzer.Models;
 using Rubberduck.Parsing.PreProcessing;
 using Rubberduck.Parsing.Symbols.DeclarationLoaders;
 using Rubberduck.Parsing.VBA;
 using Rubberduck.VBEditor.SafeComWrappers;
 using Rubberduck.VBEditor.SafeComWrappers.Abstract;
+using AttributeParser = PerfectXL.VbaCodeAnalyzer.Models.AttributeParser;
 
-namespace infotron.VbaCodeAnalizer.Mog
+namespace PerfectXL.VbaCodeAnalyzer.Extensions
 {
     internal static class VbeExtensions
     {

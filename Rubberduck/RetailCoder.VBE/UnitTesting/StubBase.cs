@@ -5,6 +5,15 @@ using Rubberduck.Parsing.ComReflection;
 
 namespace Rubberduck.UnitTesting
 {
+   /* internal class LocalHook : IDisposable
+    {
+        public static LocalHook Create(IntPtr address, Delegate callback, object dummy)
+        {
+            return new LocalHook();
+        }
+
+        public void Dispose() { }
+    }*/
     internal class StubBase : IStub, IDisposable
     {
         internal const string TargetLibrary = "vbe7.dll";

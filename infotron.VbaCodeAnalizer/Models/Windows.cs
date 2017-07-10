@@ -3,29 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using Rubberduck.VBEditor.SafeComWrappers.Abstract;
 
-namespace infotron.VbaCodeAnalizer.Mog
+namespace PerfectXL.VbaCodeAnalyzer.Models
 {
     internal class Windows : IWindows
     {
-        private readonly IList<IWindow> _windows = new List<IWindow>();
-
         public Windows(IVBE vbe)
         {
             VBE = vbe;
         }
 
-        public int Count => _windows.Count;
+        public IList<IWindow> WindowList { get; } = new List<IWindow>();
 
-        public IWindow this[object index] => index is string ? _windows.SingleOrDefault(window => window.Caption == (string)index) : _windows[(int)index];
+        public int Count => WindowList.Count;
+
+        public IWindow this[object index] => index is string ? WindowList.SingleOrDefault(window => window.Caption == (string)index) : WindowList[(int)index];
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _windows.GetEnumerator();
+            return WindowList.GetEnumerator();
         }
 
         IEnumerator<IWindow> IEnumerable<IWindow>.GetEnumerator()
         {
-            return _windows.GetEnumerator();
+            return WindowList.GetEnumerator();
         }
 
         public bool Equals(IWindows other)
@@ -47,12 +47,7 @@ namespace infotron.VbaCodeAnalizer.Mog
 
         public override int GetHashCode()
         {
-            return _windows.GetHashCode();
-        }
-
-        public void Add(IWindow window)
-        {
-            _windows.Add(window);
+            return WindowList.GetHashCode();
         }
     }
 }

@@ -1,7 +1,6 @@
 using System.Linq;
-using infotron.VbaCodeAnalizer;
-using infotron.VbaCodeAnalizer.Inspections;
 using NUnit.Framework;
+using PerfectXL.VbaCodeAnalyzer.Inspection;
 
 namespace PerfectXL.VbaCodeAnalyzer.UnitTests
 {
@@ -11,7 +10,8 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
         [Test, Ignore]
         public void ApplicationWorksheetFunctionInspectionTest()
         {
-            CodeInspectionResult result = CodeAnalizer.Analize(@"
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1",
+                @"
                 Option Explicit
 
                 Private Sub MySub()
@@ -20,31 +20,29 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                     m = Application.WorksheetFunction.Min(r)
                     MsgBox m
                 End Sub
-                ",
-                "Module1",
-                "Workbook1.xlsm");
+                ");
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ApplicationWorksheetFunction"));
         }
 
         [Test]
         public void ConstantNotUsedInspectionTest()
         {
-            CodeInspectionResult result = CodeAnalizer.Analize(@"
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1",
+                @"
                  Option Explicit
 
                 Private Sub MySub()
                     Const c As String = ""foo""
                 End Sub
-                ",
-                "Module1",
-                "Workbook1.xlsm");
+                ");
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ConstantNotUsed"));
         }
 
         [Test, Ignore]
         public void EmptyStringLiteralInspectionTest()
         {
-            CodeInspectionResult result = CodeAnalizer.Analize(@"
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1",
+                @"
                 Option Explicit
 
                 Private Sub MySub()
@@ -52,16 +50,15 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                     s = """"
                     s = s + s
                 End Sub
-                ",
-                "Module1",
-                "Workbook1.xlsm");
+                ");
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "EmptyStringLiteral"));
         }
 
         [Test]
         public void EncapsulatePublicFieldInspectionTest()
         {
-            CodeInspectionResult result = CodeAnalizer.Analize(@"
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1",
+                @"
                 Option Explicit
 
                 Public x As New Excel.Application
@@ -69,16 +66,15 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                 Private Sub MySub()
                     x.Calculate
                 End Sub
-                ",
-                "Module1",
-                "Workbook1.xlsm");
+                ");
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "EncapsulatePublicField"));
         }
 
         [Test]
         public void FunctionReturnValueNotUsedInspectionTest()
         {
-            CodeInspectionResult result = CodeAnalizer.Analize(@"
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1",
+                @"
                 Option Explicit
 
                 Private Function MyFunction() As Integer
@@ -88,9 +84,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                 Private Sub MySub()
                     MyFunction
                 End Sub
-                ",
-                "Module1",
-                "Workbook1.xlsm");
+                ");
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "FunctionReturnValueNotUsed"));
         }
 

@@ -5,7 +5,7 @@ using System.Linq;
 using Rubberduck.VBEditor.SafeComWrappers;
 using Rubberduck.VBEditor.SafeComWrappers.Abstract;
 
-namespace infotron.VbaCodeAnalizer.Mog
+namespace PerfectXL.VbaCodeAnalyzer.Models
 {
     internal class References : IReferences
     {
@@ -49,12 +49,14 @@ namespace infotron.VbaCodeAnalizer.Mog
 
         public IReference AddFromFile(string path)
         {
-            return new Reference(VBE, path, path, 0, 0);
+            var reference = new Reference(VBE, path, path, 0, 0);
+            _references.Add(reference);
+            return reference;
         }
 
         public void Remove(IReference reference)
         {
-            throw new NotImplementedException();
+            _references.Remove(_references.First(m => m == reference));
         }
     }
 }

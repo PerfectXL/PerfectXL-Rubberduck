@@ -2,7 +2,8 @@
 using Rubberduck.Parsing.Inspections.Abstract;
 using Rubberduck.Settings;
 
-namespace infotron.VbaCodeAnalizer.Inspections {
+namespace PerfectXL.VbaCodeAnalyzer.Models
+{
     internal class GeneralConfigService : IGeneralConfigService
     {
         private readonly Configuration _configuration;

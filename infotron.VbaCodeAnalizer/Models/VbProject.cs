@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Rubberduck.VBEditor;
 using Rubberduck.VBEditor.SafeComWrappers;
 using Rubberduck.VBEditor.SafeComWrappers.Abstract;
 
-namespace infotron.VbaCodeAnalizer.Mog
+namespace PerfectXL.VbaCodeAnalyzer.Models
 {
     internal class VbProject : IVBProject
     {
@@ -68,15 +67,6 @@ namespace infotron.VbaCodeAnalizer.Mog
         public IReadOnlyList<string> ComponentNames()
         {
             return VBComponents.Select(component => component.Name).ToArray();
-        }
-
-        public void AddComponent(string name, ComponentType type, string content, Selection selection = new Selection())
-        {
-            var component = new VbComponent(VBE, name, type, VBComponents);
-            var codePane = new CodePane(VBE, new Window(name), selection, component);
-            VBE.ActiveCodePane = codePane;
-            component.CodeModule = codePane.CodeModule = new CodeModule(VBE, name, content, component, codePane);
-            ((VbComponents)VBComponents).Add(component);
         }
     }
 }
