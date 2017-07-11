@@ -66,7 +66,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\infotron.VbaCodeAnalizer\PerfectXL.VbaCodeAnalyzer.csproj">
+    <ProjectReference Include="..\PerfectXL.VbaCodeAnalyzer\PerfectXL.VbaCodeAnalyzer.csproj">
       <Project>{15e4c174-e923-4128-a6ca-b8e1f245a6d9}</Project>
       <Name>PerfectXL.VbaCodeAnalyzer</Name>
     </ProjectReference>
