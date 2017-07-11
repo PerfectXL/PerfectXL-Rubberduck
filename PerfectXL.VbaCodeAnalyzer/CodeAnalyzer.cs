@@ -37,16 +37,16 @@ namespace PerfectXL.VbaCodeAnalyzer
         {
             List<VbaCodeIssue> vbaCodeIssues = new[]
             {
-                //Inspect<EmptyIfBlockInspection>(moduleName, moduleCode, ResultFetchMethod.UsingHelper),
-                Inspect<EmptyStringLiteralInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
+                Inspect<ApplicationWorksheetFunctionInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
                 Inspect<AssignedByValParameterInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
                 Inspect<ConstantNotUsedInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
+                //Inspect<EmptyIfBlockInspection>(moduleName, moduleCode, ResultFetchMethod.UsingHelper),
+                Inspect<EmptyStringLiteralInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
                 Inspect<EncapsulatePublicFieldInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<ApplicationWorksheetFunctionInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
                 Inspect<FunctionReturnValueNotUsedInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
                 Inspect<ImplicitActiveSheetReferenceInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
                 Inspect<ImplicitActiveWorkbookReferenceInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<ImplicitByRefParameterInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
+                Inspect<ImplicitByRefModifierInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
                 Inspect<ImplicitPublicMemberInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
                 Inspect<ImplicitVariantReturnTypeInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
                 Inspect<MemberNotOnInterfaceInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
@@ -55,7 +55,6 @@ namespace PerfectXL.VbaCodeAnalyzer
                 Inspect<MoveFieldCloserToUsageInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
                 Inspect<MultilineParameterInspection>(moduleName, moduleCode, ResultFetchMethod.UsingHelper),
                 Inspect<MultipleDeclarationsInspection>(moduleName, moduleCode, ResultFetchMethod.UsingHelper),
-                Inspect<MultipleFolderAnnotationsInspection>(moduleName, moduleCode, ResultFetchMethod.UsingHelper),
                 Inspect<NonReturningFunctionInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
                 Inspect<ObsoleteCallStatementInspection>(moduleName, moduleCode, ResultFetchMethod.UsingHelper),
                 Inspect<ObsoleteCommentSyntaxInspection>(moduleName, moduleCode, ResultFetchMethod.UsingHelper),
@@ -63,12 +62,12 @@ namespace PerfectXL.VbaCodeAnalyzer
                 Inspect<ObsoleteLetStatementInspection>(moduleName, moduleCode, ResultFetchMethod.UsingHelper),
                 Inspect<ObsoleteTypeHintInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
                 Inspect<OptionBaseInspection>(moduleName, moduleCode, ResultFetchMethod.UsingHelper),
-                Inspect<OptionBaseZeroInspection>(moduleName, moduleCode, ResultFetchMethod.UsingHelper),
+                Inspect<OptionBaseInspection>(moduleName, moduleCode, ResultFetchMethod.UsingHelper),
                 Inspect<OptionExplicitInspection>(moduleName, moduleCode, ResultFetchMethod.UsingHelper),
                 Inspect<ParameterCanBeByValInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
                 Inspect<ParameterNotUsedInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<ProcedureNotUsedInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
                 Inspect<ProcedureCanBeWrittenAsFunctionInspection>(moduleName, moduleCode, ResultFetchMethod.UsingHelper),
+                Inspect<ProcedureNotUsedInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
                 Inspect<SelfAssignedDeclarationInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
                 Inspect<UnassignedVariableUsageInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
                 Inspect<UndeclaredVariableInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
@@ -76,8 +75,7 @@ namespace PerfectXL.VbaCodeAnalyzer
                 Inspect<VariableNotAssignedInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
                 Inspect<VariableNotUsedInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
                 Inspect<VariableTypeNotDeclaredInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<WriteOnlyPropertyInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper)
-            }.SelectMany(x => x).ToList();
+                Inspect<WriteOnlyPropertyInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper)            }.SelectMany(x => x).ToList();
 
             return new CodeInspectionResult(moduleName) {VbaCodeIssues = vbaCodeIssues};
         }

@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using PerfectXL.VbaCodeAnalyzer.Models;
+using Rubberduck.Common;
 using Rubberduck.Parsing.PreProcessing;
+using Rubberduck.Parsing.Symbols;
 using Rubberduck.Parsing.Symbols.DeclarationLoaders;
 using Rubberduck.Parsing.VBA;
 using Rubberduck.VBEditor.SafeComWrappers;
@@ -15,20 +17,24 @@ namespace PerfectXL.VbaCodeAnalyzer.Extensions
     {
         public static ParseCoordinator CreateConfiguredParser(this IVBE vbe, string serializedDeclarationsPath = null)
         {
-            var state = new RubberduckParserState(vbe);
+            var state = new RubberduckParserState(vbe, new ConcurrentlyConstructedDeclarationFinderFactory());
 
             var moduleToModuleReferenceManager = new ModuleToModuleReferenceManager();
             var parserStateManager = new SynchronousParserStateManager(state);
             var referenceRemover = new SynchronousReferenceRemover(state, moduleToModuleReferenceManager);
+            var supertypeClearer = new SupertypeClearer(state);
             var comSynchronizer = new SynchronousCOMReferenceSynchronizer(state, parserStateManager, @"C:\");
 
             var parseRunner = new SynchronousParseRunner(state,
                 parserStateManager,
                 () => new VBAPreprocessor(double.Parse(vbe.Version, CultureInfo.InvariantCulture)),
-                new AttributeParser());
+                new AttributeParser(),
+                new ModuleExporter());
 
             var declarationResolveRunner = new SynchronousDeclarationResolveRunner(state, parserStateManager, comSynchronizer);
             var referenceResolveRunner = new SynchronousReferenceResolveRunner(state, parserStateManager, moduleToModuleReferenceManager, referenceRemover);
+
+            var parsingCacheService = new ParsingCacheService(state, moduleToModuleReferenceManager, referenceRemover, supertypeClearer);
 
             var parsingStageService = new ParsingStageService(comSynchronizer,
                 new BuiltInDeclarationLoader(state,
@@ -45,10 +51,9 @@ namespace PerfectXL.VbaCodeAnalyzer.Extensions
 
             var parser = new ParseCoordinator(state,
                 parsingStageService,
+                parsingCacheService,
                 new SynchronousProjectManager(state, vbe),
-                moduleToModuleReferenceManager,
                 parserStateManager,
-                referenceRemover,
                 true);
             return parser;
         }

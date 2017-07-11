@@ -29,7 +29,7 @@ namespace PerfectXL.VbaCodeAnalyzer.Inspection
                 //case "HungarianNotationInspection": return new HungarianNotationInspection(state);
                 case "ImplicitActiveSheetReferenceInspection": return new ImplicitActiveSheetReferenceInspection(state);
                 case "ImplicitActiveWorkbookReferenceInspection": return new ImplicitActiveWorkbookReferenceInspection(state);
-                case "ImplicitByRefParameterInspection": return new ImplicitByRefParameterInspection(state);
+                case "ImplicitByRefModifierInspection": return new ImplicitByRefModifierInspection(state);
                 case "ImplicitDefaultMemberAssignmentInspection": return new ImplicitDefaultMemberAssignmentInspection(state);
                 case "ImplicitPublicMemberInspection": return new ImplicitPublicMemberInspection(state);
                 case "ImplicitVariantReturnTypeInspection": return new ImplicitVariantReturnTypeInspection(state);
@@ -39,7 +39,7 @@ namespace PerfectXL.VbaCodeAnalyzer.Inspection
                 case "MoveFieldCloserToUsageInspection": return new MoveFieldCloserToUsageInspection(state);
                 case "MultilineParameterInspection": return new MultilineParameterInspection(state);
                 case "MultipleDeclarationsInspection": return new MultipleDeclarationsInspection(state);
-                case "MultipleFolderAnnotationsInspection": return new MultipleFolderAnnotationsInspection(state);
+                //case "MultipleFolderAnnotationsInspection": return new MultipleFolderAnnotationsInspection(state);
                 case "NonReturningFunctionInspection": return new NonReturningFunctionInspection(state);
                 case "ObjectVariableNotSetInspection": return new ObjectVariableNotSetInspection(state);
                 case "ObsoleteCallStatementInspection": return new ObsoleteCallStatementInspection(state);
@@ -48,7 +48,6 @@ namespace PerfectXL.VbaCodeAnalyzer.Inspection
                 case "ObsoleteLetStatementInspection": return new ObsoleteLetStatementInspection(state);
                 case "ObsoleteTypeHintInspection": return new ObsoleteTypeHintInspection(state);
                 case "OptionBaseInspection": return new OptionBaseInspection(state);
-                case "OptionBaseZeroInspection": return new OptionBaseZeroInspection(state);
                 case "OptionExplicitInspection": return new OptionExplicitInspection(state);
                 case "ParameterCanBeByValInspection": return new ParameterCanBeByValInspection(state);
                 case "ParameterNotUsedInspection": return new ParameterNotUsedInspection(state);
@@ -63,7 +62,7 @@ namespace PerfectXL.VbaCodeAnalyzer.Inspection
                 case "VariableNotUsedInspection": return new VariableNotUsedInspection(state);
                 case "VariableTypeNotDeclaredInspection": return new VariableTypeNotDeclaredInspection(state);
                 case "WriteOnlyPropertyInspection": return new WriteOnlyPropertyInspection(state);
-                default: throw new ArgumentException(nameof(TInspection));
+                default: throw new ArgumentOutOfRangeException(nameof(TInspection), typeof(TInspection).Name, null);
             }
         }
     }
