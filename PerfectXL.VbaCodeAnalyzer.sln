@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rubberduck", "Rubberduck", "{BB7426B1-C313-42EF-9124-F00FE23B8E4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerfectXL.VbaCodeAnalyzer", "infotron.VbaCodeAnalizer\PerfectXL.VbaCodeAnalyzer.csproj", "{15E4C174-E923-4128-A6CA-B8E1F245A6D9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerfectXL.VbaCodeAnalyzer", "PerfectXL.VbaCodeAnalyzer\PerfectXL.VbaCodeAnalyzer.csproj", "{15E4C174-E923-4128-A6CA-B8E1F245A6D9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubberduck", "Rubberduck\RetailCoder.VBE\Rubberduck.csproj", "{20589DE8-432E-4359-9232-69EB070B7185}"
 	ProjectSection(ProjectDependencies) = postProject
