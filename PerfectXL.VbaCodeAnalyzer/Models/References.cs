@@ -37,8 +37,7 @@ namespace PerfectXL.VbaCodeAnalyzer.Models
 
         public object Target { get; }
         public bool IsWrappingNullReference { get; }
-        public event EventHandler<ReferenceEventArgs> ItemAdded;
-        public event EventHandler<ReferenceEventArgs> ItemRemoved;
+
         public IVBE VBE { get; }
         public IVBProject Parent { get; }
 
@@ -58,5 +57,10 @@ namespace PerfectXL.VbaCodeAnalyzer.Models
         {
             _references.Remove(_references.First(m => m == reference));
         }
+
+#pragma warning disable 67
+        public event EventHandler<ReferenceEventArgs> ItemAdded;
+        public event EventHandler<ReferenceEventArgs> ItemRemoved;
+#pragma warning restore 67
     }
 }
