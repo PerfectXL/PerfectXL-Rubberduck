@@ -20,7 +20,7 @@ namespace PerfectXL.VbaCodeAnalyzer
         /// <param name="fileName">The file name.</param>
         public CodeAnalyzer(string fileName)
         {
-            _fileName = CleanupFileName(fileName);
+            _fileName = fileName;
         }
 
         /// <summary>

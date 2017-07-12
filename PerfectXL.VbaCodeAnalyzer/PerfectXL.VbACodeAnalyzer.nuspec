@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>PerfectXL.VbaCodeAnalyzer</id>
-    <version>0.1.1</version>
+    <version>0.2.3</version>
     <title>PerfectXL.VbaCodeAnalyzer</title>
     <authors>Infotron BV</authors>
     <owners>Infotron BV</owners>
@@ -10,12 +10,7 @@
     <description>Rubberduck integration into PerfectXL</description>
     <tags>infotron perfectxl rubberduck</tags>
     <dependencies>
-      <dependency id="Antlr4" version="4.3.0" />
       <dependency id="Antlr4.Runtime" version="4.3.0" />
-      <dependency id="AvalonEdit" version="5.0.3" />
-      <dependency id="Castle.Core" version="3.2.0" />
-      <dependency id="EasyHook" version="2.7.6270" />
-      <dependency id="HtmlAgilityPack" version="1.4.9" />
       <dependency id="Ninject" version="3.2.1" />
       <dependency id="Ninject.Extensions.Conventions" version="3.2.0" />
       <dependency id="Ninject.Extensions.Factory" version="3.2.1" />
@@ -23,25 +18,24 @@
       <dependency id="Ninject.Extensions.Interception.DynamicProxy" version="3.2.0" />
       <dependency id="Ninject.Extensions.NamedScope" version="3.2.0" />
       <dependency id="NLog" version="4.4.10" />
-      <dependency id="NLog.Schema" version="4.0.1" />
-      <dependency id="LibGit2Sharp" version="0.22.0" />
-      <dependency id="Newtonsoft.Json" version="9.0.1" />
     </dependencies>
   </metadata>
    <files>
-    <file src="bin\Debug\infotron.VbaCodeAnalizer.dll" target="lib\net45" />
-    <file src="bin\Debug\infotron.VbaCodeAnalizer.pdb" target="lib\net45" />
+    <file src="bin\Debug\Grammar\VBALexer.g4" target="lib\net45" />
+    <file src="bin\Debug\Grammar\VBAParser.g4" target="lib\net45" />
     <file src="bin\Debug\Microsoft.VB6.Interop.VBIDE.dll" target="lib\net45" />
     <file src="bin\Debug\Microsoft.Vbe.Interop.dll" target="lib\net45" />
     <file src="bin\Debug\Microsoft.Vbe.Interop.Forms.dll" target="lib\net45" />
     <file src="bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll" target="lib\net45" />
     <file src="bin\Debug\office.dll" target="lib\net45" />
+    <file src="bin\Debug\PerfectXL.VbaCodeAnalyzer.dll" target="lib\net45" />
+    <file src="bin\Debug\PerfectXL.VbaCodeAnalyzer.pdb" target="lib\net45" />
     <file src="bin\Debug\Rubberduck.dll" target="lib\net45" />
+    <file src="bin\Debug\Rubberduck.pdb" target="lib\net45" />
     <file src="bin\Debug\Rubberduck.Inspections.dll" target="lib\net45" />
     <file src="bin\Debug\Rubberduck.Inspections.pdb" target="lib\net45" />
     <file src="bin\Debug\Rubberduck.Parsing.dll" target="lib\net45" />
     <file src="bin\Debug\Rubberduck.Parsing.pdb" target="lib\net45" />
-    <file src="bin\Debug\Rubberduck.pdb" target="lib\net45" />
     <file src="bin\Debug\Rubberduck.RegexAssistant.dll" target="lib\net45" />
     <file src="bin\Debug\Rubberduck.RegexAssistant.pdb" target="lib\net45" />
     <file src="bin\Debug\Rubberduck.SettingsProvider.dll" target="lib\net45" />
@@ -53,7 +47,5 @@
     <file src="bin\Debug\Rubberduck.VBEditor.dll" target="lib\net45" />
     <file src="bin\Debug\Rubberduck.VBEditor.pdb" target="lib\net45" />
     <file src="bin\Debug\stdole.dll" target="lib\net45" />
-    <file src="bin\Debug\Grammar\VBALexer.g4" target="lib\net45" />
-    <file src="bin\Debug\Grammar\VBAParser.g4" target="lib\net45" />
   </files>
 </package>
