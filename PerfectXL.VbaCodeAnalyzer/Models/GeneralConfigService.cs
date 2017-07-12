@@ -23,7 +23,9 @@ namespace PerfectXL.VbaCodeAnalyzer.Models
             throw new NotImplementedException();
         }
 
+#pragma warning disable 67
         public event EventHandler<ConfigurationChangedEventArgs> SettingsChanged;
+#pragma warning restore 67
 
         public Configuration GetDefaultConfiguration()
         {

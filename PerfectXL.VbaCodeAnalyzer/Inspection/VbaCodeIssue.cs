@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Text.RegularExpressions;
 using Rubberduck.Parsing.Inspections.Abstract;
 
 namespace PerfectXL.VbaCodeAnalyzer.Inspection
@@ -30,10 +30,12 @@ namespace PerfectXL.VbaCodeAnalyzer.Inspection
 
         private static string ExtractIdentifierName(string text)
         {
-            return text.Contains("Option Explicit")
-                ? "Option Explicit"
-                : text.Substring(text.IndexOf("'", StringComparison.Ordinal),
-                    text.LastIndexOf("'", StringComparison.Ordinal) - text.IndexOf("'", StringComparison.Ordinal));
+            if (text.Contains("Option Explicit"))
+            {
+                return "Option Explicit";
+            }
+            Match match = Regex.Match(text, @" ['‘’] ( [^'‘’]+ ) ['‘’] ", RegexOptions.IgnorePatternWhitespace);
+            return match.Success ? match.Groups[1].Value : text;
         }
     }
 }
