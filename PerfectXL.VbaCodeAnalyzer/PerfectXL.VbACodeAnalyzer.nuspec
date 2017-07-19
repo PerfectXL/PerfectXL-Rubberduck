@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>PerfectXL.VbaCodeAnalyzer</id>
-    <version>0.2.3</version>
+    <version>0.2.4</version>
     <title>PerfectXL.VbaCodeAnalyzer</title>
     <authors>Infotron BV</authors>
     <owners>Infotron BV</owners>
