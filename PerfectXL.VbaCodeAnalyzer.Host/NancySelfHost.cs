@@ -15,18 +15,31 @@
 // You should have received a copy of the GNU General Public License
 // along with PerfectXL.VbaCodeAnalyzer.  If not, see <http://www.gnu.org/licenses/>.
 
-using System.Collections.Generic;
+using System;
+using System.Configuration;
+using Nancy.Hosting.Self;
+using NLog;
 
-namespace PerfectXL.VbaCodeAnalyzer.Inspection
+namespace PerfectXL.VbaCodeAnalyzer.Host
 {
-    public class CodeInspectionResult
+    internal class NancySelfHost
     {
-        public CodeInspectionResult(string moduleName)
+        private static readonly Logger MyLogger = LogManager.GetCurrentClassLogger();
+        private static readonly int Port = int.Parse(ConfigurationManager.AppSettings["port"]);
+        private readonly Uri _uri = new UriBuilder {Scheme = "http", Port = Port, Host = "localhost"}.Uri;
+        private NancyHost _nancyHost;
+
+        public void Start()
         {
-            ModuleName = moduleName;
+            _nancyHost = new NancyHost(_uri);
+            MyLogger.Info($"Running {Program.Name} on {_uri}.");
+            _nancyHost.Start();
         }
 
-        public string ModuleName { get; }
-        public List<VbaCodeIssue> VbaCodeIssues { get; set; } = new List<VbaCodeIssue>();
+        public void Stop()
+        {
+            _nancyHost.Stop();
+            MyLogger.Info($"Stopped {Program.Name}.");
+        }
     }
 }

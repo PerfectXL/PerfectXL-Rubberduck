@@ -1,5 +1,21 @@
-﻿using System;
-using System.Linq;
+// Copyright 2017 Infotron B.V.
+//
+// This file is part of PerfectXL.VbaCodeAnalyzer.
+// 
+// PerfectXL.VbaCodeAnalyzer is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// PerfectXL.VbaCodeAnalyzer is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with PerfectXL.VbaCodeAnalyzer.  If not, see <http://www.gnu.org/licenses/>.
+
+using System.Text.RegularExpressions;
 using Rubberduck.Parsing.Inspections.Abstract;
 
 namespace PerfectXL.VbaCodeAnalyzer.Inspection
@@ -31,24 +47,12 @@ namespace PerfectXL.VbaCodeAnalyzer.Inspection
 
         private static string ExtractIdentifierName(string text)
         {
-            var result = "";
-            var count = text.Count(f => f == (char)39);
-
-            //result = text.Contains("Option Explicit")
-            //    ? "Option Explicit"
-            //    : text.Substring(text.IndexOf((char)39), text.LastIndexOf((char)39) - text.IndexOf((char)39));
-
-            switch (count)
+            if (text.Contains("Option Explicit"))
             {
-                case 0:
-                case 1:
-                    result = text.Contains("Option Explicit")? "Option Explicit": "";
-                    break;
-                case 2:
-                    result = text.Substring(text.IndexOf((char)39), text.LastIndexOf((char)39) + 1- text.IndexOf((char)39));
-                    break;
+                return "Option Explicit";
             }
-            return result;
+            Match match = Regex.Match(text, @" ['‘’] ( [^'‘’]+ ) ['‘’] ", RegexOptions.IgnorePatternWhitespace);
+            return match.Success ? match.Groups[1].Value : text;
         }
     }
 }

@@ -15,18 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with PerfectXL.VbaCodeAnalyzer.  If not, see <http://www.gnu.org/licenses/>.
 
-using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
-namespace PerfectXL.VbaCodeAnalyzer.Inspection
-{
-    public class CodeInspectionResult
-    {
-        public CodeInspectionResult(string moduleName)
-        {
-            ModuleName = moduleName;
-        }
-
-        public string ModuleName { get; }
-        public List<VbaCodeIssue> VbaCodeIssues { get; set; } = new List<VbaCodeIssue>();
-    }
-}
+[assembly: ComVisible(false)]
+[assembly: Guid("75ba2e25-be0d-4873-b75a-23a7fbc34ebe")]
