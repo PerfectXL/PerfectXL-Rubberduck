@@ -1,10 +1,26 @@
-﻿using System.Collections.Generic;
+// Copyright 2017 Infotron B.V.
+//
+// This file is part of PerfectXL.VbaCodeAnalyzer.
+// 
+// PerfectXL.VbaCodeAnalyzer is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// PerfectXL.VbaCodeAnalyzer is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with PerfectXL.VbaCodeAnalyzer.  If not, see <http://www.gnu.org/licenses/>.
+
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using PerfectXL.VbaCodeAnalyzer.Extensions;
 using PerfectXL.VbaCodeAnalyzer.Inspection;
 using PerfectXL.VbaCodeAnalyzer.Models;
-using Rubberduck.Inspections.Abstract;
 using Rubberduck.Inspections.Concrete;
 using Rubberduck.Parsing.Inspections.Abstract;
 using Rubberduck.Parsing.VBA;
@@ -35,47 +51,50 @@ namespace PerfectXL.VbaCodeAnalyzer
 
         internal CodeInspectionResult AnalyzeModule(string moduleName, string moduleCode)
         {
+            RubberduckParserState parserState = Parse(moduleCode);
+
             List<VbaCodeIssue> vbaCodeIssues = new[]
             {
-                Inspect<ApplicationWorksheetFunctionInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<AssignedByValParameterInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<ConstantNotUsedInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                //Inspect<EmptyIfBlockInspection>(moduleName, moduleCode, ResultFetchMethod.UsingHelper),
-                Inspect<EmptyStringLiteralInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<EncapsulatePublicFieldInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<FunctionReturnValueNotUsedInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<ImplicitActiveSheetReferenceInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<ImplicitActiveWorkbookReferenceInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<ImplicitByRefModifierInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<ImplicitPublicMemberInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<ImplicitVariantReturnTypeInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<MemberNotOnInterfaceInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<MissingAnnotationArgumentInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<ModuleScopeDimKeywordInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<MoveFieldCloserToUsageInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<MultilineParameterInspection>(moduleName, moduleCode, ResultFetchMethod.UsingHelper),
-                Inspect<MultipleDeclarationsInspection>(moduleName, moduleCode, ResultFetchMethod.UsingHelper),
-                Inspect<NonReturningFunctionInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<ObsoleteCallStatementInspection>(moduleName, moduleCode, ResultFetchMethod.UsingHelper),
-                Inspect<ObsoleteCommentSyntaxInspection>(moduleName, moduleCode, ResultFetchMethod.UsingHelper),
-                Inspect<ObsoleteGlobalInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<ObsoleteLetStatementInspection>(moduleName, moduleCode, ResultFetchMethod.UsingHelper),
-                Inspect<ObsoleteTypeHintInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<OptionBaseInspection>(moduleName, moduleCode, ResultFetchMethod.UsingHelper),
-                Inspect<OptionBaseInspection>(moduleName, moduleCode, ResultFetchMethod.UsingHelper),
-                Inspect<OptionExplicitInspection>(moduleName, moduleCode, ResultFetchMethod.UsingHelper),
-                Inspect<ParameterCanBeByValInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<ParameterNotUsedInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<ProcedureCanBeWrittenAsFunctionInspection>(moduleName, moduleCode, ResultFetchMethod.UsingHelper),
-                Inspect<ProcedureNotUsedInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<SelfAssignedDeclarationInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<UnassignedVariableUsageInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<UndeclaredVariableInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<UntypedFunctionUsageInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<VariableNotAssignedInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<VariableNotUsedInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<VariableTypeNotDeclaredInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<WriteOnlyPropertyInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper)            }.SelectMany(x => x).ToList();
+                Inspect<ApplicationWorksheetFunctionInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
+                Inspect<AssignedByValParameterInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
+                Inspect<ConstantNotUsedInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
+                //Inspect<EmptyIfBlockInspection>(moduleName, parserState, ResultFetchMethod.UsingHelper),
+                Inspect<EmptyStringLiteralInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
+                Inspect<EncapsulatePublicFieldInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
+                Inspect<FunctionReturnValueNotUsedInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
+                Inspect<ImplicitActiveSheetReferenceInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
+                Inspect<ImplicitActiveWorkbookReferenceInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
+                Inspect<ImplicitByRefModifierInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
+                Inspect<ImplicitPublicMemberInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
+                Inspect<ImplicitVariantReturnTypeInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
+                Inspect<MemberNotOnInterfaceInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
+                Inspect<MissingAnnotationArgumentInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
+                Inspect<ModuleScopeDimKeywordInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
+                Inspect<MoveFieldCloserToUsageInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
+                Inspect<MultilineParameterInspection>(moduleName, parserState, ResultFetchMethod.UsingHelper),
+                Inspect<MultipleDeclarationsInspection>(moduleName, parserState, ResultFetchMethod.UsingHelper),
+                Inspect<NonReturningFunctionInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
+                Inspect<ObsoleteCallStatementInspection>(moduleName, parserState, ResultFetchMethod.UsingHelper),
+                Inspect<ObsoleteCommentSyntaxInspection>(moduleName, parserState, ResultFetchMethod.UsingHelper),
+                Inspect<ObsoleteGlobalInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
+                Inspect<ObsoleteLetStatementInspection>(moduleName, parserState, ResultFetchMethod.UsingHelper),
+                Inspect<ObsoleteTypeHintInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
+                Inspect<OptionBaseInspection>(moduleName, parserState, ResultFetchMethod.UsingHelper),
+                Inspect<OptionBaseInspection>(moduleName, parserState, ResultFetchMethod.UsingHelper),
+                Inspect<OptionExplicitInspection>(moduleName, parserState, ResultFetchMethod.UsingHelper),
+                Inspect<ParameterCanBeByValInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
+                Inspect<ParameterNotUsedInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
+                Inspect<ProcedureCanBeWrittenAsFunctionInspection>(moduleName, parserState, ResultFetchMethod.UsingHelper),
+                Inspect<ProcedureNotUsedInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
+                Inspect<SelfAssignedDeclarationInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
+                Inspect<UnassignedVariableUsageInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
+                Inspect<UndeclaredVariableInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
+                Inspect<UntypedFunctionUsageInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
+                Inspect<VariableNotAssignedInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
+                Inspect<VariableNotUsedInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
+                Inspect<VariableTypeNotDeclaredInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
+                Inspect<WriteOnlyPropertyInspection>(moduleName, parserState, ResultFetchMethod.NoHelper)
+            }.SelectMany(x => x).ToList();
 
             return new CodeInspectionResult(moduleName) {VbaCodeIssues = vbaCodeIssues};
         }
@@ -86,11 +105,9 @@ namespace PerfectXL.VbaCodeAnalyzer
             return fileName.Substring(afterLastHyphenPosition, fileName.Length - afterLastHyphenPosition);
         }
 
-        private IEnumerable<VbaCodeIssue> Inspect<TInspection>(string moduleName, string inputCode, ResultFetchMethod resultFetchMethod)
-            where TInspection : InspectionBase
+        private IEnumerable<VbaCodeIssue> Inspect<TInspection>(string moduleName, RubberduckParserState parserState, ResultFetchMethod resultFetchMethod)
+            where TInspection : IInspection
         {
-            RubberduckParserState parserState = Parse(inputCode);
-
             IEnumerable<IInspectionResult> inspectionResults = InspectionFactory.Create<TInspection>(parserState, resultFetchMethod).GetInspectionResults();
 
             return inspectionResults.GroupBy(x => x.Description).Select(x => x.First()).Select(item => new VbaCodeIssue(item, _fileName, moduleName));

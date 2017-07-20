@@ -286,3 +286,4 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+deploy/setup-PerfectXL.VbaCodeAnalyzer.Host*.exe

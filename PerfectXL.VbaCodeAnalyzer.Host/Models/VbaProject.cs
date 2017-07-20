@@ -17,16 +17,11 @@
 
 using System.Collections.Generic;
 
-namespace PerfectXL.VbaCodeAnalyzer.Inspection
+namespace PerfectXL.VbaCodeAnalyzer.Host.Models
 {
-    public class CodeInspectionResult
+    internal class VbaProject
     {
-        public CodeInspectionResult(string moduleName)
-        {
-            ModuleName = moduleName;
-        }
-
-        public string ModuleName { get; }
-        public List<VbaCodeIssue> VbaCodeIssues { get; set; } = new List<VbaCodeIssue>();
+        public string FileName { get; set; }
+        public IList<VbaModule> VbaModules { get; set; }
     }
 }

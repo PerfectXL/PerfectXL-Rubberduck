@@ -15,18 +15,32 @@
 // You should have received a copy of the GNU General Public License
 // along with PerfectXL.VbaCodeAnalyzer.  If not, see <http://www.gnu.org/licenses/>.
 
-using System.Collections.Generic;
+using Topshelf;
 
-namespace PerfectXL.VbaCodeAnalyzer.Inspection
+namespace PerfectXL.VbaCodeAnalyzer.Host
 {
-    public class CodeInspectionResult
+    internal class Program
     {
-        public CodeInspectionResult(string moduleName)
-        {
-            ModuleName = moduleName;
-        }
+        public static string Name { get; } = "PerfectXL.VbaCodeAnalyzer.Host";
 
-        public string ModuleName { get; }
-        public List<VbaCodeIssue> VbaCodeIssues { get; set; } = new List<VbaCodeIssue>();
+        private static void Main()
+        {
+            Nancy.Json.JsonSettings.MaxJsonLength = int.MaxValue;
+
+            HostFactory.Run(x =>
+            {
+                x.Service<NancySelfHost>(s =>
+                {
+                    s.ConstructUsing(name => new NancySelfHost());
+                    s.WhenStarted(tc => tc.Start());
+                    s.WhenStopped(tc => tc.Stop());
+                });
+
+                x.RunAsLocalSystem();
+                x.SetDescription(Name);
+                x.SetDisplayName(Name);
+                x.SetServiceName(Name);
+            });
+        }
     }
 }
