@@ -12,7 +12,7 @@ The analyzer can be installed as a Windows service. It provides an HTTP API wher
 Packaging the software
 ----------------------
 
-If you want to install this program yourself, you can find a batch script to build and package the software at [https://github.com/PerfectXL/PerfectXL-Rubberduck/blob/develop/deploy/build-and-package. Cmd] (https://github.com/PerfectXL/PerfectXL-Rubberduck/blob/develop/deploy/build-and-package.cmd). This builds an setup program that you can run on a Windows device to install the software.
+If you want to install this program yourself, you can find a batch script to build and package the software at [https://github.com/PerfectXL/PerfectXL-Rubberduck/blob/develop/deploy/build-and-package.cmd](https://github.com/PerfectXL/PerfectXL-Rubberduck/blob/develop/deploy/build-and-package.cmd). This builds an setup program that you can run on a Windows device to install the software.
 
 License
 -------
