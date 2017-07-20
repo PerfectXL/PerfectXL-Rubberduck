@@ -1,7 +1,7 @@
 PerfectXL-Rubberduck
 ====================
 
-PerfectXL VbaCodeAnalyzer uses code of Rubberduck. [Rubberduck](http://rubberduckvba.com/) is an open-source project that analyzes and inspects [VBA](https://en.wikipedia.org/wiki/Visual_Basic_for_Applications) code. It is licensed under the GPLv3 license and the source code is available at [https://github.com/rubberduck-vba/Rubberduck](https://github.com/rubberduck-vba/Rubberduck).
+PerfectXL VbaCodeAnalyzer uses code of Rubberduck. [Rubberduck](http://rubberduckvba.com/) is an open-source project that parses and inspects [VBA](https://en.wikipedia.org/wiki/Visual_Basic_for_Applications) code. It is licensed under the GPLv3 license and the source code is available at [https://github.com/rubberduck-vba/Rubberduck](https://github.com/rubberduck-vba/Rubberduck).
 
 Similarly, PerfectXL VbaCodeAnalyzer is open source, with its source code publicly available at [https://github.com/PerfectXL/PerfectXL-Rubberduck](https://github.com/PerfectXL/PerfectXL-Rubberduck).
 
