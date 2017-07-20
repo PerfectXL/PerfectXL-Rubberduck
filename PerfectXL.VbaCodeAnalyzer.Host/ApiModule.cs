@@ -16,28 +16,64 @@
 // along with PerfectXL.VbaCodeAnalyzer.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using Nancy;
 using Nancy.ModelBinding;
+using NLog;
 using PerfectXL.VbaCodeAnalyzer.Host.Models;
+using PerfectXL.VbaCodeAnalyzer.Inspection;
 
 namespace PerfectXL.VbaCodeAnalyzer.Host
 {
     public class ApiModule : NancyModule
     {
+        private static readonly Logger MyLogger = LogManager.GetCurrentClassLogger();
+
         public ApiModule()
         {
             Get["/"] = parameters => $@"<html><head><title>{Program.Name}</title></head>
                 <body><h1 style=""font:700 18px sans-serif;text-align:center;"">{Program.Name}</h1>
                 <p style=""text-align:center;""><img src=""data:image/png;base64,{GetResource()}"" /></p></body></html>";
 
-            Post["/v1/analyze/project"] = parameters =>
+            Post["/v1/analyze/project"] = x => AnalyzeProject(x);
+        }
+
+        private IList<CodeInspectionResult> AnalyzeProject(dynamic parameters)
+        {
+            VbaProject model;
+            try
             {
-                var model = this.Bind<VbaProject>(new BindingConfig {BodyOnly = true});
-                return new CodeAnalyzer(model.FileName).Run(model.VbaModules.ToDictionary(x => x.Name, x => x.Code));
-            };
+                model = this.Bind<VbaProject>(new BindingConfig {BodyOnly = true});
+            }
+            catch (Exception exception)
+            {
+                MyLogger.Error(exception);
+                throw;
+            }
+            IList<CodeInspectionResult> results = AnalyzeProject(model);
+            return results;
+        }
+
+        private static IList<CodeInspectionResult> AnalyzeProject(VbaProject model)
+        {
+            MyLogger.Debug($"Analyzing {model.FileName} with {model.VbaModules.Count} VBA modules.");
+            Stopwatch sw = Stopwatch.StartNew();
+            IList<CodeInspectionResult> results;
+            try
+            {
+                results = new CodeAnalyzer(model.FileName).Run(model.VbaModules.ToDictionary(x => x.Name, x => x.Code));
+            }
+            catch (Exception exception)
+            {
+                MyLogger.Error(exception);
+                throw;
+            }
+            MyLogger.Debug($"Analysis took {sw.ElapsedMilliseconds}ms.");
+            return results;
         }
 
         private static string GetResource()

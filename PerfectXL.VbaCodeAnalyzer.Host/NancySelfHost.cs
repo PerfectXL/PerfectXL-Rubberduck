@@ -18,11 +18,13 @@
 using System;
 using System.Configuration;
 using Nancy.Hosting.Self;
+using NLog;
 
 namespace PerfectXL.VbaCodeAnalyzer.Host
 {
     internal class NancySelfHost
     {
+        private static readonly Logger MyLogger = LogManager.GetCurrentClassLogger();
         private static readonly int Port = int.Parse(ConfigurationManager.AppSettings["port"]);
         private readonly Uri _uri = new UriBuilder {Scheme = "http", Port = Port, Host = "localhost"}.Uri;
         private NancyHost _nancyHost;
@@ -30,14 +32,14 @@ namespace PerfectXL.VbaCodeAnalyzer.Host
         public void Start()
         {
             _nancyHost = new NancyHost(_uri);
-            Console.WriteLine($"Running {Program.Name} on {_uri}.");
+            MyLogger.Info($"Running {Program.Name} on {_uri}.");
             _nancyHost.Start();
         }
 
         public void Stop()
         {
             _nancyHost.Stop();
-            Console.WriteLine($"Stopped {Program.Name}.");
+            MyLogger.Info($"Stopped {Program.Name}.");
         }
     }
 }
