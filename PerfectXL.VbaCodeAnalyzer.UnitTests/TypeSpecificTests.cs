@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Linq;
 using NUnit.Framework;
 using PerfectXL.VbaCodeAnalyzer.Inspection;
@@ -7,51 +8,37 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
     [TestFixture]
     public class TypeSpecificTests
     {
-        [Test, Ignore]
-        public void ApplicationWorksheetFunctionInspectionTest()
-        {
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1",
-                @"
-                Option Explicit
+        //[Test, Ignore]
+        //public void ApplicationWorksheetFunctionInspectionTest()
+        //{
+        //    CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1",
+        //        @"
+        //        Option Explicit
 
-                Private Sub MySub()
-                    Dim r As Range, m As Variant
-                    Set r = Worksheets(""Sheet1"").Range(""A1:C10"")
-                    m = Application.WorksheetFunction.Min(r)
-                    MsgBox m
-                End Sub
-                ");
-            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ApplicationWorksheetFunction"));
-        }
+        //        Private Sub MySub()
+        //            Dim r As Range, m As Variant
+        //            Set r = Worksheets(""Sheet1"").Range(""A1:C10"")
+        //            m = Application.WorksheetFunction.Min(r)
+        //            MsgBox m
+        //        End Sub
+        //        ");
+        //    Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ApplicationWorksheetFunction"));
+        //}
+
+
 
         [Test]
-        public void ConstantNotUsedInspectionTest()
+        public void ConstantNotUsedTest()
         {
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1",
-                @"
-                 Option Explicit
+            const string inputCode =
+                @"Option Explicit
+                Public Sub Foo()
+                    Const const1 As Integer = 9
+                End Sub";
 
-                Private Sub MySub()
-                    Const c As String = ""foo""
-                End Sub
-                ");
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ConstantNotUsed"));
-        }
-
-        [Test, Ignore]
-        public void EmptyStringLiteralInspectionTest()
-        {
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1",
-                @"
-                Option Explicit
-
-                Private Sub MySub()
-                    Dim s As String
-                    s = """"
-                    s = s + s
-                End Sub
-                ");
-            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "EmptyStringLiteral"));
         }
 
         [Test]
@@ -88,6 +75,384 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "FunctionReturnValueNotUsed"));
         }
 
-        // TODO roel Create unit test for every inspection type. Fix ignored unit tests.
+        [Test]
+        public void ImplicitPublicMemberTest()
+        {
+            const string inputCode = @"option explicit
+                                        Sub ExcelSub()
+                                            Dim foo As Double
+                                        End Sub";
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ImplicitPublicMember"));
+
+        }
+        
+        [Test]
+        public void MultipleDeclarationsTest()
+        {
+            const string inputCode =
+                @"Option Explicit
+            Private Sub MySub()
+                Dim r As Range, m As Variant
+                Set r = Worksheets(""Sheet1"").Range(""A1:C10"")
+                m = Application.WorksheetFunction.Min(r)
+                MsgBox m
+            End Sub ";
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "MultipleDeclarations"));
+
+        }
+
+        [Test]
+        public void ProcedureNotUsedTest()
+        {
+            const string inputCode =
+                @"Option Explicit
+            Private Sub MySub()
+                Dim r As Range, m As Variant
+                Set r = Worksheets(""Sheet1"").Range(""A1:C10"")
+                m = Application.WorksheetFunction.Min(r)
+                MsgBox m
+            End Sub ";
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ProcedureNotUsed"));
+
+        }
+
+        [Test]
+        public void VariableUnassignedUsageTest()
+        {
+            const string inputCode =
+                @"Option Explicit
+            Private Sub MySub()
+                Dim r As Range, m As Variant
+                Set r = Worksheets(""Sheet1"").Range(""A1:C10"")
+                m = Application.WorksheetFunction.Min(r)
+                MsgBox m
+            End Sub ";
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+            Assert.AreEqual(3, result.VbaCodeIssues.Count(x => x.Type == "UnassignedVariableUsage"));
+
+        }
+
+        [Test]
+        public void VariableUndeclaredTest()
+        {
+            const string inputCode =
+                @"Option Explicit
+            Private Sub MySub()
+                Dim r As Range, m As Variant
+                Set r = Worksheets(""Sheet1"").Range(""A1:C10"")
+                m = Application.WorksheetFunction.Min(r)
+                MsgBox m
+            End Sub ";
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+            var Count = result.VbaCodeIssues.Count(x => x.Type == "UndeclaredVariable");
+
+            Assert.AreEqual(3, result.VbaCodeIssues.Count(x => x.Type == "UndeclaredVariable"));
+
+        }
+
+        [Test]
+        public void VariableNotUsed()
+        {
+            const string inputCode = @"option explicit
+                                        Sub ExcelSub()
+                                            Dim foo As Double
+                                        End Sub";
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "VariableNotUsed"));
+
+        }
+
+        [Test]
+        public void VariableNotAssigned()
+        {
+            const string inputCode = @"option explicit
+                                        Sub ExcelSub()
+                                            Dim foo As Double
+                                        End Sub";
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "VariableNotAssigned"));
+
+        }
+
+        [Test]
+        public void VariableNotUsedTest()
+        {
+            const string inputCode =
+                @"Option Explicit
+                    Public Sub Foo(ByVal arg1 As String, ByVal arg2 As Integer)
+                     arg1 = ""test""
+    
+                    Dim var1 As Integer
+                    var1 = arg2
+                End Sub";
+
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module", inputCode);
+
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "VariableNotUsed"));
+        }
+
+        [Test]
+        public void FunctionReturnValueNotUsedTest()
+        {
+            const string inputCode =
+                @"Option Explicit
+                    Function Foo(ByVal arg1 As Integer) As Boolean
+                        arg1 = 9
+                    End Function";
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "FunctionReturnValueNotUsed"));
+
+        }
+
+        [Test]
+        public void FunctionNonReturningTest()
+        {
+            const string inputCode =
+                @"Option Explicit
+                    Function Foo(ByVal arg1 As Integer) As Boolean
+                        arg1 = 9
+                    End Function";
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "NonReturningFunction"));
+
+        }
+
+        [Test]
+        public void ObsoleteCallStatementTest()
+        {
+            const string inputCode = @"Option Explicit
+                                        Sub Foo()
+                                            Call Foo
+                                        End Sub";
+
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
+
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ObsoleteCallStatement"));
+        }
+
+        [Test]
+        public void ObsoleteCommentSyntaxTest()
+        {
+            const string inputCode =
+                @"Option Explicit 
+                    Rem test";
+
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
+
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ObsoleteCommentSyntax"));
+        }
+
+        [Test]
+        public void ObsoleteGlobalTest()
+        {
+            const string inputCode =
+                @"Option Explicit 
+                    Global var1 As Integer";
+
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
+
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ObsoleteGlobal"));
+        }
+
+        [Test]
+        public void ObsoleteLetStatementTest()
+        {
+            const string inputCode =
+                @"Option Explicit 
+                    Public Sub Foo()
+                        Dim var1 As Integer
+                        Dim var2 As Integer
+    
+                        Let var2 = var1
+                    End Sub                    ";
+
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
+
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ObsoleteLetStatement"));
+        }
+        
+        [Test]
+        public void ObsoleteTypeHintTest()
+        {
+            const string inputCode =
+                @"Option Explicit 
+                    Public Foo&";
+
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
+
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ObsoleteTypeHint"));
+        }
+
+        [Test]
+        public void OptionBaseTest()
+        {
+            const string inputCode =
+                @"Option Explicit 
+                    Option Base 1";
+
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
+
+            Assert.AreEqual(2, result.VbaCodeIssues.Count(x => x.Type == "OptionBase"));
+        }
+
+        [Test]
+        public void OptionExcplicitTest()
+        {
+            const string inputCode = @"Sub ExcelSub()
+                                            Dim foo As Double
+                                        End Sub";
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "OptionExplicit"));
+        }
+
+        [Test]
+        public void ProcedureCanBeWrittenAsFunctiontTest()
+        {
+            const string inputCode =
+                @"Option Explicit 
+                 Sub Foo(arg1 As Integer)
+                End Sub";
+
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ProcedureCanBeWrittenAsFunction"));
+
+        }
+
+        [Test]
+        public void ParameterNotUsedTest()
+        {
+            const string inputCode =
+                @"Option Explicit
+                  Public Sub Foo(ByVal arg1 As String)
+                  End Sub";
+
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+
+            Assert.AreEqual(1, result.VbaCodeIssues.Count);
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ParameterNotUsed"));
+        }
+
+        [Test]
+        public void ParameterCanBeByValTest()
+        {
+            const string inputCode =
+                @"Option Explicit 
+                 Sub Foo(arg1 As Integer)
+                End Sub";
+
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ParameterCanBeByVal"));
+        }
+
+        [Test]
+        public void ParameterAssignedByValTest()
+        {
+            const string inputCode =
+                @"Option Explicit
+                    Public Sub Foo(ByVal arg1 As String, ByVal arg2 As Integer)
+                        arg1 = ""test""
+                        arg2 = 9
+                    End Sub";
+
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+
+            Assert.AreEqual(2, result.VbaCodeIssues.Count);
+            Assert.AreEqual(2, result.VbaCodeIssues.Count(x => x.Type == "AssignedByValParameter"));
+        }
+
+        [Test]
+        public void ProcedureCanBeWrittenAsFunctionTest()
+        {
+            const string inputCode =
+                @"Option Explicit 
+                    '@Ignore ParameterCanBeByVal
+                    Sub Foo(arg1 As String)
+                    End Sub";
+
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
+
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ProcedureCanBeWrittenAsFunction"));
+        }
+
+        [Test]
+        public void MoveFieldCloserToUsageTest()
+        {
+            const string inputCode =
+                @"Option Explicit 
+                    Private bar As String
+                    Public Sub Foo()
+                        bar = ""test""
+                    End Sub";
+
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
+
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "MoveFieldCloserToUsage"));
+        }
+
+        [Test]
+        public void WriteOnlyPropertyTest()
+        {
+            const string inputCode =
+                @"Option Explicit 
+                    Public Property Set Foo(ByVal value As Object)
+                    End Property";
+
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
+
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "WriteOnlyProperty"));
+        }
+
+        [Test]
+        public void SelfAssignedDeclarationTest()
+        {
+            const string inputCode =
+                @"Option Explicit 
+                    Sub Foo()
+                        Dim b As New Collection
+                    End Sub";
+
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
+
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "SelfAssignedDeclaration"));
+        }
+
+
+
+        [Test,Ignore]
+        public void xTester()
+        {
+            const string inputCode =
+                @"Option Explicit 
+                Sub Foo()
+                    Dim str As String
+                    str = Left$(""test"", 1)
+                End Sub
+                ";
+
+            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
+
+            if (result.VbaCodeIssues.Count > 0)
+            {
+                foreach (var issue in result.VbaCodeIssues)
+                {
+                    Debug.WriteLine($"VbaCodeIssues.Types : {issue.Type}");
+                }
+            }
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "SelfAssignedDeclaration"));
+        }
+
+
     }
 }
+
+//TODO :
+// MissingAnnotationArgumentInspection
+// MemberNotOnInterfaceInspection
+// OptionExplicitInspection

@@ -19,7 +19,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
         public void IssuesTest()
         {
             CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1",
-                @"
+                @"Option Explicit
                 Sub MySub()
                     counter = 10
                     For i = 1 To counter

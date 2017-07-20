@@ -37,7 +37,7 @@
     </Reference>
     <Reference Include="Rubberduck.SmartIndenter, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Rubberduck\Rubberduck.SmartIndenter\bin\Debug\Rubberduck.SmartIndenter.dll</HintPath>
+      <HintPath>..\Rubberduck\Rubberduck.SmartIndenter\obj\Debug\Rubberduck.SmartIndenter.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

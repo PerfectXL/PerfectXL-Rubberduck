@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Threading;
 using PerfectXL.VbaCodeAnalyzer.Extensions;
@@ -75,9 +76,22 @@ namespace PerfectXL.VbaCodeAnalyzer
                 Inspect<VariableNotAssignedInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
                 Inspect<VariableNotUsedInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
                 Inspect<VariableTypeNotDeclaredInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper),
-                Inspect<WriteOnlyPropertyInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper)            }.SelectMany(x => x).ToList();
+                Inspect<WriteOnlyPropertyInspection>(moduleName, moduleCode, ResultFetchMethod.NoHelper)
+            }.SelectMany(x => x).ToList();
 
-            return new CodeInspectionResult(moduleName) {VbaCodeIssues = vbaCodeIssues};
+            return new CodeInspectionResult(moduleName) { VbaCodeIssues = vbaCodeIssues };
+        }
+
+        internal RubberduckParserState Parse(string inputCode)
+        {
+            return DoParse(inputCode);
+        }
+
+        internal IVBE GetVbe(string inputCode)
+        {
+            IVBE vbe = new Vbe();
+            vbe.AddProjectFromCode(inputCode);
+            return vbe;
         }
 
         private static string CleanupFileName(string fileName)
@@ -86,17 +100,16 @@ namespace PerfectXL.VbaCodeAnalyzer
             return fileName.Substring(afterLastHyphenPosition, fileName.Length - afterLastHyphenPosition);
         }
 
-        private IEnumerable<VbaCodeIssue> Inspect<TInspection>(string moduleName, string inputCode, ResultFetchMethod resultFetchMethod)
-            where TInspection : InspectionBase
+        private IEnumerable<VbaCodeIssue> Inspect<TInspection>(string moduleName, string inputCode, ResultFetchMethod resultFetchMethod) where TInspection : InspectionBase
         {
-            RubberduckParserState parserState = Parse(inputCode);
+            RubberduckParserState parserState = DoParse(inputCode);
 
             IEnumerable<IInspectionResult> inspectionResults = InspectionFactory.Create<TInspection>(parserState, resultFetchMethod).GetInspectionResults();
 
             return inspectionResults.GroupBy(x => x.Description).Select(x => x.First()).Select(item => new VbaCodeIssue(item, _fileName, moduleName));
         }
 
-        private static RubberduckParserState Parse(string inputCode)
+        private static RubberduckParserState DoParse(string inputCode)
         {
             IVBE vbe = new Vbe();
             vbe.AddProjectFromCode(inputCode);
