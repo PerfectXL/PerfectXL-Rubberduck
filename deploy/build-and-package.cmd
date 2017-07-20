@@ -33,14 +33,15 @@ pause
 goto :eof
 
 :CHECK_PERMISSIONS
-@echo Administrative permissions required. Detecting permissions...
+@echo Elevated permissions required. Detecting permissions...
 
 net session >nul 2>&1
 if %errorLevel% == 0 (
-    echo Success: Administrative permissions confirmed.
+    echo Success: Elevated permissions confirmed.
     goto BUILD_AND_PACKAGE
 
 ) else (
-    @echo Failure: Administrative permissions required.
+    @echo Failure: Elevated permissions required.
+    @echo (Right-click and choose: "Run as administrator")
     pause
 )
