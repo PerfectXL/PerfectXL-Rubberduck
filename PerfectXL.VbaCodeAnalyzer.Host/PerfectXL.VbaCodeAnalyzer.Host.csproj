@@ -63,6 +63,10 @@
     <Compile Include="Models\VbaProject.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Rubberduck\license">
+      <Link>license</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
