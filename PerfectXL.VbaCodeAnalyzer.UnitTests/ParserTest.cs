@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.XPath;
 using NUnit.Framework;
-using PerfectXL.VbaCodeAnalyzer.Extensions;
-using Rubberduck.Parsing.Symbols;
-using Rubberduck.Parsing.VBA;
 
 namespace PerfectXL.VbaCodeAnalyzer.UnitTests
 {
@@ -17,70 +16,48 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
         [Test]
         public void TestParser()
         {
+            var codeUrenregistratie = CodeExtractor(@"Macros\" + TestFileNames.UserDefined_Macro_1 + ".txt");
 
-            var codeUrenregistratie = CodeExtractor(@"Planning_uren_v1.4_20160824\Modules\Urenregistratie.txt");
-            var codeRoosterplanning = CodeExtractor(@"Planning_uren_v1.4_20160824\Modules\Roosterplanning.txt");
-
-            IEnumerable<MacroTermPresenter> urenregistratieTermList = null;
-            IEnumerable<MacroTermPresenter> roosterplanningTermList = null;
-
-            if (codeUrenregistratie != String.Empty)
+            if (codeUrenregistratie != string.Empty)
             {
-                var vbaObject = new CodeAnalyzer("Workbook1.xlsm").Parse(codeUrenregistratie);
-                urenregistratieTermList = Analize(vbaObject);
-            }
+                var macroTypeCache = new CodeAnalyzer("Workbook1.xlsm").RankMacro("Module1", codeUrenregistratie);
 
-            if (codeRoosterplanning != String.Empty)
-            {
-                var vbaObject = new CodeAnalyzer("Workbook1.xlsm").Parse(codeRoosterplanning);
-                roosterplanningTermList = Analize(vbaObject);
-            }
-
-        }
-
-        public static IEnumerable<MacroTermPresenter> Analize(RubberduckParserState vbaObject)
-        {
-            var unresolvedMemberDeclarations = vbaObject.AllDeclarations.GroupBy(grp => grp.ParentDeclaration).SelectMany(g => g.OrderBy(grp => grp.Selection.StartLine)).ToArray();
-
-            return MacroTermsCounter(unresolvedMemberDeclarations, MacroTerms.List());
-        }
-
-        private static IEnumerable<MacroTermPresenter> MacroTermsCounter(IEnumerable<Declaration> declarations, IEnumerable<string> terms)
-        {
-            var presenterList = new List<MacroTermPresenter>();
-            foreach (var term in terms)
-            {
-                var declarationQuery = declarations.Where(x => x.IdentifierName == term).Select(item => new { item }).ToList();
-
-                foreach (var declaration in declarationQuery)
+                foreach (var macrotype in macroTypeCache)
                 {
-                    var termPresenter = new MacroTermPresenter
-                    {
-                        Module = declaration.item.ComponentName,
-                        Function = declaration.item.ParentDeclaration.IdentifierName,
-                        Term = term,
-                        Repeat = declaration.item.References.Count()
-                    };
-                    presenterList.Add(termPresenter);
+                    var mcrotype = "Macro: " + macrotype.Name + " is a " + macrotype.State + " macro";
+                    Debug.WriteLine(mcrotype);
                 }
             }
-
-            CalculatePercentage(presenterList);
-
-            return presenterList;
         }
 
-        private static void CalculatePercentage(IEnumerable<MacroTermPresenter> presenters)
+        [Test]
+        public void TestFilter()
         {
-            var macroTermPresenters = presenters as IList<MacroTermPresenter> ?? presenters.ToList();
-            var sum = (double)macroTermPresenters.Select(r => r.Repeat).Sum();
+            var file = @"C:\Users\HarveyBouva\Projects\PerfectXL\PerfectXL-Rubberduck\PerfectXL-Rubberduck\MacroTermRating.xml";
 
-            foreach (var present in macroTermPresenters)
+            XDocument xdoc = null;
+
+            using (XmlReader xr = XmlReader.Create(file))
             {
-                present.Percentage = Math.Round(100 * present.Repeat / sum);
+                xdoc = XDocument.Load(xr);
             }
-        }
 
+
+            // XmlTextReader reader = new XmlTextReader(file);
+
+            //var xml = XDocument.Load(file);
+            XElement xelement = XElement.Load(file);
+
+            // IEnumerable<XElement> employees = xelement.Elements();
+
+
+            //foreach (var employee in employees)
+            //{
+            //    Debug.WriteLine(employee.Element("Name").Value);
+            //}
+
+
+        }
         private static string CodeExtractor(string path)
         {
             var vbaCode = "";
@@ -93,93 +70,29 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
             }
             return vbaCode;
         }
-
-        public static int CountStringOccurrences(string text, string pattern)
+        
+        public enum TestFileNames
         {
-            var count = 0;
-            var i = 0;
-            while ((i = text.IndexOf(pattern, i, StringComparison.Ordinal)) != -1)
-            {
-                i += pattern.Length;
-                count++;
-            }
-            return count;
-        }
-
-        public class MacroTermPresenter
-        {
-            public string Module { get; set; }
-            public string Function { get; set; }
-            public string Term { get; set; }
-            public int Repeat { get; set; }
-            public double Percentage { get; set; }
-        }
-
-        public static class MacroTerms
-        {
-            private static readonly List<string> _terms = new List<string>();
-
-            static MacroTerms()
-            {
-                _terms.AddRange(new List<string>
-                {
-                    "Activate",
-                    "ActiveChart",
-                    "ActiveSheet",
-                    "ActiveWorkbook",
-                    "Add",
-                    "AllowMultiSelect",
-                    "Application",
-                    "Apply",
-                    "AutoClose",
-                    "AutoExec",
-                    "AutoExit",
-                    "AutoFill",
-                    "AutoNew",
-                    "AutoOpen",
-                    "Clear",
-                    "Close",
-                    "Copy",
-                    "CutCopyMode",
-                    "Delete",
-                    "Display3DShading",
-                    "DisplayFullScreen",
-                    "DisplayHeadings",
-                    "DropDownLines",
-                    "Header",
-                    "Insert",
-                    "LinkedCell",
-                    "ListFillRange",
-                    "MatchVase",
-                    "MsgBox",
-                    "msoFileOpen",
-                    "Open",
-                    "Orientation",
-                    "PastSpecial",
-                    "Protect",
-                    "Range",
-                    "Save",
-                    "ScreenUpdating",
-                    "Select",
-                    "Selection",
-                    "SelectionChange",
-                    "SetRange",
-                    "Sheets",
-                    "Show",
-                    "SortMethod",
-                    "Unprotect",
-                    "Values",
-                    "Windows",
-                    "Workbook_Open",
-                    "XValues",
-                    "Zoom"
-                });
-            }
-
-            public static List<string> List()
-            {
-                return _terms;
-            }
+            Predefined_Casheflow_BilledSalesInlezenBilledSales,
+            Predefined_Casheflow_Module1,
+            Predefined_Casheflow_SubDTVernieuwenDBForecast,
+            Predefined_Casheflow_SubDTVernieuwenDBForecastvsActuals,
+            Predefined_Casheflow_SubDTVernieuwenHoofdblad,
+            Predefined_Hurdles_Module1,
+            Predefined_Hurdles_Module2,
+            Predefined_Hurdles_Sheet1,
+            Predefined_Hurdles_Sheet2,
+            Predefined_Planning_Instelling,
+            Predefined_Planning_Openen,
+            Predefined_Planning_Roosterplanning,
+            Predefined_Planning_Roosterplanning_bereken_totalen,
+            Predefined_Planning_Roosterplanning_laden_beschikbaarheidsplanning,
+            Predefined_Planning_Roosterplanning_uren_plannen,
+            Predefined_Planning_Urenregistratie,
+            Predefined_Planning_Urenregistratie_balken,
+            UserDefined_Macro_1,
+            UserDefined_Macro_1_Eerste_Opname,
+            UserDefined_Macro_2
         }
 
     }
