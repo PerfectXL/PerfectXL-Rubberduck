@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
-using System.Xml.XPath;
 using NUnit.Framework;
 
 namespace PerfectXL.VbaCodeAnalyzer.UnitTests
@@ -16,17 +12,13 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
         [Test]
         public void TestParser()
         {
-            var codeUrenregistratie = CodeExtractor(@"Macros\" + TestFileNames.UserDefined_Macro_1 + ".txt");
+            var codeUrenregistratie = CodeExtractor(@"Macros\" + TestFileNames.Predefined_Planning_Urenregistratie_balken + ".txt");
 
             if (codeUrenregistratie != string.Empty)
             {
                 var macroTypeCache = new CodeAnalyzer("Workbook1.xlsm").RankMacro("Module1", codeUrenregistratie);
 
-                foreach (var macrotype in macroTypeCache)
-                {
-                    var mcrotype = "Macro: " + macrotype.Name + " is a " + macrotype.State + " macro";
-                    Debug.WriteLine(mcrotype);
-                }
+                Assert.AreEqual(17, macroTypeCache.Count);
             }
         }
 
@@ -73,6 +65,10 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
         
         public enum TestFileNames
         {
+            DCF_WONEN_Blad9,
+            DCF_WONEN_foto,
+            DCF_WONEN_getallen_nederlands,
+            DCF_WONEN_getallen_uitschrijven,
             Predefined_Casheflow_BilledSalesInlezenBilledSales,
             Predefined_Casheflow_Module1,
             Predefined_Casheflow_SubDTVernieuwenDBForecast,

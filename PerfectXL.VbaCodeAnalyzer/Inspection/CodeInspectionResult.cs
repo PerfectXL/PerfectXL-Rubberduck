@@ -29,6 +29,6 @@ namespace PerfectXL.VbaCodeAnalyzer.Inspection
 
         public string ModuleName { get; }
         public List<VbaCodeIssue> VbaCodeIssues { get; set; } = new List<VbaCodeIssue>();
-        public List<MacroState> MacroStates { get; set; } = new List<MacroState>();
+        public List<VbaMacroIssue> VbaMacroIssues { get; set; } = new List<VbaMacroIssue>();
     }
 }

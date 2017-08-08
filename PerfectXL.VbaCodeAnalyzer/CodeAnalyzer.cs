@@ -100,14 +100,14 @@ namespace PerfectXL.VbaCodeAnalyzer
             var inspectionResult = new CodeInspectionResult(moduleName)
             {
                 VbaCodeIssues = vbaCodeIssues,
-                MacroStates = RankMacro(moduleName, moduleCode)
+                VbaMacroIssues = RankMacro(moduleName, moduleCode)
             };
             
             return inspectionResult;
         }
 
 
-        internal List<MacroState> RankMacro(string moduleName, string moduleCode)
+        internal List<VbaMacroIssue> RankMacro(string moduleName, string moduleCode)
         {
             return MacroInspector.Run(Parse(moduleCode));
         }
