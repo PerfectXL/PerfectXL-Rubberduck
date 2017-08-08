@@ -22,34 +22,6 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
             }
         }
 
-        [Test]
-        public void TestFilter()
-        {
-            var file = @"C:\Users\HarveyBouva\Projects\PerfectXL\PerfectXL-Rubberduck\PerfectXL-Rubberduck\MacroTermRating.xml";
-
-            XDocument xdoc = null;
-
-            using (XmlReader xr = XmlReader.Create(file))
-            {
-                xdoc = XDocument.Load(xr);
-            }
-
-
-            // XmlTextReader reader = new XmlTextReader(file);
-
-            //var xml = XDocument.Load(file);
-            XElement xelement = XElement.Load(file);
-
-            // IEnumerable<XElement> employees = xelement.Elements();
-
-
-            //foreach (var employee in employees)
-            //{
-            //    Debug.WriteLine(employee.Element("Name").Value);
-            //}
-
-
-        }
         private static string CodeExtractor(string path)
         {
             var vbaCode = "";
