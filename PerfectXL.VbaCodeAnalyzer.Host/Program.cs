@@ -25,6 +25,8 @@ namespace PerfectXL.VbaCodeAnalyzer.Host
 
         private static void Main()
         {
+            Nancy.Json.JsonSettings.MaxJsonLength = int.MaxValue;
+
             HostFactory.Run(x =>
             {
                 x.Service<NancySelfHost>(s =>
