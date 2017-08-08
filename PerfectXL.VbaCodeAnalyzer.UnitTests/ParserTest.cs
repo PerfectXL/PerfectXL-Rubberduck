@@ -12,7 +12,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
         [Test]
         public void TestParser()
         {
-            var codeUrenregistratie = CodeExtractor(@"Macros\" + TestFileNames.Predefined_Planning_Urenregistratie_balken + ".txt");
+            var codeUrenregistratie = CodeExtractor(@"Macros\" + TestFileNames.Predefined_Planning_Urenregistratie + ".txt");
 
             if (codeUrenregistratie != string.Empty)
             {

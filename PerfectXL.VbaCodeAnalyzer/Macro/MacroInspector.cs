@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Antlr4.Runtime.Misc;
-using PerfectXL.VbaCodeAnalyzer.Inspection;
 using Rubberduck.Parsing.Symbols;
 using Rubberduck.Parsing.VBA;
 
@@ -11,19 +9,10 @@ namespace PerfectXL.VbaCodeAnalyzer.Macro
 {
     public static class MacroInspector
     {
-        private static readonly List<VbaMacroIssue> MacroStateInspection = new List<VbaMacroIssue>();
-
         public static List<VbaMacroIssue> Run(RubberduckParserState vbaObject)
         {
             return QualifyMacro(vbaObject);
         }
-
-        //private static IEnumerable<MacroTermPresenter> Inspect(RubberduckParserState vbaObject)
-        //{
-        //   var macroIssues = QualifyMacro(vbaObject);
-
-        //    return MacroTermsCounter(CreateDeclarationList(vbaObject));
-        //}
 
         private static IEnumerable<Declaration> CreateDeclarationList(RubberduckParserState vbaObject)
         {
@@ -46,12 +35,6 @@ namespace PerfectXL.VbaCodeAnalyzer.Macro
 
         private static List<VbaMacroIssue> QualifyMacro(RubberduckParserState vbaObject)
         {
-            // Het is opgenomen macro als
-            // Er nooit het woord “DIM spatie” gebruikt wordt
-            // Er in het eerste commentaar het woord “spatie Macro” staat
-            // Als er minimaal 1 maal in de code staat “Select white space Active”
-            // returns a list with recorded macro's
-
             var macroIssues = new List<VbaMacroIssue>();
 
             var hasMacroComment = false;
@@ -132,111 +115,5 @@ namespace PerfectXL.VbaCodeAnalyzer.Macro
             }
             return macroIssues;
         }
-
-        //private static IEnumerable<MacroTermPresenter> MacroTermsCounter(IEnumerable<Declaration> declarations)
-        //{
-        //    var presenterList = new List<MacroTermPresenter>();
-
-        //    CounterFunctionTerm.Clear();
-
-        //    var functionList = declarations.GroupBy(grp => grp.ParentDeclaration.IdentifierName).Select(g => g.Key).Distinct().ToList();
-
-        //    foreach (var function in functionList)
-        //    {
-        //        var functionTerms = declarations.Where(l => l.ParentDeclaration.IdentifierName == function).Select(x => x).OrderBy(x => x.IdentifierName).ToList();
-
-        //        presenterList.AddRange(CreatePresenterList(functionTerms));
-        //    }
-        //    return presenterList;
-        //}
-
-        //private static IEnumerable<MacroTermPresenter> CreatePresenterList(IEnumerable<Declaration> declarations)
-        //{
-        //    var totalTermCounter = 0;
-
-        //    var presenterList = new List<MacroTermPresenter>();
-
-        //    foreach (var declaration in declarations)
-        //    {
-        //        var termCounter = 1;
-
-        //        if (declaration.IsUndeclared)
-        //        {
-        //            termCounter = declaration.References.GroupBy(grp => grp.Selection).Select(g => g.Key).Distinct().Count();
-        //        }
-
-        //        totalTermCounter = totalTermCounter + termCounter;
-
-        //        FunctionTermCounter(declaration.ParentDeclaration.IdentifierName, termCounter);
-
-        //        var termPresenter = new MacroTermPresenter
-        //        {
-        //            Module = declaration.ComponentName,
-        //            Function = declaration.ParentDeclaration.IdentifierName,
-        //            Term = declaration.IdentifierName,
-        //            Repeat = termCounter,
-        //            Listed = IsListedTerm(declaration.IdentifierName)
-        //        };
-
-        //        var presenterInList = presenterList.Find(x => x.Term == termPresenter.Term && x.Function == termPresenter.Function);
-
-        //        if (presenterInList == null)
-        //        {
-        //            presenterList.Add(termPresenter);
-        //        }
-        //        else
-        //        {
-        //            presenterInList.Repeat = presenterInList.Repeat + termPresenter.Repeat;
-        //        }
-        //    }
-
-        //    CalculatePercentage(presenterList);
-
-        //    return presenterList;
-        //}
-
-        //private static readonly Dictionary<string, int> CounterFunctionTerm = new Dictionary<string, int>();
-        //private static void FunctionTermCounter(string macro, int termcounter)
-        //{
-        //    if (CounterFunctionTerm.ContainsKey(macro))
-        //    {
-        //        var value = CounterFunctionTerm[macro];
-        //        CounterFunctionTerm[macro] = value + termcounter;
-        //    }
-        //    else
-        //    {
-        //        CounterFunctionTerm.Add(macro, termcounter);
-        //    }
-        //}
-
-        //private static bool IsListedTerm(string term)
-        //{
-        //    return (MacroTerm.List().Where(s => s == term).ToList().Count != 0);
-        //}
-
-        //private static void CalculatePercentage(IEnumerable<MacroTermPresenter> presenterList)
-        //{
-        //    foreach (var item in presenterList)
-        //    {
-        //        var count = CounterFunctionTerm[item.Function];
-        //        item.Percentage = Math.Round((decimal)item.Repeat / count, 3);
-        //    }
-        //}
-
-        //private static void MacroTypeToCache(string function, bool type)
-        //{
-        //    var macroStateItem = MacroStateInspection.Find(x => x.Name == function);
-
-        //    var macrotype = ((type) ? "Predefined" : "Recorded");
-        //    if (macroStateItem == null)
-        //    {
-        //        MacroStateInspection.Add(new VbaMacroIssue { Name = function, State = macrotype });
-        //    }
-        //    else
-        //    {
-        //        macroStateItem.State = macrotype;
-        //    }
-        //}
-
     }
 }
