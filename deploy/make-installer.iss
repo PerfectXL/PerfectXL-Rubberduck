@@ -24,21 +24,23 @@ VersionInfoCopyright=Copyright 2017 Infotron B.V.
 VersionInfoVersion={#fileversion}
 
 [Files]
+Source: "bin\Debug\*.dll"; DestDir: "{app}"
 Source: "bin\Debug\*.exe"; DestDir: "{app}"; Excludes: "*.vshost*"
 Source: "bin\Debug\*.exe.config"; DestDir: "{app}"; Flags: onlyifdoesntexist confirmoverwrite uninsneveruninstall; Excludes: "*.vshost*"
-Source: "bin\Debug\*.dll"; DestDir: "{app}"
 Source: "bin\Debug\*.pdb"; DestDir: "{app}"
 Source: "bin\Debug\license"; DestDir: "{app}"
+Source: "bin\Debug\README.md"; DestDir: "{app}"
 
 [UninstallRun]
 Filename: "{app}\{#appname}.exe"; Parameters: "stop"; WorkingDir: "{app}"; Flags: waituntilterminated
 Filename: "{app}\{#appname}.exe"; Parameters: "uninstall"; WorkingDir: "{app}"; Flags: waituntilterminated
 
 [UninstallDelete]
-Type: files; Name: "{app}\*.exe"
 Type: files; Name: "{app}\*.dll"
+Type: files; Name: "{app}\*.exe"
 Type: files; Name: "{app}\*.pdb"
 Type: files; Name: "{app}\license"
+Type: files; Name: "{app}\README.md"
 Type: dirifempty; Name: "{app}"
 
 [Messages]
