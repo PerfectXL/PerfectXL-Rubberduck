@@ -63,11 +63,12 @@ namespace PerfectXL.VbaCodeAnalyzer.Macro
                 var macroText = context.GetText(new Interval(startIndex, endIndex));
 
                 var hasDimStatements = Regex.Matches(macroText, @"(^|\n)\s*Dim").Count > 0;
-                var hasSelectFollowedByActive = Regex.Matches(macroText, @"Select\s*\n\s*Active").Count > 0;
+                var hasSelectFollowedByActive = Regex.Matches(macroText, @"\bSelect\s*\n\s*Active\w+").Count > 0;
 
-                var isRecorded = (hasMacroComment || hasSelectFollowedByActive || !hasDimStatements);
+                var isRecorded2 = (hasMacroComment || hasSelectFollowedByActive) && !hasDimStatements;
+                var isRecorded = hasMacroComment || hasSelectFollowedByActive || !hasDimStatements;
 
-                if (isRecorded)
+                if (isRecorded2)
                 {
                     IInspectionResult item = null;
                     var macroIssue = new VbaCodeIssue(item , "filename", "modulename")

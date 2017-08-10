@@ -38,6 +38,9 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
             CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1",
                 @"Option Explicit
                 Sub MySub()
+                    '
+                    ' MySyb Macro
+                    '
                     counter = 10
                     For i = 1 To counter
                         MsgBox i

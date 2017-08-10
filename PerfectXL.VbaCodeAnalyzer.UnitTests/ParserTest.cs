@@ -1,7 +1,4 @@
-﻿using System.Diagnostics;
-using System.IO;
-using System.Xml;
-using System.Xml.Linq;
+﻿using System.IO;
 using NUnit.Framework;
 
 namespace PerfectXL.VbaCodeAnalyzer.UnitTests
@@ -37,6 +34,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
         
         public enum TestFileNames
         {
+            adreslijst_sorteren,
             DCF_WONEN_Blad9,
             DCF_WONEN_foto,
             DCF_WONEN_getallen_nederlands,
