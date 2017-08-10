@@ -94,20 +94,21 @@ namespace PerfectXL.VbaCodeAnalyzer
                 Inspect<VariableNotAssignedInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
                 Inspect<VariableNotUsedInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
                 Inspect<VariableTypeNotDeclaredInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
-                Inspect<WriteOnlyPropertyInspection>(moduleName, parserState, ResultFetchMethod.NoHelper)
+                Inspect<WriteOnlyPropertyInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
             }.SelectMany(x => x).ToList();
 
             var inspectionResult = new CodeInspectionResult(moduleName)
             {
-                VbaCodeIssues = vbaCodeIssues,
-                VbaMacroIssues = RankMacro(moduleName, moduleCode)
+                VbaCodeIssues = vbaCodeIssues
             };
-            
+
+            inspectionResult.VbaCodeIssues.AddRange(RankMacro(moduleName, moduleCode));
+
             return inspectionResult;
         }
 
 
-        internal List<VbaMacroIssue> RankMacro(string moduleName, string moduleCode)
+        internal List<VbaCodeIssue> RankMacro(string moduleName, string moduleCode)
         {
             return MacroInspector.Run(Parse(moduleCode));
         }

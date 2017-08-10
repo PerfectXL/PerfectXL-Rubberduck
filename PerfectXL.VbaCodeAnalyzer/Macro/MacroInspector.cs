@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using Antlr4.Runtime.Misc;
+using PerfectXL.VbaCodeAnalyzer.Inspection;
+using Rubberduck.Parsing.Inspections.Abstract;
 using Rubberduck.Parsing.Symbols;
 using Rubberduck.Parsing.VBA;
 
@@ -9,7 +11,7 @@ namespace PerfectXL.VbaCodeAnalyzer.Macro
 {
     public static class MacroInspector
     {
-        public static List<VbaMacroIssue> Run(RubberduckParserState vbaObject)
+        public static List<VbaCodeIssue> Run(RubberduckParserState vbaObject)
         {
             return QualifyMacro(vbaObject);
         }
@@ -33,9 +35,9 @@ namespace PerfectXL.VbaCodeAnalyzer.Macro
             return declarations;
         }
 
-        private static List<VbaMacroIssue> QualifyMacro(RubberduckParserState vbaObject)
+        private static List<VbaCodeIssue> QualifyMacro(RubberduckParserState vbaObject)
         {
-            var macroIssues = new List<VbaMacroIssue>();
+            var macroIssues = new List<VbaCodeIssue>();
 
             var hasMacroComment = false;
 
@@ -67,7 +69,8 @@ namespace PerfectXL.VbaCodeAnalyzer.Macro
 
                 if (isRecorded)
                 {
-                    var macroIssue = new VbaMacroIssue
+                    IInspectionResult item = null;
+                    var macroIssue = new VbaCodeIssue(item , "filename", "modulename")
                     {
                         Type = "RecordedMacro",
                         Name = function.IdentifierName,
@@ -99,7 +102,8 @@ namespace PerfectXL.VbaCodeAnalyzer.Macro
 
                 if (isAuto)
                 {
-                    var macroIssue = new VbaMacroIssue
+                    IInspectionResult item = null;
+                    var macroIssue = new VbaCodeIssue(item, "filename", "modulename")
                     {
                         Type = "AutoOpenMacro",
                         Name = function.IdentifierName,

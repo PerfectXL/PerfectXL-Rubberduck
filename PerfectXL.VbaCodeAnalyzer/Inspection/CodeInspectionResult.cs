@@ -16,7 +16,6 @@
 // along with PerfectXL.VbaCodeAnalyzer.  If not, see <http://www.gnu.org/licenses/>.
 
 using System.Collections.Generic;
-using PerfectXL.VbaCodeAnalyzer.Macro;
 
 namespace PerfectXL.VbaCodeAnalyzer.Inspection
 {
@@ -29,6 +28,5 @@ namespace PerfectXL.VbaCodeAnalyzer.Inspection
 
         public string ModuleName { get; }
         public List<VbaCodeIssue> VbaCodeIssues { get; set; } = new List<VbaCodeIssue>();
-        public List<VbaMacroIssue> VbaMacroIssues { get; set; } = new List<VbaMacroIssue>();
     }
 }

@@ -56,7 +56,6 @@
     <Compile Include="Extensions\VbProjectExtensions.cs" />
     <Compile Include="Inspection\CodeInspectionResult.cs" />
     <Compile Include="Inspection\InspectionWrapper.cs" />
-    <Compile Include="Macro\VbaMacroIssue.cs" />
     <Compile Include="Macro\MacroInspector.cs" />
     <Compile Include="Macro\MacroTerm.cs" />
     <Compile Include="Models\GeneralConfigService.cs" />

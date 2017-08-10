@@ -44,7 +44,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                     Next
                 End Sub
                 ");
-            Assert.AreEqual(6, result.VbaCodeIssues.Count);
+            Assert.AreEqual(7, result.VbaCodeIssues.Count);
             Assert.AreEqual(0, result.VbaCodeIssues.Count(x => x.Type == "OptionExplicit"));
         }
     }
