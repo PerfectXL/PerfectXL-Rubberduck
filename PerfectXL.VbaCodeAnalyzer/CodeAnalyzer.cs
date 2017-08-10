@@ -20,6 +20,7 @@ using System.Linq;
 using System.Threading;
 using PerfectXL.VbaCodeAnalyzer.Extensions;
 using PerfectXL.VbaCodeAnalyzer.Inspection;
+using PerfectXL.VbaCodeAnalyzer.Macro;
 using PerfectXL.VbaCodeAnalyzer.Models;
 using Rubberduck.Inspections.Concrete;
 using Rubberduck.Parsing.Inspections.Abstract;
@@ -93,15 +94,33 @@ namespace PerfectXL.VbaCodeAnalyzer
                 Inspect<VariableNotAssignedInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
                 Inspect<VariableNotUsedInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
                 Inspect<VariableTypeNotDeclaredInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
-                Inspect<WriteOnlyPropertyInspection>(moduleName, parserState, ResultFetchMethod.NoHelper)
+                Inspect<WriteOnlyPropertyInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
             }.SelectMany(x => x).ToList();
 
-            return new CodeInspectionResult(moduleName) { VbaCodeIssues = vbaCodeIssues };
+            var inspectionResult = new CodeInspectionResult(moduleName)
+            {
+                VbaCodeIssues = vbaCodeIssues
+            };
+
+            inspectionResult.VbaCodeIssues.AddRange(RankMacro(moduleName, moduleCode));
+
+            return inspectionResult;
+        }
+
+
+        internal List<VbaCodeIssue> RankMacro(string moduleName, string moduleCode)
+        {
+            return MacroInspector.Run(Parse(moduleCode));
         }
 
         internal RubberduckParserState Parse(string inputCode)
         {
-            return DoParse(inputCode);
+            IVBE vbe = new Vbe();
+            vbe.AddProjectFromCode(inputCode);
+            ParseCoordinator parser = vbe.CreateConfiguredParser();
+            parser.Parse(new CancellationTokenSource());
+
+            return parser.State;
         }
 
         internal IVBE GetVbe(string inputCode)
@@ -111,28 +130,18 @@ namespace PerfectXL.VbaCodeAnalyzer
             return vbe;
         }
 
-        private static string CleanupFileName(string fileName)
-        {
-            int afterLastHyphenPosition = fileName.LastIndexOf('-') + 1;
-            return fileName.Substring(afterLastHyphenPosition, fileName.Length - afterLastHyphenPosition);
-        }
+        //private static string CleanupFileName(string fileName)
+        //{
+        //    int afterLastHyphenPosition = fileName.LastIndexOf('-') + 1;
+        //    return fileName.Substring(afterLastHyphenPosition, fileName.Length - afterLastHyphenPosition);
+        //}
 
-        private IEnumerable<VbaCodeIssue> Inspect<TInspection>(string moduleName, RubberduckParserState parserState, ResultFetchMethod resultFetchMethod)
-            where TInspection : IInspection
+        private IEnumerable<VbaCodeIssue> Inspect<TInspection>(string moduleName, RubberduckParserState parserState, ResultFetchMethod resultFetchMethod) where TInspection : IInspection
         {
             IEnumerable<IInspectionResult> inspectionResults = InspectionFactory.Create<TInspection>(parserState, resultFetchMethod).GetInspectionResults();
 
             return inspectionResults.GroupBy(x => x.Description).Select(x => x.First()).Select(item => new VbaCodeIssue(item, _fileName, moduleName));
         }
 
-        private static RubberduckParserState DoParse(string inputCode)
-        {
-            IVBE vbe = new Vbe();
-            vbe.AddProjectFromCode(inputCode);
-            ParseCoordinator parser = vbe.CreateConfiguredParser();
-            parser.Parse(new CancellationTokenSource());
-
-            return parser.State;
-        }
     }
 }
