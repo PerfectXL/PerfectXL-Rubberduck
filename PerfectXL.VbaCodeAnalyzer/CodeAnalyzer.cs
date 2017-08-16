@@ -17,6 +17,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using PerfectXL.VbaCodeAnalyzer.Extensions;
 using PerfectXL.VbaCodeAnalyzer.Inspection;
@@ -52,6 +53,8 @@ namespace PerfectXL.VbaCodeAnalyzer
 
         internal CodeInspectionResult AnalyzeModule(string moduleName, string moduleCode)
         {
+            moduleCode = RemoveAttributeLineFromCode(moduleCode);
+
             RubberduckParserState parserState = Parse(moduleCode);
 
             List<VbaCodeIssue> vbaCodeIssues = new[]
@@ -107,6 +110,10 @@ namespace PerfectXL.VbaCodeAnalyzer
             return inspectionResult;
         }
 
+        private static string RemoveAttributeLineFromCode(string code)
+        {
+            return string.Join("\r\n", Regex.Split(code, "\r\n").Where(s => !Regex.IsMatch(s, "A?ttribute VB_")));
+        }
 
         internal List<VbaCodeIssue> RankMacro(string moduleName, string moduleCode)
         {
@@ -129,12 +136,6 @@ namespace PerfectXL.VbaCodeAnalyzer
             vbe.AddProjectFromCode(inputCode);
             return vbe;
         }
-
-        //private static string CleanupFileName(string fileName)
-        //{
-        //    int afterLastHyphenPosition = fileName.LastIndexOf('-') + 1;
-        //    return fileName.Substring(afterLastHyphenPosition, fileName.Length - afterLastHyphenPosition);
-        //}
 
         private IEnumerable<VbaCodeIssue> Inspect<TInspection>(string moduleName, RubberduckParserState parserState, ResultFetchMethod resultFetchMethod) where TInspection : IInspection
         {
