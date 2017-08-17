@@ -101,7 +101,12 @@ namespace PerfectXL.VbaCodeAnalyzer
 
         internal RubberduckParserState Parse(string inputCode)
         {
-            return DoParse(inputCode);
+            IVBE vbe = new Vbe();
+            vbe.AddProjectFromCode(inputCode);
+            ParseCoordinator parser = vbe.CreateConfiguredParser();
+            parser.Parse(new CancellationTokenSource());
+
+            return parser.State;
         }
 
         internal IVBE GetVbe(string inputCode)
@@ -123,16 +128,6 @@ namespace PerfectXL.VbaCodeAnalyzer
             IEnumerable<IInspectionResult> inspectionResults = InspectionFactory.Create<TInspection>(parserState, resultFetchMethod).GetInspectionResults();
 
             return inspectionResults.GroupBy(x => x.Description).Select(x => x.First()).Select(item => new VbaCodeIssue(item, _fileName, moduleName));
-        }
-
-        private static RubberduckParserState DoParse(string inputCode)
-        {
-            IVBE vbe = new Vbe();
-            vbe.AddProjectFromCode(inputCode);
-            ParseCoordinator parser = vbe.CreateConfiguredParser();
-            parser.Parse(new CancellationTokenSource());
-
-            return parser.State;
         }
     }
 }
