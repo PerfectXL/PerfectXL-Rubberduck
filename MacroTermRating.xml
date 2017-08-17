@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+   <Macro>
+      <Terms>
+      <Term LanguageID="NL-nl">
+      	<Name>Activate</Name>
+      	<Rating>0.1</Rating>
+      </Term>
+      <Term>
+      	<Name>ActiveChart</Name>
+      	<Rating>0.2</Rating>
+      </Term>
+      <Term>
+      	<Name>ActiveSheet</Name>
+      	<Rating>0.3</Rating>
+      </Term>
+    </Terms>
+  </Macro>

@@ -56,6 +56,8 @@
     <Compile Include="Extensions\VbProjectExtensions.cs" />
     <Compile Include="Inspection\CodeInspectionResult.cs" />
     <Compile Include="Inspection\InspectionWrapper.cs" />
+    <Compile Include="Macro\MacroInspector.cs" />
+    <Compile Include="Macro\MacroTerm.cs" />
     <Compile Include="Models\GeneralConfigService.cs" />
     <Compile Include="Inspection\InspectionFactory.cs" />
     <Compile Include="Inspection\ResultFetchMethod.cs" />
@@ -110,6 +112,7 @@
       <Name>Rubberduck.VBEditor</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
