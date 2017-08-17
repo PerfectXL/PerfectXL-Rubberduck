@@ -27,6 +27,7 @@ using Rubberduck.Inspections.Concrete;
 using Rubberduck.Parsing.Inspections.Abstract;
 using Rubberduck.Parsing.VBA;
 using Rubberduck.VBEditor.SafeComWrappers.Abstract;
+using System.Configuration;
 
 namespace PerfectXL.VbaCodeAnalyzer
 {
@@ -56,6 +57,8 @@ namespace PerfectXL.VbaCodeAnalyzer
             moduleCode = RemoveAttributeLineFromCode(moduleCode);
 
             RubberduckParserState parserState = Parse(moduleCode);
+
+          //  var test = IdentiefierFilter(parserState);
 
             List<VbaCodeIssue> vbaCodeIssues = new[]
             {
@@ -102,7 +105,7 @@ namespace PerfectXL.VbaCodeAnalyzer
 
             var inspectionResult = new CodeInspectionResult(moduleName)
             {
-                VbaCodeIssues = vbaCodeIssues
+                VbaCodeIssues = IssueFilter(vbaCodeIssues)  
             };
 
             inspectionResult.VbaCodeIssues.AddRange(RankMacro(moduleName, moduleCode));
@@ -110,13 +113,10 @@ namespace PerfectXL.VbaCodeAnalyzer
             return inspectionResult;
         }
 
-        private static string RemoveAttributeLineFromCode(string code)
-        {
-            return string.Join("\r\n", Regex.Split(code, "\r\n").Where(s => !Regex.IsMatch(s, "A?ttribute VB_")));
-        }
 
         internal List<VbaCodeIssue> RankMacro(string moduleName, string moduleCode)
         {
+            moduleCode = RemoveAttributeLineFromCode(moduleCode);
             return MacroInspector.Run(Parse(moduleCode));
         }
 
@@ -142,6 +142,24 @@ namespace PerfectXL.VbaCodeAnalyzer
             IEnumerable<IInspectionResult> inspectionResults = InspectionFactory.Create<TInspection>(parserState, resultFetchMethod).GetInspectionResults();
 
             return inspectionResults.GroupBy(x => x.Description).Select(x => x.First()).Select(item => new VbaCodeIssue(item, _fileName, moduleName));
+        }
+
+        private static string RemoveAttributeLineFromCode(string code)
+        {
+            return string.Join("\r\n", Regex.Split(code, "\r\n").Where(s => !Regex.IsMatch(s, "A?ttribute VB_")));
+        }
+
+        private static List<VbaCodeIssue> IssueFilter(List<VbaCodeIssue> vbaCodeIssues)
+        {
+            var vbaTerms = ConfigurationManager.AppSettings["VbaTerms"].Split(',');
+
+             var filteredCodeIssues = vbaCodeIssues.FindAll(terms => !vbaTerms.Contains(terms.Name));
+
+            filteredCodeIssues = filteredCodeIssues.FindAll(s => !Regex.IsMatch(s.Name, @"^xl", RegexOptions.IgnoreCase));
+
+            filteredCodeIssues = filteredCodeIssues.FindAll(s => !Regex.IsMatch(s.Type, @"^UnassignedVariableUsage", RegexOptions.IgnoreCase));
+
+            return filteredCodeIssues;
         }
 
     }

@@ -9,14 +9,23 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
         [Test]
         public void TestParser()
         {
-            var codeUrenregistratie = CodeExtractor(@"Macros\" + TestFileNames.Predefined_Planning_Urenregistratie + ".txt");
+            var codeUrenregistratie = CodeExtractor(@"Macros\" + TestFileNames.Predefined_Planning_Urenregistratie_balken + ".txt");
 
-            if (codeUrenregistratie != string.Empty)
-            {
-                var macroTypeCache = new CodeAnalyzer("Workbook1.xlsm").RankMacro("Module1", codeUrenregistratie);
+            if (codeUrenregistratie == string.Empty) return;
+            var macroTypeCache = new CodeAnalyzer("Workbook1.xlsm").RankMacro("Module1", codeUrenregistratie);
 
-                Assert.AreEqual(17, macroTypeCache.Count);
-            }
+            Assert.AreEqual(1, macroTypeCache.Count);
+        }
+
+        [Test]
+        public void AnalyzeTest()
+        {
+            var codeUrenregistratie = CodeExtractor(@"Macros\" + TestFileNames.UserDefined_Macro_1 + ".txt");
+
+            if (codeUrenregistratie == string.Empty) return;
+            var analyzeResult = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", codeUrenregistratie);
+
+            Assert.AreEqual(13, analyzeResult.VbaCodeIssues.Count);
         }
 
         private static string CodeExtractor(string path)

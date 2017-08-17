@@ -66,7 +66,6 @@ namespace PerfectXL.VbaCodeAnalyzer.Macro
                 var hasSelectFollowedByActive = Regex.Matches(macroText, @"\bSelect\s*\n\s*Active\w+").Count > 0;
 
                 var isRecorded2 = (hasMacroComment || hasSelectFollowedByActive) && !hasDimStatements;
-                var isRecorded = hasMacroComment || hasSelectFollowedByActive || !hasDimStatements;
 
                 if (isRecorded2)
                 {
