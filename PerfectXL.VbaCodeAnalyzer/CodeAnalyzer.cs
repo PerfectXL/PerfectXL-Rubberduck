@@ -27,7 +27,6 @@ using Rubberduck.Inspections.Concrete;
 using Rubberduck.Parsing.Inspections.Abstract;
 using Rubberduck.Parsing.VBA;
 using Rubberduck.VBEditor.SafeComWrappers.Abstract;
-using System.Configuration;
 
 namespace PerfectXL.VbaCodeAnalyzer
 {
@@ -151,9 +150,10 @@ namespace PerfectXL.VbaCodeAnalyzer
 
         private static List<VbaCodeIssue> IssueFilter(List<VbaCodeIssue> vbaCodeIssues)
         {
-            var vbaTerms = ConfigurationManager.AppSettings["VbaTerms"].Split(',');
+            const string vbaTerms = "Range,ActiveSheet,ActiveWorkbook,ThisWorkbook,Round,Application,Selection,Target,Sheets,Worksheets,Cells,Rows";
+            var vbaTermList = vbaTerms.Split(',');
 
-             var filteredCodeIssues = vbaCodeIssues.FindAll(terms => !vbaTerms.Contains(terms.Name));
+             var filteredCodeIssues = vbaCodeIssues.FindAll(terms => !vbaTermList.Contains(terms.Name));
 
             filteredCodeIssues = filteredCodeIssues.FindAll(s => !Regex.IsMatch(s.Name, @"^xl", RegexOptions.IgnoreCase));
 
