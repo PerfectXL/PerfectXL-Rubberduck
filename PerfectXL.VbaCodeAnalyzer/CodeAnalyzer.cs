@@ -150,8 +150,9 @@ namespace PerfectXL.VbaCodeAnalyzer
 
         private static List<VbaCodeIssue> IssueFilter(List<VbaCodeIssue> vbaCodeIssues)
         {
-            const string vbaTerms = "Range,ActiveSheet,ActiveWorkbook,ThisWorkbook,Round,Application,Selection,Target,Sheets,Worksheets,Cells,Rows";
-            var vbaTermList = vbaTerms.Split(',');
+            var vbaTermList = new List<string>(new[] { "Range", "ActiveSheet", "ActiveWorkbook", "ThisWorkbook", "Round", "Application", "Selection", "Target", "Sheets", "Cells", "Rows" });
+            //const string vbaTerms = "Range,ActiveSheet,ActiveWorkbook,ThisWorkbook,Round,Application,Selection,Target,Sheets,Worksheets,Cells,Rows";
+            //var vbaTermList = vbaTerms.Split(',');
 
              var filteredCodeIssues = vbaCodeIssues.FindAll(terms => !vbaTermList.Contains(terms.Name));
 
