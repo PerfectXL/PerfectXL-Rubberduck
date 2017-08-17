@@ -53,9 +53,11 @@
       <Link>Properties\PerfectXL.VbaCodeAnalyzer.Version.cs</Link>
     </Compile>
     <Compile Include="CodeAnalyzer.cs" />
+    <Compile Include="Inspection\ConfiguredParserResult.cs" />
     <Compile Include="Extensions\VbProjectExtensions.cs" />
     <Compile Include="Inspection\CodeInspectionResult.cs" />
     <Compile Include="Inspection\InspectionWrapper.cs" />
+    <Compile Include="Inspection\RubberduckParseResult.cs" />
     <Compile Include="Models\GeneralConfigService.cs" />
     <Compile Include="Inspection\InspectionFactory.cs" />
     <Compile Include="Inspection\ResultFetchMethod.cs" />

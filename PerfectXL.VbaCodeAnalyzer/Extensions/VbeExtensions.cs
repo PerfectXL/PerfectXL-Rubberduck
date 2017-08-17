@@ -18,6 +18,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using PerfectXL.VbaCodeAnalyzer.Inspection;
 using PerfectXL.VbaCodeAnalyzer.Models;
 using Rubberduck.Common;
 using Rubberduck.Parsing.PreProcessing;
@@ -32,7 +33,7 @@ namespace PerfectXL.VbaCodeAnalyzer.Extensions
 {
     internal static class VbeExtensions
     {
-        public static ParseCoordinator CreateConfiguredParser(this IVBE vbe, string serializedDeclarationsPath = null)
+        public static ConfiguredParserResult CreateConfiguredParser(this IVBE vbe, string serializedDeclarationsPath = null)
         {
             var state = new RubberduckParserState(vbe, new ConcurrentlyConstructedDeclarationFinderFactory());
 
@@ -66,19 +67,17 @@ namespace PerfectXL.VbaCodeAnalyzer.Extensions
                 declarationResolveRunner,
                 referenceResolveRunner);
 
-            var parser = new ParseCoordinator(state,
-                parsingStageService,
-                parsingCacheService,
-                new SynchronousProjectManager(state, vbe),
-                parserStateManager,
-                true);
-            return parser;
+            IProjectManager projectManager = new SynchronousProjectManager(state, vbe);
+            var parser = new ParseCoordinator(state, parsingStageService, parsingCacheService, projectManager, parserStateManager, true);
+
+            return new ConfiguredParserResult {ParseCoordinator = parser, ProjectManager = projectManager};
         }
 
-        public static void AddProjectFromCode(this IVBE vbe, string inputCode)
+        public static void AddProjectFromCode(this IVBE vbe, string moduleName, string inputCode)
         {
             var project = new VbProject(vbe, "TestProject1", "", ProjectProtection.Unprotected);
-            project.AddComponent("TestModule1", ComponentType.StandardModule, inputCode);
+            var componentType = ComponentType.StandardModule; // TODO roel We should be able te detect the ComponentType from the VB_Attributes
+            project.AddComponent(moduleName, componentType, inputCode);
 
             vbe.AddProject(project);
         }
