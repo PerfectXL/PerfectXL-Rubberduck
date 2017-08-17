@@ -1,4 +1,21 @@
-﻿using System;
+﻿// Copyright 2017 Infotron B.V.
+//
+// This file is part of PerfectXL.VbaCodeAnalyzer.
+// 
+// PerfectXL.VbaCodeAnalyzer is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// PerfectXL.VbaCodeAnalyzer is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with PerfectXL.VbaCodeAnalyzer.  If not, see <http://www.gnu.org/licenses/>.
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,31 +28,31 @@ using Rubberduck.Parsing.VBA;
 
 namespace PerfectXL.VbaCodeAnalyzer.UnitTests
 {
+    // TODO These are not unit tests. Remove or rewrite.
+    // TODO Class name does not reflect purpose of this module.
     [TestFixture]
     public class ParserTest
     {
         [Test]
         public void TestParser()
         {
-
-            var codeUrenregistratie = CodeExtractor(@"Planning_uren_v1.4_20160824\Modules\Urenregistratie.txt");
-            var codeRoosterplanning = CodeExtractor(@"Planning_uren_v1.4_20160824\Modules\Roosterplanning.txt");
+            string codeUrenregistratie = CodeExtractor(@"Planning_uren_v1.4_20160824\Modules\Urenregistratie.txt");
+            string codeRoosterplanning = CodeExtractor(@"Planning_uren_v1.4_20160824\Modules\Roosterplanning.txt");
 
             IEnumerable<MacroTermPresenter> urenregistratieTermList = null;
             IEnumerable<MacroTermPresenter> roosterplanningTermList = null;
 
-            if (codeUrenregistratie != String.Empty)
+            if (codeUrenregistratie != string.Empty)
             {
-                var vbaObject = new CodeAnalyzer("Workbook1.xlsm").Parse(codeUrenregistratie);
+                RubberduckParserState vbaObject = new CodeAnalyzer("Workbook1.xlsm").Parse("Module1", codeUrenregistratie);
                 urenregistratieTermList = Analize(vbaObject);
             }
 
-            if (codeRoosterplanning != String.Empty)
+            if (codeRoosterplanning != string.Empty)
             {
-                var vbaObject = new CodeAnalyzer("Workbook1.xlsm").Parse(codeRoosterplanning);
+                RubberduckParserState vbaObject = new CodeAnalyzer("Workbook1.xlsm").Parse("Module1", codeRoosterplanning);
                 roosterplanningTermList = Analize(vbaObject);
             }
-
         }
 
         public static IEnumerable<MacroTermPresenter> Analize(RubberduckParserState vbaObject)
