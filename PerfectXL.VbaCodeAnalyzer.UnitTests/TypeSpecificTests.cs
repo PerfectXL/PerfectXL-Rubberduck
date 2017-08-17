@@ -28,7 +28,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
         [Test, Ignore]
         public void ApplicationWorksheetFunctionInspectionTest()
         {
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1",
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1",
                 @"
                 Option Explicit
 
@@ -50,7 +50,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                     Const const1 As Integer = 9
                 End Sub";
 
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
 
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ConstantNotUsed"));
         }
@@ -58,7 +58,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
         [Test]
         public void EncapsulatePublicFieldInspectionTest()
         {
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1",
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1",
                 @"
                 Option Explicit
 
@@ -78,7 +78,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                     Function Foo(ByVal arg1 As Integer) As Boolean
                         arg1 = 9
                     End Function";
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
 
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "NonReturningFunction"));
         }
@@ -86,7 +86,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
         [Test]
         public void FunctionReturnValueNotUsedInspectionTest()
         {
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1",
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1",
                 @"
                 Option Explicit
 
@@ -108,7 +108,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                     Function Foo(ByVal arg1 As Integer) As Boolean
                         arg1 = 9
                     End Function";
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
 
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "FunctionReturnValueNotUsed"));
         }
@@ -120,7 +120,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                                         Sub ExcelSub()
                                             Dim foo As Double
                                         End Sub";
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ImplicitPublicMember"));
         }
 
@@ -133,7 +133,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                         bar = ""test""
                     End Sub";
 
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
 
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "MoveFieldCloserToUsage"));
         }
@@ -148,7 +148,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                 m = Application.WorksheetFunction.Min(r)
                 MsgBox m
             End Sub ";
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "MultipleDeclarations"));
         }
 
@@ -160,7 +160,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                                             Call Foo
                                         End Sub";
 
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
 
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ObsoleteCallStatement"));
         }
@@ -171,7 +171,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
             const string inputCode = @"Option Explicit 
                     Rem test";
 
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
 
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ObsoleteCommentSyntax"));
         }
@@ -182,7 +182,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
             const string inputCode = @"Option Explicit 
                     Global var1 As Integer";
 
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
 
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ObsoleteGlobal"));
         }
@@ -198,7 +198,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                         Let var2 = var1
                     End Sub                    ";
 
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
 
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ObsoleteLetStatement"));
         }
@@ -209,7 +209,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
             const string inputCode = @"Option Explicit 
                     Public Foo&";
 
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
 
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ObsoleteTypeHint"));
         }
@@ -220,7 +220,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
             const string inputCode = @"Option Explicit 
                     Option Base 1";
 
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
 
             Assert.AreEqual(2, result.VbaCodeIssues.Count(x => x.Type == "OptionBase"));
         }
@@ -231,7 +231,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
             const string inputCode = @"Sub ExcelSub()
                                             Dim foo As Double
                                         End Sub";
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "OptionExplicit"));
         }
 
@@ -244,7 +244,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                         arg2 = 9
                     End Sub";
 
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
 
             Assert.AreEqual(2, result.VbaCodeIssues.Count);
             Assert.AreEqual(2, result.VbaCodeIssues.Count(x => x.Type == "AssignedByValParameter"));
@@ -257,7 +257,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                  Sub Foo(arg1 As Integer)
                 End Sub";
 
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
 
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ParameterCanBeByVal"));
         }
@@ -269,7 +269,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                   Public Sub Foo(ByVal arg1 As String)
                   End Sub";
 
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
 
             Assert.AreEqual(1, result.VbaCodeIssues.Count);
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ParameterNotUsed"));
@@ -283,7 +283,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                     Sub Foo(arg1 As String)
                     End Sub";
 
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
 
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ProcedureCanBeWrittenAsFunction"));
         }
@@ -295,7 +295,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                  Sub Foo(arg1 As Integer)
                 End Sub";
 
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
 
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ProcedureCanBeWrittenAsFunction"));
         }
@@ -310,7 +310,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                 m = Application.WorksheetFunction.Min(r)
                 MsgBox m
             End Sub ";
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "ProcedureNotUsed"));
         }
 
@@ -322,7 +322,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                         Dim b As New Collection
                     End Sub";
 
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
 
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "SelfAssignedDeclaration"));
         }
@@ -334,7 +334,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                                         Sub ExcelSub()
                                             Dim foo As Double
                                         End Sub";
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "VariableNotAssigned"));
         }
 
@@ -345,7 +345,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                                         Sub ExcelSub()
                                             Dim foo As Double
                                         End Sub";
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "VariableNotUsed"));
         }
 
@@ -360,7 +360,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                     var1 = arg2
                 End Sub";
 
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module", inputCode);
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module", inputCode);
 
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "VariableNotUsed"));
         }
@@ -375,7 +375,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                 m = Application.WorksheetFunction.Min(r)
                 MsgBox m
             End Sub ";
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
             Assert.AreEqual(3, result.VbaCodeIssues.Count(x => x.Type == "UnassignedVariableUsage"));
         }
 
@@ -389,7 +389,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                 m = Application.WorksheetFunction.Min(r)
                 MsgBox m
             End Sub ";
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
             int Count = result.VbaCodeIssues.Count(x => x.Type == "UndeclaredVariable");
 
             Assert.AreEqual(3, result.VbaCodeIssues.Count(x => x.Type == "UndeclaredVariable"));
@@ -402,7 +402,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                     Public Property Set Foo(ByVal value As Object)
                     End Property";
 
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
 
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "WriteOnlyProperty"));
         }
@@ -417,7 +417,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                 End Sub
                 ";
 
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
 
             if (result.VbaCodeIssues.Count > 0)
             {

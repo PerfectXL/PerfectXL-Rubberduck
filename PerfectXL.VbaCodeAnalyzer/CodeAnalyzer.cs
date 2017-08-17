@@ -46,12 +46,12 @@ namespace PerfectXL.VbaCodeAnalyzer
         /// </summary>
         /// <param name="modules">A dictionary containing key value pairs of module name and module code (as a string).</param>
         /// <returns>A list of code inspection results per module.</returns>
-        public IList<CodeInspectionResult> Run(IDictionary<string, string> modules)
+        public IList<CodeAnalyzerResult> Run(IDictionary<string, string> modules)
         {
             return modules.Select(module => AnalyzeModule(module.Key, module.Value)).ToList();
         }
 
-        internal CodeInspectionResult AnalyzeModule(string moduleName, string moduleCode)
+        internal CodeAnalyzerResult AnalyzeModule(string moduleName, string moduleCode)
         {
             RubberduckParseResult rubberduckParseResult = Parse(moduleName, moduleCode);
             RubberduckParserState parserState = rubberduckParseResult.ParserState;
@@ -100,7 +100,7 @@ namespace PerfectXL.VbaCodeAnalyzer
             }.SelectMany(x => x).ToList();
 
             IParseTree parseTree = rubberduckParseResult.GetParseTree(moduleName);
-            return new CodeInspectionResult(moduleName) {VbaCodeIssues = vbaCodeIssues, ParseTree = parseTree.Accept(new SerializableObjectStructureVisitor())};
+            return new CodeAnalyzerResult(moduleName) {VbaCodeIssues = vbaCodeIssues, ParseTree = parseTree.Accept(new SerializableObjectStructureVisitor())};
         }
 
         internal RubberduckParseResult Parse(string moduleName, string inputCode)
