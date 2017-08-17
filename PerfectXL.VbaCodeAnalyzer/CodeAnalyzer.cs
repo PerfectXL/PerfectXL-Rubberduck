@@ -18,9 +18,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Antlr4.Runtime.Tree;
 using PerfectXL.VbaCodeAnalyzer.Extensions;
 using PerfectXL.VbaCodeAnalyzer.Inspection;
 using PerfectXL.VbaCodeAnalyzer.Models;
+using PerfectXL.VbaCodeAnalyzer.Parsing;
 using Rubberduck.Inspections.Concrete;
 using Rubberduck.Parsing.Inspections.Abstract;
 using Rubberduck.Parsing.VBA;
@@ -51,7 +53,8 @@ namespace PerfectXL.VbaCodeAnalyzer
 
         internal CodeInspectionResult AnalyzeModule(string moduleName, string moduleCode)
         {
-            RubberduckParserState parserState = Parse(moduleCode);
+            RubberduckParseResult rubberduckParseResult = Parse(moduleName, moduleCode);
+            RubberduckParserState parserState = rubberduckParseResult.ParserState;
 
             List<VbaCodeIssue> vbaCodeIssues = new[]
             {
@@ -99,21 +102,13 @@ namespace PerfectXL.VbaCodeAnalyzer
             return new CodeInspectionResult(moduleName) { VbaCodeIssues = vbaCodeIssues };
         }
 
-        internal RubberduckParserState Parse(string inputCode)
+        internal RubberduckParseResult Parse(string moduleName, string inputCode)
         {
             IVBE vbe = new Vbe();
-            vbe.AddProjectFromCode(inputCode);
-            ParseCoordinator parser = vbe.CreateConfiguredParser();
-            parser.Parse(new CancellationTokenSource());
-
-            return parser.State;
-        }
-
-        internal IVBE GetVbe(string inputCode)
-        {
-            IVBE vbe = new Vbe();
-            vbe.AddProjectFromCode(inputCode);
-            return vbe;
+            vbe.AddProjectFromCode(moduleName, inputCode);
+            ConfiguredParserResult configuredParser = vbe.CreateConfiguredParser();
+            configuredParser.ParseCoordinator.Parse(new CancellationTokenSource());
+            return new RubberduckParseResult {ProjectManager = configuredParser.ProjectManager, ParserState = configuredParser.ParseCoordinator.State};
         }
 
         private static string CleanupFileName(string fileName)
