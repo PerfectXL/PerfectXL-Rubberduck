@@ -23,6 +23,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
 using PerfectXL.VbaCodeAnalyzer.Extensions;
+using PerfectXL.VbaCodeAnalyzer.Inspection;
 using Rubberduck.Parsing.Symbols;
 using Rubberduck.Parsing.VBA;
 
@@ -44,13 +45,13 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
 
             if (codeUrenregistratie != string.Empty)
             {
-                RubberduckParserState vbaObject = new CodeAnalyzer("Workbook1.xlsm").Parse("Module1", codeUrenregistratie);
+                RubberduckParserState vbaObject = new CodeAnalyzer("Workbook1.xlsm").Parse("Module1", codeUrenregistratie).ParserState;
                 urenregistratieTermList = Analize(vbaObject);
             }
 
             if (codeRoosterplanning != string.Empty)
             {
-                RubberduckParserState vbaObject = new CodeAnalyzer("Workbook1.xlsm").Parse("Module1", codeRoosterplanning);
+                RubberduckParserState vbaObject = new CodeAnalyzer("Workbook1.xlsm").Parse("Module1", codeRoosterplanning).ParserState;
                 roosterplanningTermList = Analize(vbaObject);
             }
         }

@@ -99,7 +99,8 @@ namespace PerfectXL.VbaCodeAnalyzer
                 Inspect<WriteOnlyPropertyInspection>(moduleName, parserState, ResultFetchMethod.NoHelper)
             }.SelectMany(x => x).ToList();
 
-            return new CodeInspectionResult(moduleName) { VbaCodeIssues = vbaCodeIssues };
+            IParseTree parseTree = rubberduckParseResult.GetParseTree(moduleName);
+            return new CodeInspectionResult(moduleName) {VbaCodeIssues = vbaCodeIssues, ParseTree = parseTree.Accept(new SerializableObjectStructureVisitor())};
         }
 
         internal RubberduckParseResult Parse(string moduleName, string inputCode)
