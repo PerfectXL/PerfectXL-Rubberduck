@@ -58,7 +58,7 @@ namespace PerfectXL.VbaCodeAnalyzer.Host
             return results;
         }
 
-        private static IList<CodeInspectionResult> AnalyzeProject(VbaProject model)
+        internal static IList<CodeInspectionResult> AnalyzeProject(VbaProject model)
         {
             MyLogger.Debug($"Analyzing {model.FileName} with {model.VbaModules.Count} VBA modules.");
             Stopwatch sw = Stopwatch.StartNew();
