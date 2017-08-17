@@ -42,7 +42,7 @@ namespace PerfectXL.VbaCodeAnalyzer.Host
             Post["/v1/analyze/project"] = x => AnalyzeProject(x);
         }
 
-        private IList<CodeInspectionResult> AnalyzeProject(dynamic parameters)
+        private IList<CodeAnalyzerResult> AnalyzeProject(dynamic parameters)
         {
             VbaProject model;
             try
@@ -54,15 +54,15 @@ namespace PerfectXL.VbaCodeAnalyzer.Host
                 MyLogger.Error(exception);
                 throw;
             }
-            IList<CodeInspectionResult> results = AnalyzeProject(model);
+            IList<CodeAnalyzerResult> results = AnalyzeProject(model);
             return results;
         }
 
-        internal static IList<CodeInspectionResult> AnalyzeProject(VbaProject model)
+        internal static IList<CodeAnalyzerResult> AnalyzeProject(VbaProject model)
         {
             MyLogger.Debug($"Analyzing {model.FileName} with {model.VbaModules.Count} VBA modules.");
             Stopwatch sw = Stopwatch.StartNew();
-            IList<CodeInspectionResult> results;
+            IList<CodeAnalyzerResult> results;
             try
             {
                 results = new CodeAnalyzer(model.FileName).Run(model.VbaModules.ToDictionary(x => x.Name, x => x.Code));

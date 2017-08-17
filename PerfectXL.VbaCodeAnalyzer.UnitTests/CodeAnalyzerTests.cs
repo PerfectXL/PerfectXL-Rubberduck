@@ -27,7 +27,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
         [Test]
         public void BasicTest()
         {
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", @"Option Explicit");
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", @"Option Explicit");
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.VbaCodeIssues.Count);
         }
@@ -35,7 +35,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
         [Test]
         public void IssuesTest()
         {
-            CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1",
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1",
                 @"Sub MySub()
                     counter = 10
                     For i = 1 To counter

@@ -16,13 +16,14 @@
 // along with PerfectXL.VbaCodeAnalyzer.  If not, see <http://www.gnu.org/licenses/>.
 
 using System.Collections.Generic;
+using PerfectXL.VbaCodeAnalyzer.Inspection;
 using PerfectXL.VbaCodeAnalyzer.Parsing;
 
-namespace PerfectXL.VbaCodeAnalyzer.Inspection
+namespace PerfectXL.VbaCodeAnalyzer
 {
-    public class CodeInspectionResult
+    public class CodeAnalyzerResult
     {
-        public CodeInspectionResult(string moduleName)
+        public CodeAnalyzerResult(string moduleName)
         {
             ModuleName = moduleName;
         }
