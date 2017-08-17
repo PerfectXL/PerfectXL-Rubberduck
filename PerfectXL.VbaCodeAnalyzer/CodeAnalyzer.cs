@@ -161,6 +161,5 @@ namespace PerfectXL.VbaCodeAnalyzer
 
             return filteredCodeIssues;
         }
-
     }
 }
