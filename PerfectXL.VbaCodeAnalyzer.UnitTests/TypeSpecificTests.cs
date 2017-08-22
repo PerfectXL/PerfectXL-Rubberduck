@@ -149,6 +149,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                 MsgBox m
             End Sub ";
             CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
+            Assert.AreEqual(11, result.VbaCodeIssues.Count());
             Assert.AreEqual(3, result.VbaCodeIssues.Count(x => x.Type == "UnassignedVariableUsage"));
 
         }
@@ -165,8 +166,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                 MsgBox m
             End Sub ";
             CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
-            var Count = result.VbaCodeIssues.Count(x => x.Type == "UndeclaredVariable");
-
+            Assert.AreEqual(11, result.VbaCodeIssues.Count());
             Assert.AreEqual(3, result.VbaCodeIssues.Count(x => x.Type == "UndeclaredVariable"));
 
         }

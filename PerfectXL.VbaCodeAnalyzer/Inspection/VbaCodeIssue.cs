@@ -24,13 +24,13 @@ namespace PerfectXL.VbaCodeAnalyzer.Inspection
     {
         public VbaCodeIssue(IInspectionResult item, string fileName, string moduleName)
         {
-            Severity = item.Inspection.Severity.ToString();
-            Description = item.Description;
-            Type = item.Inspection.AnnotationName;
-            Meta = item.Inspection.Meta;
-            Name = ExtractIdentifierName(item.Description);
-            Line = item.QualifiedSelection.Selection.StartLine;
-            Column = item.QualifiedSelection.Selection.StartColumn;
+            Severity = item?.Inspection.Severity.ToString() ?? "";
+            Description = item?.Description ?? "";
+            Type = item?.Inspection.AnnotationName ?? "";
+            Meta = item?.Inspection.Meta ?? "";
+            Name = ExtractIdentifierName(item?.Description ?? "");
+            Line = item?.QualifiedSelection.Selection.StartLine ?? 0;
+            Column = item?.QualifiedSelection.Selection.StartColumn ?? 0;
             FileName = fileName;
             ModuleName = moduleName;
         }
