@@ -100,7 +100,7 @@ namespace PerfectXL.VbaCodeAnalyzer.Macro
                     hashWorksheetSelectionChange || hasWorksheetActivate || hasWorksheetChange || 
                     hasAutoOpen || hasRun;
 
-                if (isAuto)
+                if (!isAuto) continue;
                 {
                     IInspectionResult item = null;
                     var macroIssue = new VbaCodeIssue(item, "filename", "modulename")

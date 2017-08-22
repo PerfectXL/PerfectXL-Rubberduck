@@ -49,15 +49,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
         public void ConstantNotUsedTest()
         {
             const string inputCode =
-                @"Attribute VB_Name = 'ThisWorkbook'
-            Attribute VB_Base = '0{00020819-0000-0000-C000-000000000046}'
-            Attribute VB_GlobalNameSpace = False
-            Attribute VB_Creatable = False
-            Attribute VB_PredeclaredId = True
-            Attribute VB_Exposed = True
-            Attribute VB_TemplateDerived = False
-            Attribute VB_Customizable = True
-                Option Explicit
+                @"Option Explicit
                 Public Sub Foo()
                     Const const1 As Integer = 9
                 End Sub";
@@ -157,7 +149,8 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                 MsgBox m
             End Sub ";
             CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
-            Assert.AreEqual(0, result.VbaCodeIssues.Count(x => x.Type == "UnassignedVariableUsage"));
+            Assert.AreEqual(11, result.VbaCodeIssues.Count());
+            Assert.AreEqual(3, result.VbaCodeIssues.Count(x => x.Type == "UnassignedVariableUsage"));
 
         }
 
@@ -173,9 +166,8 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                 MsgBox m
             End Sub ";
             CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
-            var Count = result.VbaCodeIssues.Count(x => x.Type == "UndeclaredVariable");
-
-            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "UndeclaredVariable"));
+            Assert.AreEqual(11, result.VbaCodeIssues.Count());
+            Assert.AreEqual(3, result.VbaCodeIssues.Count(x => x.Type == "UndeclaredVariable"));
 
         }
 

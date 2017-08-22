@@ -53,11 +53,9 @@ namespace PerfectXL.VbaCodeAnalyzer
 
         internal CodeInspectionResult AnalyzeModule(string moduleName, string moduleCode)
         {
-            moduleCode = RemoveAttributeLineFromCode(moduleCode);
+            //moduleCode = RemoveAttributeLineFromCode(moduleCode);
 
             RubberduckParserState parserState = Parse(moduleCode);
-
-          //  var test = IdentiefierFilter(parserState);
 
             List<VbaCodeIssue> vbaCodeIssues = new[]
             {
@@ -104,7 +102,7 @@ namespace PerfectXL.VbaCodeAnalyzer
 
             var inspectionResult = new CodeInspectionResult(moduleName)
             {
-                VbaCodeIssues = IssueFilter(vbaCodeIssues)  
+                VbaCodeIssues = vbaCodeIssues
             };
 
             inspectionResult.VbaCodeIssues.AddRange(RankMacro(moduleName, moduleCode));
@@ -115,7 +113,6 @@ namespace PerfectXL.VbaCodeAnalyzer
 
         internal List<VbaCodeIssue> RankMacro(string moduleName, string moduleCode)
         {
-            moduleCode = RemoveAttributeLineFromCode(moduleCode);
             return MacroInspector.Run(Parse(moduleCode));
         }
 
@@ -141,26 +138,6 @@ namespace PerfectXL.VbaCodeAnalyzer
             IEnumerable<IInspectionResult> inspectionResults = InspectionFactory.Create<TInspection>(parserState, resultFetchMethod).GetInspectionResults();
 
             return inspectionResults.GroupBy(x => x.Description).Select(x => x.First()).Select(item => new VbaCodeIssue(item, _fileName, moduleName));
-        }
-
-        private static string RemoveAttributeLineFromCode(string code)
-        {
-            return string.Join("\r\n", Regex.Split(code, "\r\n").Where(s => !Regex.IsMatch(s, "A?ttribute VB_")));
-        }
-
-        private static List<VbaCodeIssue> IssueFilter(List<VbaCodeIssue> vbaCodeIssues)
-        {
-            var vbaTermList = new List<string>(new[] { "Range", "ActiveSheet", "ActiveWorkbook", "ThisWorkbook", "Round", "Application", "Selection", "Target", "Sheets", "Cells", "Rows" });
-            //const string vbaTerms = "Range,ActiveSheet,ActiveWorkbook,ThisWorkbook,Round,Application,Selection,Target,Sheets,Worksheets,Cells,Rows";
-            //var vbaTermList = vbaTerms.Split(',');
-
-             var filteredCodeIssues = vbaCodeIssues.FindAll(terms => !vbaTermList.Contains(terms.Name));
-
-            filteredCodeIssues = filteredCodeIssues.FindAll(s => !Regex.IsMatch(s.Name, @"^xl", RegexOptions.IgnoreCase));
-
-            filteredCodeIssues = filteredCodeIssues.FindAll(s => !Regex.IsMatch(s.Type, @"^UnassignedVariableUsage", RegexOptions.IgnoreCase));
-
-            return filteredCodeIssues;
         }
     }
 }
