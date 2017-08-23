@@ -17,9 +17,11 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using PerfectXL.VbaCodeAnalyzer.Extensions;
 using PerfectXL.VbaCodeAnalyzer.Inspection;
+using PerfectXL.VbaCodeAnalyzer.Macro;
 using PerfectXL.VbaCodeAnalyzer.Models;
 using Rubberduck.Inspections.Concrete;
 using Rubberduck.Parsing.Inspections.Abstract;
@@ -51,6 +53,8 @@ namespace PerfectXL.VbaCodeAnalyzer
 
         internal CodeInspectionResult AnalyzeModule(string moduleName, string moduleCode)
         {
+            moduleCode = RemoveAttributeLineFromCode(moduleCode);
+
             RubberduckParserState parserState = Parse(moduleCode);
 
             List<VbaCodeIssue> vbaCodeIssues = new[]
@@ -93,10 +97,27 @@ namespace PerfectXL.VbaCodeAnalyzer
                 Inspect<VariableNotAssignedInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
                 Inspect<VariableNotUsedInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
                 Inspect<VariableTypeNotDeclaredInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
-                Inspect<WriteOnlyPropertyInspection>(moduleName, parserState, ResultFetchMethod.NoHelper)
+                Inspect<WriteOnlyPropertyInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
             }.SelectMany(x => x).ToList();
 
-            return new CodeInspectionResult(moduleName) { VbaCodeIssues = vbaCodeIssues };
+            var inspectionResult = new CodeInspectionResult(moduleName)
+            {
+                VbaCodeIssues = vbaCodeIssues
+            };
+
+            inspectionResult.VbaCodeIssues.AddRange(RankMacro(moduleName, moduleCode));
+
+            return inspectionResult;
+        }
+
+        private static string RemoveAttributeLineFromCode(string code)
+        {
+            return string.Join("\r\n", Regex.Split(code, "\r\n").Where(s => !Regex.IsMatch(s, "A?ttribute VB_")));
+        }
+
+        internal List<VbaCodeIssue> RankMacro(string moduleName, string moduleCode)
+        {
+            return MacroInspector.Run(Parse(moduleCode));
         }
 
         internal RubberduckParserState Parse(string inputCode)
@@ -116,14 +137,7 @@ namespace PerfectXL.VbaCodeAnalyzer
             return vbe;
         }
 
-        private static string CleanupFileName(string fileName)
-        {
-            int afterLastHyphenPosition = fileName.LastIndexOf('-') + 1;
-            return fileName.Substring(afterLastHyphenPosition, fileName.Length - afterLastHyphenPosition);
-        }
-
-        private IEnumerable<VbaCodeIssue> Inspect<TInspection>(string moduleName, RubberduckParserState parserState, ResultFetchMethod resultFetchMethod)
-            where TInspection : IInspection
+        private IEnumerable<VbaCodeIssue> Inspect<TInspection>(string moduleName, RubberduckParserState parserState, ResultFetchMethod resultFetchMethod) where TInspection : IInspection
         {
             IEnumerable<IInspectionResult> inspectionResults = InspectionFactory.Create<TInspection>(parserState, resultFetchMethod).GetInspectionResults();
 

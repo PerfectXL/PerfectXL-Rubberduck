@@ -38,6 +38,9 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
             CodeInspectionResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1",
                 @"Option Explicit
                 Sub MySub()
+                    '
+                    ' MySyb Macro
+                    '
                     counter = 10
                     For i = 1 To counter
                         MsgBox i
@@ -45,7 +48,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                 End Sub
                 ");
             Assert.AreEqual(7, result.VbaCodeIssues.Count);
-            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "OptionExplicit"));
+            Assert.AreEqual(0, result.VbaCodeIssues.Count(x => x.Type == "OptionExplicit"));
         }
     }
 }
