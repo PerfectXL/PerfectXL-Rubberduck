@@ -1,3 +1,4 @@
 [submodule "Rubberduck"]
 	path = Rubberduck
 	url = https://github.com/PerfectXL/Rubberduck.git
+    branch = next

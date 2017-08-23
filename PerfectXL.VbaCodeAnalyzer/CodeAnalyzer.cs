@@ -143,6 +143,5 @@ namespace PerfectXL.VbaCodeAnalyzer
 
             return inspectionResults.GroupBy(x => x.Description).Select(x => x.First()).Select(item => new VbaCodeIssue(item, _fileName, moduleName));
         }
-
     }
 }
