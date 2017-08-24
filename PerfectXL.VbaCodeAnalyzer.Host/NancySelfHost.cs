@@ -16,9 +16,17 @@
 // along with PerfectXL.VbaCodeAnalyzer.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
+using Nancy;
 using Nancy.Hosting.Self;
+using Nancy.TinyIoc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using NLog;
+using PerfectXL.VbaCodeAnalyzer.Inspection;
+using PerfectXL.VbaCodeAnalyzer.Parsing;
 
 namespace PerfectXL.VbaCodeAnalyzer.Host
 {
@@ -31,7 +39,7 @@ namespace PerfectXL.VbaCodeAnalyzer.Host
 
         public void Start()
         {
-            _nancyHost = new NancyHost(_uri);
+            _nancyHost = new NancyHost(_uri, new Bootstrapper());
             MyLogger.Info($"Running {Program.Name} on {_uri}.");
             _nancyHost.Start();
         }
@@ -41,5 +49,59 @@ namespace PerfectXL.VbaCodeAnalyzer.Host
             _nancyHost.Stop();
             MyLogger.Info($"Stopped {Program.Name}.");
         }
+
+        #region Nancy host configuration
+        private class Bootstrapper : DefaultNancyBootstrapper
+        {
+            protected override void ConfigureApplicationContainer(TinyIoCContainer container)
+            {
+                base.ConfigureApplicationContainer(container);
+                container.Register<JsonSerializer, CustomJsonSerializer>();
+            }
+        }
+
+        // ReSharper disable once ClassNeverInstantiated.Local
+        private class CustomJsonSerializer : JsonSerializer
+        {
+            public CustomJsonSerializer()
+            {
+                Initialize();
+            }
+
+            private void Initialize()
+            {
+                PreserveReferencesHandling = PreserveReferencesHandling.All;
+                TypeNameHandling = TypeNameHandling.Auto;
+                TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple;
+                SerializationBinder = new CustomSerializationBinder();
+            }
+        }
+
+        private class CustomSerializationBinder : ISerializationBinder
+        {
+            private static readonly List<Type> AllowedTypes = new List<Type>
+            {
+                typeof(CodeAnalyzerResult),
+                typeof(VbaCodeIssue),
+                typeof(VbaParseTree),
+                typeof(ErrorNode),
+                typeof(Interval),
+                typeof(Rule),
+                typeof(Token),
+                typeof(UnkownNode)
+            };
+
+            public Type BindToType(string assemblyName, string typeName)
+            {
+                return AllowedTypes.FirstOrDefault(x => x.Name == typeName);
+            }
+
+            public void BindToName(Type serializedType, out string assemblyName, out string typeName)
+            {
+                assemblyName = "Vba";
+                typeName = serializedType.Name;
+            }
+        }
+        #endregion Nancy host configuration
     }
 }

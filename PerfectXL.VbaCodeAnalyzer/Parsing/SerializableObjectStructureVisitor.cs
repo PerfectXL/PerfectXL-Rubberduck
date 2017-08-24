@@ -38,6 +38,7 @@ namespace PerfectXL.VbaCodeAnalyzer.Parsing
                 {
                     continue;
                 }
+                nextResult.Parent = result;
                 result.Children.Add(nextResult);
             }
             return result;
