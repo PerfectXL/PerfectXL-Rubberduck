@@ -19,7 +19,7 @@ using Antlr4.Runtime.Tree;
 
 namespace PerfectXL.VbaCodeAnalyzer.Parsing
 {
-    internal class ErrorNode : VbaParseTree
+    public class ErrorNode : VbaParseTree
     {
         private readonly IErrorNode _error;
 

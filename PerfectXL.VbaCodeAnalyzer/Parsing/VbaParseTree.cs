@@ -30,9 +30,9 @@ namespace PerfectXL.VbaCodeAnalyzer.Parsing
             _node = node;
         }
 
+        public VbaParseTree Parent { get; set; }
         public int ChildCount => _node.ChildCount;
-        public List<VbaParseTree> Children { get; } = new List<VbaParseTree>();
-        public string NodeType => GetType().Name;
+        public IList<VbaParseTree> Children { get; } = new List<VbaParseTree>();
         public string Text => _node.GetText();
 
         public static VbaParseTree Create(IParseTree node)

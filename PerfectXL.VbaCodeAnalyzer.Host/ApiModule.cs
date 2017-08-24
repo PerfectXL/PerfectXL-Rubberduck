@@ -25,7 +25,6 @@ using Nancy;
 using Nancy.ModelBinding;
 using NLog;
 using PerfectXL.VbaCodeAnalyzer.Host.Models;
-using PerfectXL.VbaCodeAnalyzer.Inspection;
 
 namespace PerfectXL.VbaCodeAnalyzer.Host
 {
@@ -42,21 +41,6 @@ namespace PerfectXL.VbaCodeAnalyzer.Host
             Post["/v1/analyze/project"] = x => AnalyzeProject(x);
         }
 
-        private IList<CodeAnalyzerResult> AnalyzeProject(dynamic parameters)
-        {
-            VbaProject model;
-            try
-            {
-                model = this.Bind<VbaProject>(new BindingConfig {BodyOnly = true});
-            }
-            catch (Exception exception)
-            {
-                MyLogger.Error(exception);
-                throw;
-            }
-            IList<CodeAnalyzerResult> results = AnalyzeProject(model);
-            return results;
-        }
 
         internal static IList<CodeAnalyzerResult> AnalyzeProject(VbaProject model)
         {
@@ -73,6 +57,22 @@ namespace PerfectXL.VbaCodeAnalyzer.Host
                 throw;
             }
             MyLogger.Debug($"Analysis took {sw.ElapsedMilliseconds}ms.");
+            return results;
+        }
+
+        private IList<CodeAnalyzerResult> AnalyzeProject(dynamic parameters)
+        {
+            VbaProject model;
+            try
+            {
+                model = this.Bind<VbaProject>(new BindingConfig {BodyOnly = true});
+            }
+            catch (Exception exception)
+            {
+                MyLogger.Error(exception);
+                throw;
+            }
+            IList<CodeAnalyzerResult> results = AnalyzeProject(model);
             return results;
         }
 
