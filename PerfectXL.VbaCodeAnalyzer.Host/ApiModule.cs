@@ -36,8 +36,8 @@ namespace PerfectXL.VbaCodeAnalyzer.Host
         public ApiModule()
         {
             Get["/"] = parameters => $@"<html><head><title>{Program.Name}</title></head>
-                <body><h1 style=""font:700 18px sans-serif;text-align:center;"">{Program.Name}</h1>
-                <p style=""text-align:center;""><img src=""data:image/png;base64,{GetResource()}"" /></p></body></html>";
+                <body><h1 style=""font:700 18px sans-serif;text-align:center;"">{Program.Name} {Program.Version}</p>
+                <p style=""text-align:center;""><img src=""data:image/png;base64,{GetResource()}"" /></body></html>";
 
             Post["/v1/analyze/project"] = x => AnalyzeProject(x);
         }
