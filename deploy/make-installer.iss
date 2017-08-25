@@ -43,9 +43,6 @@ Type: files; Name: "{app}\license"
 Type: files; Name: "{app}\README.md"
 Type: dirifempty; Name: "{app}"
 
-[Messages]
-InstallingLabel=Installing [name] on this computer. Note that a username/password prompt appears at the top left of the screen.
-
 [Code]
 /////////////////////////////////////////////////////////////////////
 function GetUninstallString(): String;
@@ -110,7 +107,7 @@ begin
   if (CurStep=ssPostInstall) then
   begin
     sAppName := WizardDirValue() + '\{#appname}.exe';
-    if (Exec(sAppName, 'install --interactive', '', SW_HIDE, ewWaitUntilTerminated, iResultCode)) then
+    if (Exec(sAppName, 'install --localsystem', '', SW_HIDE, ewWaitUntilTerminated, iResultCode)) then
       Exec(sAppName, 'start', '', SW_HIDE, ewWaitUntilTerminated, iResultCode)
   end;
 end;
