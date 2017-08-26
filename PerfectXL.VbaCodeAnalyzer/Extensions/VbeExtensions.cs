@@ -76,9 +76,11 @@ namespace PerfectXL.VbaCodeAnalyzer.Extensions
         public static void AddProjectFromCode(this IVBE vbe, string moduleName, string inputCode)
         {
             var project = new VbProject(vbe, "TestProject1", "", ProjectProtection.Unprotected);
-            var componentType = ComponentType.StandardModule; // TODO roel We should be able te detect the ComponentType from the VB_Attributes
-            project.AddComponent(moduleName, componentType, inputCode);
 
+            ComponentType componentType = inputCode.GetModuleType();
+            string cleanedCodeContent = inputCode.StripVbAttributes();
+
+            project.AddComponent(moduleName, componentType, cleanedCodeContent);
             vbe.AddProject(project);
         }
 

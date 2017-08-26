@@ -15,8 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with PerfectXL.VbaCodeAnalyzer.  If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using System.Text.RegularExpressions;
 using Rubberduck.Parsing.Inspections.Abstract;
+using Rubberduck.Parsing.Symbols;
 
 namespace PerfectXL.VbaCodeAnalyzer.Inspection
 {
@@ -31,6 +33,22 @@ namespace PerfectXL.VbaCodeAnalyzer.Inspection
             Name = ExtractIdentifierName(item.Description);
             Line = item.QualifiedSelection.Selection.StartLine;
             Column = item.QualifiedSelection.Selection.StartColumn;
+            FileName = fileName;
+            ModuleName = moduleName;
+        }
+
+        public VbaCodeIssue(Exception exception, string fileName, string moduleName)
+        {
+            Type = exception.GetType().Name;
+            Description = exception.Message;
+
+            var syntaxErrorException = exception as SyntaxErrorException;
+            if (syntaxErrorException != null)
+            {
+                Line = syntaxErrorException.LineNumber;
+                Column = syntaxErrorException.Position;
+            }
+
             FileName = fileName;
             ModuleName = moduleName;
         }

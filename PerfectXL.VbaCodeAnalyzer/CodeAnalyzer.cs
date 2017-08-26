@@ -56,6 +56,11 @@ namespace PerfectXL.VbaCodeAnalyzer
             RubberduckParseResult rubberduckParseResult = Parse(moduleName, moduleCode);
             RubberduckParserState parserState = rubberduckParseResult.ParserState;
 
+            if (parserState.Status != ParserState.Ready)
+            {
+                return new CodeAnalyzerResult(moduleName) {VbaCodeIssues = GetModuleExceptions(moduleName, parserState)};
+            }
+
             List<VbaCodeIssue> vbaCodeIssues = new[]
             {
                 Inspect<ApplicationWorksheetFunctionInspection>(moduleName, parserState, ResultFetchMethod.NoHelper),
@@ -109,13 +114,13 @@ namespace PerfectXL.VbaCodeAnalyzer
             vbe.AddProjectFromCode(moduleName, inputCode);
             ConfiguredParserResult configuredParser = vbe.CreateConfiguredParser();
             configuredParser.ParseCoordinator.Parse(new CancellationTokenSource());
-            return new RubberduckParseResult {ProjectManager = configuredParser.ProjectManager, ParserState = configuredParser.ParseCoordinator.State};
+            return new RubberduckParseResult {ParserState = configuredParser.ParseCoordinator.State, ProjectManager = configuredParser.ProjectManager};
         }
 
-        private static string CleanupFileName(string fileName)
+        private List<VbaCodeIssue> GetModuleExceptions(string moduleName, RubberduckParserState parserState)
         {
-            int afterLastHyphenPosition = fileName.LastIndexOf('-') + 1;
-            return fileName.Substring(afterLastHyphenPosition, fileName.Length - afterLastHyphenPosition);
+            return parserState.ModuleExceptions
+                .Select(x => new VbaCodeIssue(x.Item2, _fileName, moduleName)).ToList();
         }
 
         private IEnumerable<VbaCodeIssue> Inspect<TInspection>(string moduleName, RubberduckParserState parserState, ResultFetchMethod resultFetchMethod)
