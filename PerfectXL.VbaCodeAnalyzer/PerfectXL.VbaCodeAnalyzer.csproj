@@ -53,6 +53,7 @@
       <Link>Properties\PerfectXL.VbaCodeAnalyzer.Version.cs</Link>
     </Compile>
     <Compile Include="CodeAnalyzer.cs" />
+    <Compile Include="Extensions\VbaCodeModuleExtensions.cs" />
     <Compile Include="Inspection\ConfiguredParserResult.cs" />
     <Compile Include="Extensions\VbProjectExtensions.cs" />
     <Compile Include="CodeAnalyzerResult.cs" />
