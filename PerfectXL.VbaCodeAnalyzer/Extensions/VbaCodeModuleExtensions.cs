@@ -36,15 +36,13 @@ namespace PerfectXL.VbaCodeAnalyzer.Extensions
 
         public static string StripVbAttributes(this string moduleCode)
         {
-            return string.Join("\n",
-                moduleCode.Split('\n').SkipWhile(string.IsNullOrWhiteSpace)
-                    .SkipWhile(s => Regex.IsMatch(s, @"^ \s* Attribute \s+ VB_\w+ \s+ =", RegexOptions.IgnorePatternWhitespace)));
+            return string.Join("\n", moduleCode.Split('\n').Where(s => !IsAttributeStatement(s)));
         }
 
         public static ComponentType GetModuleType(this string moduleCode)
         {
             string typeGuid = GetTypeGuid(moduleCode);
-            if (Regex.IsMatch(typeGuid, PatternTwoGuids, RegexOptions.IgnorePatternWhitespace))
+            if (IsTwoGuids(typeGuid))
             {
                 return ComponentType.UserForm;
             }
@@ -54,18 +52,24 @@ namespace PerfectXL.VbaCodeAnalyzer.Extensions
 
         private static string GetTypeGuid(string moduleCode)
         {
-            return moduleCode.Split('\n')
-                .Where(s => !string.IsNullOrWhiteSpace(s))
-                .Select(s => Regex.Replace(s.Trim(), @"\s+", " "))
-                .TakeWhile(s => s.StartsWith("Attribute VB_")) /* Take the header part of the module code */
-                .Where(s => s.StartsWith(@"Attribute VB_Base = """))
-                .Select(ExtractVbBaseGuidValues)
-                .FirstOrDefault() ?? "";
+            return moduleCode.Split('\n').Where(s => !string.IsNullOrWhiteSpace(s)).Select(s => Regex.Replace(s.Trim(), @"\s+", " "))
+                       .TakeWhile(s => s.StartsWith("Attribute VB_")) /* Take the header part of the module code */
+                       .Where(s => s.StartsWith(@"Attribute VB_Base = """)).Select(ExtractVbBaseGuidValues).FirstOrDefault() ?? "";
         }
 
         private static string ExtractVbBaseGuidValues(string s)
         {
             return Regex.Replace(s, PatternExtractVbBaseGuidValues, "$1", RegexOptions.IgnorePatternWhitespace);
+        }
+
+        private static bool IsTwoGuids(string typeGuid)
+        {
+            return Regex.IsMatch(typeGuid, PatternTwoGuids, RegexOptions.IgnorePatternWhitespace);
+        }
+
+        private static bool IsAttributeStatement(string s)
+        {
+            return Regex.IsMatch(s, @"^ \s* Attribute \s+ [\w\.]+ \s+ =", RegexOptions.IgnorePatternWhitespace);
         }
     }
 }
