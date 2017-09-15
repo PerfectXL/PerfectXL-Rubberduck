@@ -24,7 +24,15 @@ namespace PerfectXL.VbaCodeAnalyzer.Extensions
 {
     internal static class VbProjectExtensions
     {
-        public static void AddComponent(this IVBProject vbProject, string name, ComponentType type, string content, Selection selection = new Selection())
+        public static void AddModuleFromCode(this IVBProject vbProject, string moduleName, string inputCode)
+        {
+            ComponentType componentType = inputCode.GetModuleType();
+            string cleanedCodeContent = inputCode.StripVbAttributes();
+
+            vbProject.AddComponent(moduleName, componentType, cleanedCodeContent);
+        }
+
+        private static void AddComponent(this IVBProject vbProject, string name, ComponentType type, string content, Selection selection = new Selection())
         {
             var component = new VbComponent(vbProject.VBE, name, type, vbProject.VBComponents);
             var codePane = new CodePane(vbProject.VBE, new Window(name), selection, component);

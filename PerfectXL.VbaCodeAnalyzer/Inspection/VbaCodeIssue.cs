@@ -17,6 +17,7 @@
 
 using System;
 using System.Text.RegularExpressions;
+using Rubberduck.Inspections.Abstract;
 using Rubberduck.Parsing.Inspections.Abstract;
 using Rubberduck.Parsing.Symbols;
 
@@ -24,7 +25,7 @@ namespace PerfectXL.VbaCodeAnalyzer.Inspection
 {
     public class VbaCodeIssue
     {
-        public VbaCodeIssue(IInspectionResult item, string fileName, string moduleName)
+        public VbaCodeIssue(IInspectionResult item, string fileName)
         {
             Severity = item.Inspection.Severity.ToString();
             Description = item.Description;
@@ -34,7 +35,7 @@ namespace PerfectXL.VbaCodeAnalyzer.Inspection
             Line = item.QualifiedSelection.Selection.StartLine;
             Column = item.QualifiedSelection.Selection.StartColumn;
             FileName = fileName;
-            ModuleName = moduleName;
+            ModuleName = GetModuleName(item);
         }
 
         public VbaCodeIssue(Exception exception, string fileName, string moduleName)
@@ -71,6 +72,19 @@ namespace PerfectXL.VbaCodeAnalyzer.Inspection
             }
             Match match = Regex.Match(text, @" ['‘’] ( [^'‘’]+ ) ['‘’] ", RegexOptions.IgnorePatternWhitespace);
             return match.Success ? match.Groups[1].Value : text;
+        }
+
+        private static string GetModuleName(IInspectionResult item)
+        {
+            var inspectionResultBase = item as InspectionResultBase;
+            return inspectionResultBase != null
+                ? inspectionResultBase.QualifiedName.ComponentName
+                : item.QualifiedMemberName?.QualifiedModuleName.ComponentName;
+        }
+
+        public override string ToString()
+        {
+            return $"Type = \"{Type}\" ModuleName = \"{ModuleName}\"";
         }
     }
 }

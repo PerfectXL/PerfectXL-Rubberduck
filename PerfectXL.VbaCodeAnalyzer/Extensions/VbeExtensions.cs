@@ -25,7 +25,6 @@ using Rubberduck.Parsing.PreProcessing;
 using Rubberduck.Parsing.Symbols;
 using Rubberduck.Parsing.Symbols.DeclarationLoaders;
 using Rubberduck.Parsing.VBA;
-using Rubberduck.VBEditor.SafeComWrappers;
 using Rubberduck.VBEditor.SafeComWrappers.Abstract;
 using AttributeParser = PerfectXL.VbaCodeAnalyzer.Models.AttributeParser;
 
@@ -73,18 +72,7 @@ namespace PerfectXL.VbaCodeAnalyzer.Extensions
             return new ConfiguredParserResult {ParseCoordinator = parser, ProjectManager = projectManager};
         }
 
-        public static void AddProjectFromCode(this IVBE vbe, string moduleName, string inputCode)
-        {
-            var project = new VbProject(vbe, "TestProject1", "", ProjectProtection.Unprotected);
-
-            ComponentType componentType = inputCode.GetModuleType();
-            string cleanedCodeContent = inputCode.StripVbAttributes();
-
-            project.AddComponent(moduleName, componentType, cleanedCodeContent);
-            vbe.AddProject(project);
-        }
-
-        private static void AddProject(this IVBE vbe, IVBProject project)
+        public static void AddProject(this IVBE vbe, IVBProject project)
         {
             ((VbProjects)vbe.VBProjects).Projects.Add(project);
             foreach (IVBComponent component in ((VbProjects)vbe.VBProjects).Projects.SelectMany(x => x.VBComponents))
