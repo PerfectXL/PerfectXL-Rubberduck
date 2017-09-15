@@ -17,7 +17,6 @@
 
 using System.Linq;
 using NUnit.Framework;
-using PerfectXL.VbaCodeAnalyzer.Inspection;
 
 namespace PerfectXL.VbaCodeAnalyzer.UnitTests
 {
