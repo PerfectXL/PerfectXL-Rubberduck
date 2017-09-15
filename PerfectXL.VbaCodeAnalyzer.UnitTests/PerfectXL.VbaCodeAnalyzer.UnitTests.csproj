@@ -67,7 +67,6 @@
       <Link>Properties\PerfectXL.VbaCodeAnalyzer.Version.cs</Link>
     </Compile>
     <Compile Include="CodeAnalyzerTests.cs" />
-    <Compile Include="ParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypeSpecificTests.cs" />
   </ItemGroup>
