@@ -133,7 +133,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
                         bar = ""test""
                     End Sub";
 
-            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
+            CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", inputCode);
 
             Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "MoveFieldCloserToUsage"));
         }
@@ -222,7 +222,7 @@ namespace PerfectXL.VbaCodeAnalyzer.UnitTests
 
             CodeAnalyzerResult result = new CodeAnalyzer("Workbook1.xlsm").AnalyzeModule("Module1", "" + inputCode);
 
-            Assert.AreEqual(2, result.VbaCodeIssues.Count(x => x.Type == "OptionBase"));
+            Assert.AreEqual(1, result.VbaCodeIssues.Count(x => x.Type == "OptionBase"));
         }
 
         [Test]
