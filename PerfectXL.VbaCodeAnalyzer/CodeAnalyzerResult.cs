@@ -29,7 +29,7 @@ namespace PerfectXL.VbaCodeAnalyzer
         }
 
         public string ModuleName { get; }
-        public List<VbaCodeIssue> VbaCodeIssues { get; set; } = new List<VbaCodeIssue>();
+        public IList<VbaCodeIssue> VbaCodeIssues { get; set; } = new List<VbaCodeIssue>();
         public VbaParseTree ParseTree { get; set; }
     }
 }
