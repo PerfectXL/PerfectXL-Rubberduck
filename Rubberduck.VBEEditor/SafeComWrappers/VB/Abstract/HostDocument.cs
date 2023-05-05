@@ -37,9 +37,10 @@ namespace Rubberduck.VBEditor.SafeComWrappers.Abstract
         string DocumentName { get; }
         string ClassName { get; }
         DocumentState State { get; }
-        bool TryGetTarget(out SafeIDispatchWrapper iDispatch);
+        //bool TryGetTarget(out SafeIDispatchWrapper iDispatch);
     } 
 
+    /*
     public class HostDocument : IHostDocument
     {
         private readonly Func<SafeIDispatchWrapper> _getTargetFunc;
@@ -79,4 +80,5 @@ namespace Rubberduck.VBEditor.SafeComWrappers.Abstract
             }
         }
     }
+    */
 }

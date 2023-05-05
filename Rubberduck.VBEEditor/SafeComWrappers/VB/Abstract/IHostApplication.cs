@@ -23,7 +23,7 @@ namespace Rubberduck.VBEditor.SafeComWrappers.Abstract
         /// with using those properties when the document is not in a design mode. For
         /// that reason, it's better to get the data using host's object model instead.
         /// </remarks>
-        IEnumerable<HostDocument> GetDocuments();
+        IEnumerable<IHostDocument> GetDocuments();
 
         /// <summary>
         /// Gets data for a host-specific document not otherwise exposed via VBIDE API
@@ -32,7 +32,7 @@ namespace Rubberduck.VBEditor.SafeComWrappers.Abstract
         /// <param name="document"><see cref="HostDocument"/> representing the document module</param>
         /// <returns>True if able to get the document, false otherwise</returns>
         /// <inheritdoc cref="GetDocuments"/>
-        HostDocument GetDocument(QualifiedModuleName moduleName);
+        IHostDocument GetDocument(QualifiedModuleName moduleName);
 
         /// <summary>
         /// Indicate if the host is able to open the document in design view

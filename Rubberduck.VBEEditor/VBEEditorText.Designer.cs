@@ -39,7 +39,7 @@ namespace Rubberduck.VBEditor {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubberduck.VBEditor.VBEEditorText", typeof(VBEEditorText).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubberduck.VBEEditor.VBEEditorText", typeof(VBEEditorText).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

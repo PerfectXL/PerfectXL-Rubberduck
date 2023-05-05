@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Windows.Forms;
+//using System.Windows.Forms;
 using Rubberduck.VBEditor.WindowsApi;
 
 namespace Rubberduck.VBEditor.Events
@@ -13,6 +13,7 @@ namespace Rubberduck.VBEditor.Events
             LParam = lParam;
             ControlDown = (User32.GetKeyState(VirtualKeyStates.VK_CONTROL) & 0x8000) != 0;
 
+            /*
             if (keydown)
             {
                 if (((Keys) wParam & Keys.KeyCode) == Keys.Enter)
@@ -33,6 +34,7 @@ namespace Rubberduck.VBEditor.Events
             {              
                 Character = (char)wParam;
             }
+            */
         }
 
         public IntPtr Hwnd { get; }
@@ -40,7 +42,7 @@ namespace Rubberduck.VBEditor.Events
         public IntPtr LParam { get; }
 
         public bool Handled { get; set; }
-        public bool IsDelete => (Keys)WParam == Keys.Delete;
+        public bool IsDelete { get; }//(Keys)WParam == Keys.Delete;
         public char Character { get; }
         public bool ControlDown { get; }
     }

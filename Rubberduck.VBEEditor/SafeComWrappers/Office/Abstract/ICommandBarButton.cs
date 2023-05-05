@@ -1,5 +1,5 @@
 using System;
-using System.Drawing;
+//using System.Drawing;
 
 namespace Rubberduck.VBEditor.SafeComWrappers.Abstract
 {
@@ -11,8 +11,8 @@ namespace Rubberduck.VBEditor.SafeComWrappers.Abstract
         string ShortcutText { get; set; }
         ButtonState State { get; set; }
         ButtonStyle Style { get; set; }
-        Image Picture { get; set; }
-        Image Mask { get; set; }
+        //Image Picture { get; set; }
+        //Image Mask { get; set; }
         void ApplyIcon();
     }
 }

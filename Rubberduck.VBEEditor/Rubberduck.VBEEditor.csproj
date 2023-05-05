@@ -1,8 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ComManagement\TypeLibs\**" />
+    <Compile Remove="SafeComWrappers\Abstract\HostApplicationBase.cs" />
+    <Compile Remove="SafeComWrappers\Office\AxHostConverter.cs" />
+    <Compile Remove="SafeComWrappers\SafeIDispatchWrapper.cs" />
+    <Compile Remove="Utility\RegistryWrapper.cs" />
+    <Compile Remove="VbeRuntime\Settings\VBESettings.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="NLog" Version="5.1.4" />
