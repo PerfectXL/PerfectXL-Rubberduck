@@ -1,0 +1,509 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="cross_circle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Fugue\cross-circle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="document_block" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Fugue\document-block.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="document_globe" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Fugue\document-globe.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="document_office" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Fugue\document-office.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="exclamation" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Fugue\exclamation.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FolderClosed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\FolderClosed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FolderOpen" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\FolderOpen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="lock__exclamation" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Fugue\lock--exclamation.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MdiForm" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\MdiForm.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ObjectClass" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\ObjectClass.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ObjectConstant" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\ObjectConstant.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ObjectEnum" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\ObjectEnum.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ObjectEnumItem" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\ObjectEnumItem.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ObjectEvent" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\ObjectEvent.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ObjectField" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\ObjectField.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ObjectLibrary" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\ObjectLibrary.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ObjectMethod" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\ObjectMethod.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ObjectModule" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\ObjectModule.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ObjectProperties" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\ObjectProperties.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ObjectValueType" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\ObjectValueType.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pencil_ruler" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Fugue\pencil-ruler.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ProjectForm" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\ProjectForm.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="status_offline" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Fugue\status-offline.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ui_scroll_pane_form" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Fugue\ui-scroll-pane-form.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ui_tab_content" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Fugue\ui-tab-content.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="document_import" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Fugue\document-import.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CodeExplorerDockablePresenter_Caption" xml:space="preserve">
+    <value>Code Explorer</value>
+  </data>
+  <data name="CodeExplorerDockablePresenter_ParseStarted" xml:space="preserve">
+    <value>{0} (parsing...)</value>
+  </data>
+  <data name="CodeExplorer_AddClassModuleText" xml:space="preserve">
+    <value>Class module (.cls)</value>
+  </data>
+  <data name="CodeExplorer_AddFormText" xml:space="preserve">
+    <value>UserForm (.frm)</value>
+    <comment>TC</comment>
+  </data>
+  <data name="CodeExplorer_AddModule" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="CodeExplorer_AddStdModuleText" xml:space="preserve">
+    <value>Standard module (.bas)</value>
+    <comment>TC</comment>
+  </data>
+  <data name="CodeExplorer_AddTestModuleText" xml:space="preserve">
+    <value>Test module</value>
+    <comment>TC</comment>
+  </data>
+  <data name="CodeExplorer_AddTestModuleWithStubsText" xml:space="preserve">
+    <value>Test module with stubs</value>
+    <comment>TC</comment>
+  </data>
+  <data name="CodeExplorer_CollapseSubnodesToolTip" xml:space="preserve">
+    <value>Collapse all</value>
+  </data>
+  <data name="CodeExplorer_CopyToolTip" xml:space="preserve">
+    <value>Copy to clipboard</value>
+  </data>
+  <data name="CodeExplorer_DisplayMemberNamesText" xml:space="preserve">
+    <value>Display member &amp;names</value>
+  </data>
+  <data name="CodeExplorer_DisplayModeToolTip" xml:space="preserve">
+    <value>Display style</value>
+  </data>
+  <data name="CodeExplorer_DisplaySignaturesText" xml:space="preserve">
+    <value>Display full &amp;signatures</value>
+  </data>
+  <data name="CodeExplorer_ExpandSubnodesToolTip" xml:space="preserve">
+    <value>Expand all</value>
+  </data>
+  <data name="CodeExplorer_Export" xml:space="preserve">
+    <value>Export...</value>
+  </data>
+  <data name="CodeExplorer_ExportAll" xml:space="preserve">
+    <value>Export Project...</value>
+  </data>
+  <data name="CodeExplorer_FindAllImplementationsText" xml:space="preserve">
+    <value>Find All Implementations...</value>
+    <comment>TC</comment>
+  </data>
+  <data name="CodeExplorer_FindAllReferencesText" xml:space="preserve">
+    <value>Find All References...</value>
+    <comment>TC</comment>
+  </data>
+  <data name="CodeExplorer_Import" xml:space="preserve">
+    <value>Import...</value>
+  </data>
+  <data name="CodeExplorer_Indent" xml:space="preserve">
+    <value>Indent</value>
+  </data>
+  <data name="CodeExplorer_Navigate" xml:space="preserve">
+    <value>Na&amp;vigate</value>
+  </data>
+  <data name="CodeExplorer_New" xml:space="preserve">
+    <value>&amp;New</value>
+  </data>
+  <data name="CodeExplorer_NewToolTip" xml:space="preserve">
+    <value>Add a component to the active project</value>
+  </data>
+  <data name="CodeExplorer_Open" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="CodeExplorer_OpenDesigner" xml:space="preserve">
+    <value>Open Designer</value>
+  </data>
+  <data name="CodeExplorer_OpenProjectProperties" xml:space="preserve">
+    <value>Project properties</value>
+  </data>
+  <data name="CodeExplorer_Print" xml:space="preserve">
+    <value>Print...</value>
+  </data>
+  <data name="CodeExplorer_Refresh" xml:space="preserve">
+    <value>R&amp;efresh</value>
+  </data>
+  <data name="CodeExplorer_Remove" xml:space="preserve">
+    <value>Remove...</value>
+  </data>
+  <data name="CodeExplorer_ResourceFileText" xml:space="preserve">
+    <value>Resources</value>
+  </data>
+  <data name="CodeExplorer_RunAllTestsText" xml:space="preserve">
+    <value>Run All &amp;Tests</value>
+  </data>
+  <data name="CodeExplorer_ShowDesignerToolTip" xml:space="preserve">
+    <value>Open Designer</value>
+  </data>
+  <data name="CodeExplorer_ShowFoldersToolTip" xml:space="preserve">
+    <value>Toggle folders</value>
+  </data>
+  <data name="CodeExplorer_ShowSignaturesToolTip" xml:space="preserve">
+    <value>Toggle signatures</value>
+  </data>
+  <data name="CodeExplorer_Sort" xml:space="preserve">
+    <value>Sort</value>
+  </data>
+  <data name="CodeExplorer_SortStyle_ByCodeOrder" xml:space="preserve">
+    <value>As in module</value>
+  </data>
+  <data name="CodeExplorer_SortStyle_ByName" xml:space="preserve">
+    <value>by Name</value>
+  </data>
+  <data name="CodeExplorer_SortStyle_ByType" xml:space="preserve">
+    <value>Group by Type</value>
+  </data>
+  <data name="CodeExplorer_Add" xml:space="preserve">
+    <value>Add...</value>
+  </data>
+  <data name="ExportBeforeRemove_Caption" xml:space="preserve">
+    <value>Confirm Export</value>
+  </data>
+  <data name="ExportBeforeRemove_Prompt" xml:space="preserve">
+    <value>Do you want to export '{0}' before removing?</value>
+  </data>
+  <data name="CodeExplorer_AddMDIFormText" xml:space="preserve">
+    <value>MDI form (.frm)</value>
+  </data>
+  <data name="CodeExplorer_AddPropertyPageText" xml:space="preserve">
+    <value>Property page (.pag)</value>
+  </data>
+  <data name="CodeExplorer_AddUserControlText" xml:space="preserve">
+    <value>UserControl (.ctl)</value>
+  </data>
+  <data name="CodeExplorer_AddUserDocumentText" xml:space="preserve">
+    <value>User document (.dob)</value>
+  </data>
+  <data name="CodeExplorer_AddVBFormText" xml:space="preserve">
+    <value>Form (.frm)</value>
+  </data>
+  <data name="CodeExplorer_Rename" xml:space="preserve">
+    <value>Rename...</value>
+  </data>
+  <data name="CodeExplorer_SetAsStartupProject" xml:space="preserve">
+    <value>Set as start up</value>
+  </data>
+  <data name="CodeExplorer_AddTemplatesSubMenu" xml:space="preserve">
+    <value>Templates</value>
+  </data>
+  <data name="BrokenReference" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\BrokenReference.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LockedReference" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\LockedReference.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ObjectAssembly" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\ObjectAssembly.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Reference" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Fugue\node-select-all.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CodeExplorer_ProjectReferences" xml:space="preserve">
+    <value>Project References</value>
+  </data>
+  <data name="CodeExplorer_FontSizeToolTip" xml:space="preserve">
+    <value>Font Size</value>
+  </data>
+  <data name="CodeExplorer_SearchPlaceholder" xml:space="preserve">
+    <value>Search...</value>
+  </data>
+  <data name="CodeExplorer_SyncCodePaneToolTip" xml:space="preserve">
+    <value>Sync with code pane</value>
+  </data>
+  <data name="ExportError_Caption" xml:space="preserve">
+    <value>Error exporting '{0}'</value>
+  </data>
+  <data name="RemoveError_Caption" xml:space="preserve">
+    <value>Error removing '{0}'</value>
+  </data>
+  <data name="CodeExplorer_LibraryReferences" xml:space="preserve">
+    <value>Library References</value>
+  </data>
+  <data name="ObjectClassPredeclared" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\ObjectClassPredeclared.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AccessibilityFriend" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\AccessibilityFriend.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AccessibilityGlobal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\AccessibilityGlobal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AccessibilityPrivate" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\AccessibilityPrivate.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AccessibilityStatic" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\AccessibilityStatic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ObjectInterface" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\ObjectInterface.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ObjectLibraryFunction" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\ObjectLibraryFunction.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ObjectPropertyGet" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\ObjectPropertyGet.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ObjectPropertyLet" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\ObjectPropertyLet.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ObjectPropertySet" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\ObjectPropertySet.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ObjectTestMethod" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\Custom\PNG\TestMethod.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CodeExplorer_AddExistingFileText" xml:space="preserve">
+    <value>Existing files...</value>
+  </data>
+  <data name="CodeExplorer_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="CodeExplorer_Exclude" xml:space="preserve">
+    <value>Exclude from project</value>
+  </data>
+  <data name="ConfirmBeforeDelete_Caption" xml:space="preserve">
+    <value>Confirm Delete</value>
+  </data>
+  <data name="ConfirmBeforeDelete_Prompt" xml:space="preserve">
+    <value>{0} will be permanently deleted.
+    
+Continue?</value>
+  </data>
+  <data name="DeleteFailed_Caption" xml:space="preserve">
+    <value>Delete Failed</value>
+  </data>
+  <data name="DeleteFailed_Message" xml:space="preserve">
+    <value>The following files could not be deleted:
+    
+{0}</value>
+  </data>
+  <data name="CodeExplorer_AppendHeader" xml:space="preserve">
+    <value>Rubberduck User Declarations - {0}</value>
+  </data>
+  <data name="CodeExplorer_ExtractInterfaceText" xml:space="preserve">
+    <value>Extract Interface...</value>
+  </data>
+  <data name="SyncProject" xml:space="preserve">
+    <value>Sync Project</value>
+  </data>
+  <data name="UpdateFromFiles" xml:space="preserve">
+    <value>Update Components from Files...</value>
+  </data>
+  <data name="ReplaceFromFiles" xml:space="preserve">
+    <value>Replace Contents from Files...</value>
+  </data>
+  <data name="CodeExplorer_MoveToFolder" xml:space="preserve">
+    <value>Move to Folder...</value>
+  </data>
+  <data name="CodeExplorer_Annotate" xml:space="preserve">
+    <value>Annotate</value>
+  </data>
+  <data name="ImportCommand_DocumentDoesNotExist" xml:space="preserve">
+    <value>There is no existing document module with name '{0}'; file '{1}' cannot be imported.
+
+Import aborted.</value>
+    <comment>{0} module name, {1} filename</comment>
+  </data>
+  <data name="ImportCommand_BinaryAndComponentDoNotExist" xml:space="preserve">
+    <value>For file '{0}', the required binary file(s) '{1}' are missing and the target component '{2}' does not already exists.
+
+Import aborted.</value>
+    <comment>{0} filename, {1} binaries, {2} module name</comment>
+  </data>
+  <data name="ImportCommand_BinaryDoesNotExist" xml:space="preserve">
+    <value>For file '{0}', the requires binary file(s) '{1}' are missing.
+
+Import aborted.</value>
+    <comment>{0} filename, {1} binaries</comment>
+  </data>
+  <data name="ImportCommand_DuplicateModule" xml:space="preserve">
+    <value>Multiple files contain code for the component '{0}'.
+
+Import aborted.</value>
+    <comment>{0} module name</comment>
+  </data>
+  <data name="ImportCommand_OpenDialog_Filter_AllFiles" xml:space="preserve">
+    <value>All Files</value>
+  </data>
+  <data name="ImportCommand_OpenDialog_Filter_VBFiles" xml:space="preserve">
+    <value>VB Files</value>
+  </data>
+  <data name="ImportCommand_OpenDialog_Title" xml:space="preserve">
+    <value>Import Source Files</value>
+  </data>
+  <data name="ImportCommand_UnsupportedFileExtensions" xml:space="preserve">
+    <value>The extension of the file '{0}' is not supported.
+
+Import aborted.</value>
+    <comment>{0} filename of unsupported file</comment>
+  </data>
+  <data name="CodeExplorerWindowSettings_AccessKey" xml:space="preserve">
+    <value>Code _Explorer</value>
+  </data>
+  <data name="CodeExplorer_NavigateText" xml:space="preserve">
+    <value>Navigate</value>
+  </data>
+</root>
