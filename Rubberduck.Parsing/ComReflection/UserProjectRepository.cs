@@ -6,7 +6,7 @@ using Rubberduck.Parsing.Common;
 using Rubberduck.Parsing.UIContext;
 using Rubberduck.Parsing.VBA.Extensions;
 using Rubberduck.VBEditor.ComManagement;
-using Rubberduck.VBEditor.ComManagement.TypeLibs.Abstract;
+//using Rubberduck.VBEditor.ComManagement.TypeLibs.Abstract;
 using Rubberduck.VBEditor.Extensions;
 using Rubberduck.VBEditor.SafeComWrappers.Abstract;
 
@@ -16,7 +16,7 @@ namespace Rubberduck.Parsing.ComReflection
     {
 
         private readonly IUiDispatcher _uiDispatcher;
-        private readonly ITypeLibWrapperProvider _typeLibWrapperProvider;
+        //private readonly ITypeLibWrapperProvider _typeLibWrapperProvider;
         private readonly IProjectsProvider _projectsProvider;
 
         private readonly IDictionary<string, ComProject> _userComProjects = new Dictionary<string, ComProject>();
@@ -24,10 +24,10 @@ namespace Rubberduck.Parsing.ComReflection
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
 
-        public UserProjectRepository(ITypeLibWrapperProvider typeLibWrapperProvider, IUiDispatcher uiDispatcher,
+        public UserProjectRepository(/*ITypeLibWrapperProvider typeLibWrapperProvider, */IUiDispatcher uiDispatcher,
             IProjectsProvider projectsProvider)
         {
-            _typeLibWrapperProvider = typeLibWrapperProvider;
+            //_typeLibWrapperProvider = typeLibWrapperProvider;
             _uiDispatcher = uiDispatcher;
             _projectsProvider = projectsProvider;
         }
@@ -102,19 +102,21 @@ namespace Rubberduck.Parsing.ComReflection
         /// </remarks>
         private bool TryLoadProject(string projectId, IVBProject project, out ComProject comProject)
         {
-            if (!project.TryGetFullPath(out var path))
-            {
-                //Only debug because this will always happen for unsaved projects.
-                _logger.Debug($"Unable to get project path for project with projectId {projectId} when loading the COM project.");
-                path = string.Empty;
-            }
+            comProject = null;
 
-            using (var typeLib = _typeLibWrapperProvider.TypeLibWrapperFromProject(project))
-            {
-                comProject = typeLib != null 
-                    ? new ComProject(typeLib, path) 
-                    : null;
-            }
+            //if (!project.TryGetFullPath(out var path))
+            //{
+            //    //Only debug because this will always happen for unsaved projects.
+            //    _logger.Debug($"Unable to get project path for project with projectId {projectId} when loading the COM project.");
+            //    path = string.Empty;
+            //}
+
+            //using (var typeLib = _typeLibWrapperProvider.TypeLibWrapperFromProject(project))
+            //{
+            //    comProject = typeLib != null 
+            //        ? new ComProject(typeLib, path) 
+            //        : null;
+            //}
 
             return comProject != null;
         } 

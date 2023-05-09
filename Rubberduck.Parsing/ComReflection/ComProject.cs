@@ -6,7 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Serialization;
-using Rubberduck.VBEditor.ComManagement.TypeLibs;
+//using Rubberduck.VBEditor.ComManagement.TypeLibs;
 using Rubberduck.VBEditor.Utility;
 using TYPEATTR = System.Runtime.InteropServices.ComTypes.TYPEATTR;
 using TYPELIBATTR = System.Runtime.InteropServices.ComTypes.TYPELIBATTR;
@@ -35,7 +35,7 @@ namespace Rubberduck.Parsing.ComReflection
         // YGNI...
         // ReSharper disable once NotAccessedField.Local
 #pragma warning disable IDE0052 // Remove unread private members
-        private readonly TypeLibTypeFlags _flags;
+        //private readonly TypeLibTypeFlags _flags;
 #pragma warning restore IDE0052 // Remove unread private members
 
         [DataMember(IsRequired = true)]
@@ -82,7 +82,7 @@ namespace Rubberduck.Parsing.ComReflection
 
                     MajorVersion = typeAttr.wMajorVerNum;
                     MinorVersion = typeAttr.wMinorVerNum;
-                    _flags = (TypeLibTypeFlags)typeAttr.wLibFlags;
+                    //_flags = (TypeLibTypeFlags)typeAttr.wLibFlags;
                     Guid = typeAttr.guid;
                 }
             }

@@ -4,4 +4,32 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <Antlr4UseCSharpGenerator>True</Antlr4UseCSharpGenerator>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Antlr4 Update="Grammar\VBAParser.g4">
+      <CustomToolNamespace>Rubberduck.Parsing.Grammar</CustomToolNamespace>
+    </Antlr4>
+    <Antlr4 Update="Preprocessing\*.g4">
+      <CustomToolNamespace>Rubberduck.Parsing.PreProcessing</CustomToolNamespace>
+    </Antlr4>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Antlr4.CodeGenerator" Version="4.6.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Antlr4.Runtime" Version="4.6.6" />
+    <PackageReference Include="NLog" Version="5.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Rubberduck.Resources\Rubberduck.Resources.csproj" />
+    <ProjectReference Include="..\Rubberduck.SettingsProvider\Rubberduck.SettingsProvider.csproj" />
+    <ProjectReference Include="..\Rubberduck.VBEEditor\Rubberduck.VBEEditor.csproj" />
+  </ItemGroup>
+
 </Project>

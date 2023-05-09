@@ -81,7 +81,7 @@ namespace Rubberduck.Parsing.ComReflection
         {
             var filepath = _fileSystem.Path.Combine(Target, FileName(project));
 
-            using (var stream = _fileSystem.FileStream.Create(filepath, FileMode.Create, FileAccess.Write))
+            using (var stream = _fileSystem.FileStream.New(filepath, FileMode.Create, FileAccess.Write))
             using (var xmlWriter = XmlWriter.Create(stream, WriterSettings))
             using (var writer = XmlDictionaryWriter.CreateDictionaryWriter(xmlWriter))
             {
@@ -105,7 +105,7 @@ namespace Rubberduck.Parsing.ComReflection
                 throw new InvalidOperationException();
             }
 
-            using (var stream = _fileSystem.FileStream.Create(filepath, FileMode.Open, FileAccess.Read))
+            using (var stream = _fileSystem.FileStream.New(filepath, FileMode.Open, FileAccess.Read))
             {
                 return Load(stream);
             }
