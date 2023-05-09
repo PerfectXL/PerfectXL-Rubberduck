@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rubberduck.Resources", "Rub
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rubberduck.SettingsProvider", "Rubberduck.SettingsProvider\Rubberduck.SettingsProvider.csproj", "{D7F07523-669B-470D-BD54-3A6022588ACB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rubberduck.Parsing", "Rubberduck.Parsing\Rubberduck.Parsing.csproj", "{AF6AB457-EB3B-4911-BB88-288B55E56B5B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{D7F07523-669B-470D-BD54-3A6022588ACB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7F07523-669B-470D-BD54-3A6022588ACB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7F07523-669B-470D-BD54-3A6022588ACB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF6AB457-EB3B-4911-BB88-288B55E56B5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF6AB457-EB3B-4911-BB88-288B55E56B5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF6AB457-EB3B-4911-BB88-288B55E56B5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF6AB457-EB3B-4911-BB88-288B55E56B5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
