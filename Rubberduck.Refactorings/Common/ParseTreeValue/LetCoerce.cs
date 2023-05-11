@@ -254,7 +254,7 @@ namespace Rubberduck.Refactoring.ParseTreeValue
         {
             try
             {
-                Coerce((Tokens.String, token), valueType);
+                return Coerce((Tokens.String, token), valueType).EndsWith("Infinity");
             }
             catch (OverflowException)
             {
