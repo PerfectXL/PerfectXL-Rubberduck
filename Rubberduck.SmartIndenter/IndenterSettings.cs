@@ -132,6 +132,7 @@ namespace Rubberduck.SmartIndenter
         public IndenterSettings(bool skipRegistry)
         {
             var tabWidth = 4;
+            /*
             if (!skipRegistry)
             {
                 try
@@ -147,6 +148,7 @@ namespace Rubberduck.SmartIndenter
                 catch
                 { }
             }
+            */
 
             // Mocking requires these to be virtual.
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
@@ -204,6 +206,7 @@ namespace Rubberduck.SmartIndenter
                    EmptyLineHandlingMethod == other.EmptyLineHandlingMethod;
         }
 
+        /*
         private const string LegacySettingsSubKey = @"Software\VB and VBA Program Settings\Office Automation Ltd.\Smart Indenter";
         public bool LegacySettingsExist()
         {
@@ -282,5 +285,6 @@ namespace Rubberduck.SmartIndenter
             catch { }
             return current;
         }
+        */
     }
 }

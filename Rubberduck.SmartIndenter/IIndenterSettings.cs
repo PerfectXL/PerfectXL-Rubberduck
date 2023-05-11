@@ -26,8 +26,8 @@
         bool VerticallySpaceProcedures { get; set; }
         int LinesBetweenProcedures { get; set; }
         bool GroupRelatedProperties { get; set; }
-        bool LegacySettingsExist();
-        void LoadLegacyFromRegistry();
+        //bool LegacySettingsExist();
+        //void LoadLegacyFromRegistry();
     }
 
     public enum EndOfLineCommentStyle
