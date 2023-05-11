@@ -1,7 +1,6 @@
 using System.Linq;
 using NUnit.Framework;
 using Rubberduck.SmartIndenter;
-using Rubberduck.UI.Command;
 using RubberduckTests.Settings;
 
 namespace RubberduckTests.SmartIndenter
