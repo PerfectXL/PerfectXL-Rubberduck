@@ -65,8 +65,8 @@ namespace Rubberduck.Refactorings.PromoteToParameter
 
         private void UpdateSignature(Declaration targetMethod, Declaration targetVariable, IRewriteSession rewriteSession)
         {
-            var proc = (dynamic)targetMethod.Context;
-            var paramList = (VBAParser.ArgListContext)proc.argList();
+            var proc = (VBAParser.DeclareStmtContext)targetMethod.Context;
+            var paramList = proc.argList();
             AddParameter(targetMethod, targetVariable, paramList, rewriteSession);
         }
 

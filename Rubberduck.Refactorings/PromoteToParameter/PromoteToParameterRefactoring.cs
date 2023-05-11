@@ -1,4 +1,4 @@
-﻿using Rubberduck.Interaction;
+﻿//using Rubberduck.Interaction;
 using Rubberduck.Parsing.Symbols;
 using Rubberduck.Parsing.VBA;
 using Rubberduck.Refactorings.Exceptions;
@@ -12,18 +12,18 @@ namespace Rubberduck.Refactorings.PromoteToParameter
     {
         private readonly IRefactoringAction<PromoteToParameterModel> _refactoringAction;
         private readonly ISelectedDeclarationProvider _selectedDeclarationProvider;
-        private readonly IMessageBox _messageBox;
+        //private readonly IMessageBox _messageBox;
 
         public PromoteToParameterRefactoring(
             PromoteToParameterRefactoringAction refactoringAction, 
-            IMessageBox messageBox, 
+            //IMessageBox messageBox, 
             ISelectionProvider selectionProvider,
             ISelectedDeclarationProvider selectedDeclarationProvider)
         :base(selectionProvider)
         {
             _refactoringAction = refactoringAction;
             _selectedDeclarationProvider = selectedDeclarationProvider;
-            _messageBox = messageBox;
+            //_messageBox = messageBox;
         }
 
         protected override Declaration FindTargetDeclaration(QualifiedSelection targetSelection)
@@ -95,7 +95,7 @@ namespace Rubberduck.Refactorings.PromoteToParameter
                 functionDeclaration.IdentifierName, interfaceImplementation.ComponentName,
                 interfaceImplementation.IdentifierName);
 
-            return _messageBox.Question(message, RefactoringsUI.PromoteToParameter_Caption);
+            return false;//_messageBox.Question(message, RefactoringsUI.PromoteToParameter_Caption);
         }
     }
 }
