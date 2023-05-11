@@ -1,16 +1,16 @@
 ﻿using System;
-using Rubberduck.Interaction;
+//using Rubberduck.Interaction;
 using Rubberduck.Parsing.Rewriter;
 
 namespace Rubberduck.CodeAnalysis.QuickFixes.Logistics
 {
     internal class QuickFixFailureNotifier : IQuickFixFailureNotifier
     {
-        private readonly IMessageBox _messageBox;
+        //private readonly IMessageBox _messageBox;
 
-        public QuickFixFailureNotifier(IMessageBox messageBox)
+        public QuickFixFailureNotifier(/*IMessageBox messageBox*/)
         {
-            _messageBox = messageBox;
+            //_messageBox = messageBox;
         }
 
         public void NotifyQuickFixExecutionFailure(RewriteSessionState sessionState)
@@ -18,7 +18,7 @@ namespace Rubberduck.CodeAnalysis.QuickFixes.Logistics
             var message = FailureMessage(sessionState);
             var caption = Resources.Inspections.QuickFixes.ApplyQuickFixFailedCaption;
 
-            _messageBox.NotifyWarn(message, caption);
+            //_messageBox.NotifyWarn(message, caption);
         }
 
         private static string FailureMessage(RewriteSessionState sessionState)

@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using Antlr4.Runtime;
 using Rubberduck.Common;
-using Rubberduck.Interaction.Navigation;
+//using Rubberduck.Interaction.Navigation;
 using Rubberduck.Parsing.Symbols;
 using Rubberduck.VBEditor;
 
 namespace Rubberduck.CodeAnalysis.Inspections.Abstract
 {
-    internal abstract class InspectionResultBase : IInspectionResult, INavigateSource
+    internal abstract class InspectionResultBase : IInspectionResult/*, INavigateSource*/
     {
         protected InspectionResultBase(IInspection inspection,
             string description,
@@ -52,6 +52,7 @@ namespace Rubberduck.CodeAnalysis.Inspections.Abstract
             return Inspection.CompareTo(other.Inspection);
         }
 
+        /*
         private NavigateCodeEventArgs _navigationArgs;
         public NavigateCodeEventArgs GetNavigationArgs()
         {
@@ -63,6 +64,7 @@ namespace Rubberduck.CodeAnalysis.Inspections.Abstract
             _navigationArgs = new NavigateCodeEventArgs(QualifiedSelection);
             return _navigationArgs;
         }
+        */
 
         public int CompareTo(object obj)
         {

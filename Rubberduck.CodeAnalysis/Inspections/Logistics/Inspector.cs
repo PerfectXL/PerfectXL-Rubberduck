@@ -7,7 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+//using System.Windows.Forms;
 using Antlr4.Runtime.Tree;
 using NLog;
 using Rubberduck.CodeAnalysis.Inspections.Attributes;
@@ -150,7 +150,7 @@ namespace Rubberduck.CodeAnalysis.Inspections.Logistics
         {
             var requiredHost = inspection.GetType().GetCustomAttribute<RequiredHostAttribute>();
 
-            return requiredHost == null || requiredHost.HostNames.Contains(Path.GetFileName(Application.ExecutablePath).ToUpper());
+            return requiredHost == null || requiredHost.HostNames.Contains(Path.GetFileName(Assembly.GetExecutingAssembly().Location).ToUpper());
         }
 
         private static void RunInspectionsInParallel(IEnumerable<IInspection> inspectionsToRun,

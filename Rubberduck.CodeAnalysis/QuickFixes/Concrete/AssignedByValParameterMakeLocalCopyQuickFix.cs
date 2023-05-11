@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Windows.Forms;
+//using System.Windows.Forms;
 using Antlr4.Runtime;
 using Rubberduck.CodeAnalysis.Inspections;
 using Rubberduck.CodeAnalysis.Inspections.Concrete;
@@ -13,7 +13,7 @@ using Rubberduck.Parsing.Rewriter;
 using Rubberduck.Parsing.Symbols;
 using Rubberduck.Parsing.VBA;
 using Rubberduck.Refactorings.Common;
-using Rubberduck.UI.Refactorings;
+//using Rubberduck.UI.Refactorings;
 
 namespace Rubberduck.CodeAnalysis.QuickFixes.Concrete
 {
@@ -48,14 +48,14 @@ namespace Rubberduck.CodeAnalysis.QuickFixes.Concrete
     /// </example>
     internal sealed class AssignedByValParameterMakeLocalCopyQuickFix : QuickFixBase
     {
-        private readonly IAssignedByValParameterQuickFixDialogFactory _dialogFactory;
+        //private readonly IAssignedByValParameterQuickFixDialogFactory _dialogFactory;
         private readonly IDeclarationFinderProvider _declarationFinderProvider;
         private Declaration _quickFixTarget;
 
-        public AssignedByValParameterMakeLocalCopyQuickFix(IDeclarationFinderProvider declarationFinderProvider, IAssignedByValParameterQuickFixDialogFactory dialogFactory)
+        public AssignedByValParameterMakeLocalCopyQuickFix(IDeclarationFinderProvider declarationFinderProvider/*, IAssignedByValParameterQuickFixDialogFactory dialogFactory*/)
             : base(typeof(AssignedByValParameterInspection))
         {
-            _dialogFactory = dialogFactory;
+            //_dialogFactory = dialogFactory;
             _declarationFinderProvider = declarationFinderProvider;
         }
 
@@ -79,6 +79,8 @@ namespace Rubberduck.CodeAnalysis.QuickFixes.Concrete
 
         private string PromptForLocalVariableName(Declaration target)
         {
+            return string.Empty;
+            /*
             IAssignedByValParameterQuickFixDialog view = null;
             try
             {
@@ -97,6 +99,7 @@ namespace Rubberduck.CodeAnalysis.QuickFixes.Concrete
             {
                 _dialogFactory.Release(view);
             }
+            */
         }
 
         private bool IsNameCollision(string newName) 
