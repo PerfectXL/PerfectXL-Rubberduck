@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rubberduck.SmartIndenter", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rubberduck.Refactorings", "Rubberduck.Refactorings\Rubberduck.Refactorings.csproj", "{254BC846-8759-46D0-8FD8-32C6190F15B6}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rubberduck.CodeAnalysis", "Rubberduck.CodeAnalysis\Rubberduck.CodeAnalysis.csproj", "{766A666E-D212-4D43-A519-197968B140DE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{254BC846-8759-46D0-8FD8-32C6190F15B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{254BC846-8759-46D0-8FD8-32C6190F15B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{254BC846-8759-46D0-8FD8-32C6190F15B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{766A666E-D212-4D43-A519-197968B140DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{766A666E-D212-4D43-A519-197968B140DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{766A666E-D212-4D43-A519-197968B140DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{766A666E-D212-4D43-A519-197968B140DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
