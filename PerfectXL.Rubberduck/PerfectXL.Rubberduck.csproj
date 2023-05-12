@@ -5,6 +5,13 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   
+  <PropertyGroup>
+    <Version>0.1.0</Version>
+    <Authors>Infotron B.V.</Authors>
+    <Copyright>Copyright © $([System.DateTime]::Now.Year)</Copyright>
+    <Description>Lightweight version of Rubberduck, rewritten in .NET Standard</Description>
+  </PropertyGroup>
+  
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <DebugType>none</DebugType>
     <DebugSymbols>false</DebugSymbols>
