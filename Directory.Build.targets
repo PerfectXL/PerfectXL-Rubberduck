@@ -1,0 +1,9 @@
+<Project>
+  <PropertyGroup>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="**/*.??.Designer.cs" />
+    <EmbeddedResource Remove="**/*.??.resx" />
+  </ItemGroup>
+</Project>
