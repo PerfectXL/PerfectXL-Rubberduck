@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="ILRepacker" AfterTargets="Build">
+    <ItemGroup>
+      <InputAssemblies Include="$(OutputPath)\PerfectXL.Rubberduck.dll" />
+      <InputAssemblies Include="$(OutputPath)\Rubberduck.*.dll" />
+    </ItemGroup>
+
+    <ILRepack
+      Parallel="true"
+      InputAssemblies="@(InputAssemblies)"
+      LibraryPath="$(OutputPath)"
+      TargetKind="SameAsPrimaryAssembly"
+      OutputFile="$(OutputPath)$(TargetName)$(TargetExt)"
+      />
+  </Target>
+
+  <Target Name="CleanOutputDir" AfterTargets="ILRepack">
+    <ItemGroup>
+      <DeleteFiles Include="$(TargetDir)*.dll" Exclude="$(TargetDir)$(TargetName).dll" />
+      <DeleteFiles Include="$(TargetDir)*.pdb" Exclude="$(TargetDir)$(TargetName).pdb" />
+    </ItemGroup>
+    <Delete Files="@(DeleteFiles)" />
+  </Target>
+</Project>
